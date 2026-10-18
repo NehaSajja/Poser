@@ -1,0 +1,14 @@
+node_modules/
+.next/
+.env*
+!.env.example
+.local/
+*.tsbuildinfo
+next-env.d.ts
+work/
+proof/
+__pycache__/
+*.pyc
+.DS_Store
+AGENTS.md
+CLAUDE.md
