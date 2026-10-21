@@ -4,7 +4,7 @@ import { exportPoseSketch, poseSketchBounds, poseShapes } from '../poser/canvas'
 // False restores the permanent split; 'split' restores the 20/80 experiment.
 export const ENABLE_SKETCH_THUMBNAIL = true;
 export const SKETCH_THUMBNAIL_LAYOUT = 'overlay';
-export const SKETCH_TRANSITION_MS = 480;
+export const SKETCH_TRANSITION_MS = 800;
 
 export function useSketchThumbnail(editor, medium, results) {
   const [snapshot, setSnapshot] = useState(null);

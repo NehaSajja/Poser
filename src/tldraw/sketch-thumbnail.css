@@ -95,7 +95,8 @@
 
 /* Continuous overlay geometry, isolated from the reversible split experiment. */
 .sketch-workspace[data-sketch-layout="overlay"] {
-  --sketch-motion: 480ms cubic-bezier(.22, 1, .36, 1);
+  /* Keep duration aligned with SKETCH_TRANSITION_MS so the editor returns after the card settles. */
+  --sketch-motion: 800ms cubic-bezier(.4, 0, .2, 1);
   --thumbnail-top: calc(var(--workspace-control-offset) + var(--workspace-pill-height) + 1.25rem);
   --thumbnail-width: clamp(160px, 18vw, 232px);
   --expanded-edge: calc((100% - var(--divider-width)) * var(--split-ratio));
