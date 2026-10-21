@@ -7,17 +7,17 @@ The **Mediums** menu has two options:
 - **Poser** — draw a figure, browse four matching poses, adjust a model in 3D, and explore related artwork.
 - **Wireframe** — draw interface controls and turn them into editable canvas shapes with a live shadcn/ui preview.
 
-Each medium keeps its own drawing page and camera. The two panels are resizable, with a minimum width of 33% each. Drawings persist locally in the browser; there is no account or cloud document sync.
+Each medium keeps its own drawing page and camera. The panels are resizable. In Poser, choosing a model or dragging the drawing panel below 25% collapses the drawing into a thumbnail over the full-page model or references view. Click the thumbnail to return to the split view. Drawings persist locally in the browser; there is no account or cloud document sync.
 
 ## Run locally
 
-Use Node.js 24, npm, and Python 3.11–3.13. Accept the GitHub collaborator invitation and authenticate Git with an account that has access to this private repository.
+Use Node.js 24, npm, and Python 3.11–3.13.
 
 1. Clone the repository and install the app and reference-search dependencies:
 
    ```sh
-   git clone https://github.com/ananmaysharan/poser.git
-   cd poser
+   git clone https://github.com/NehaSajja/Poser.git
+   cd Poser
    npm ci
    npm run setup
    ```
@@ -42,7 +42,7 @@ Use Node.js 24, npm, and Python 3.11–3.13. Accept the GitHub collaborator invi
    npm run dev
    ```
 
-   Open [http://127.0.0.1:4317](http://127.0.0.1:4317). `/` opens Poser; `/?medium=ui` opens Wireframe. `/tldraw` opens the same application. Restart the server after changing `.env.local`.
+   Open [http://127.0.0.1:4317](http://127.0.0.1:4317). `/` opens Poser; `/?medium=ui` opens Wireframe. `/tldraw` opens the same application. Restart the server after changing `.env.local` or `.env`. Both are Git-ignored; `.env.local` takes precedence when a setting appears in both files.
 
 `npm run setup` verifies the bundled assets, assembles MobileCLIP, creates `.venv`, installs pinned Python dependencies, and tests image/text encoding. The first run needs internet for Python packages. It creates `.env.local` only if the file is missing; rerunning setup preserves existing keys and repairs missing local weights.
 
@@ -189,9 +189,9 @@ The visible mode is named **Poser**; `poser2` remains its internal identifier an
 
 ## Repository and deployment
 
-This is a private GitHub repository. Environment files, assembled weights, caches, generated output, Python environments, and dependencies are excluded. Both pose and Met runtime assets are tracked under `data/`. Browser drawings use the local persistence key `sketch-ui-tldraw-v1`; they are not stored in Git.
+This repository contains the current local Poser application. Environment files, assembled weights, caches, generated output, Python environments, and dependencies are excluded. Both pose and Met runtime assets are tracked under `data/`. Browser drawings use the local persistence key `sketch-ui-tldraw-v1`; they are not stored in Git.
 
-There is currently no Vercel deployment, and automatic Vercel deployments are disconnected. The app still depends on local files and the Python worker. A production build alone does not package those services or datasets.
+The supported workflow is running the app locally; it depends on local files and the Python worker. A production build alone does not package those services or datasets.
 
 A deployed canvas also needs a valid [tldraw license](https://tldraw.dev/community/license), supplied through `VITE_TLDRAW_LICENSE_KEY`. The installed SDK hides an unlicensed canvas after five seconds on a production domain. Localhost development is unaffected.
 
