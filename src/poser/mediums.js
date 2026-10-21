@@ -1,4 +1,4 @@
-export const MEDIUM_NAMES = { poser2: 'Poser', ui: 'Wireframe' };
+export const MEDIUM_NAMES = { poser2: 'poser', ui: 'Wireframe' };
 
 export function resolveMedium(requested) {
   if (requested === 'poser' || requested === 'poser4') return 'poser2';

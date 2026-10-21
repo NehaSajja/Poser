@@ -98,6 +98,6 @@ export function SplitWorkspace({ sketch, preview, compactSketch = false, expandi
       <div className="workspace-gutter" aria-hidden="true"/>}
     {preview}
     {(compactSketch || expandingSketch) && SKETCH_THUMBNAIL_LAYOUT === 'overlay' &&
-      <div className="compact-sketch-title"><span className="medium-wordmark">Poser</span></div>}
+      <div className="compact-sketch-title"><span className="medium-wordmark">poser</span></div>}
   </main>;
 }

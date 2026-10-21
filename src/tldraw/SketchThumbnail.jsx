@@ -60,7 +60,7 @@ export function SketchThumbnail({ image, onExpand, compact, expanding, x, y, siz
     data-expanding={expanding} inert={!compact} aria-hidden={!compact}
     style={{ '--ink-x': `${x}px`, '--ink-y': `${y}px`, '--ink-size': `${size}px` }}
     aria-label="Expand sketch canvas" title="Expand sketch canvas">
-    <span className="medium-wordmark">Poser</span>
+    <span className="medium-wordmark">poser</span>
     <img src={image} alt="Your pose sketch" draggable={false}/>
   </button>;
 }
