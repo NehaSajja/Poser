@@ -7,7 +7,7 @@ The **Mediums** menu has two options:
 - **Poser** — draw a figure, browse four matching poses, adjust a model in 3D, and explore related artwork.
 - **Wireframe** — draw interface controls and turn them into editable canvas shapes with a live shadcn/ui preview.
 
-Each medium keeps its own drawing page and camera. The panels are resizable. In Poser, choosing a model or dragging the drawing panel below 25% collapses the drawing into a thumbnail over the full-page model or references view. Click the thumbnail to return to the split view. Drawings persist locally in the browser; there is no account or cloud document sync.
+Each medium keeps its own drawing page and camera. The expanded workspace uses a fixed 50/50 split. In Poser, choosing a model smoothly collapses the drawing into a thumbnail over the full-page model or references view. Click the thumbnail to return to the split view. Drawings persist locally in the browser; there is no account or cloud document sync.
 
 ## Run locally
 

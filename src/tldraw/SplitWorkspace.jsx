@@ -4,6 +4,8 @@ import './canvas-card-backdrop.css';
 import './sketch-thumbnail.css';
 import { SKETCH_THUMBNAIL_LAYOUT } from './SketchThumbnail';
 
+// Flip this flag to restore the manual divider experiment. Automatic thumbnail motion is independent.
+const ENABLE_MANUAL_CANVAS_RESIZE = false;
 const COLLAPSE_THRESHOLD = 25;
 const clampSplit = (value, minimum = 33) => Math.min(67, Math.max(minimum, value));
 
@@ -86,13 +88,14 @@ export function SplitWorkspace({ sketch, preview, compactSketch = false, expandi
 
   return <main className="sketch-workspace canvas-card-backdrop" data-compact-sketch={compactSketch} data-sketch-layout={SKETCH_THUMBNAIL_LAYOUT} data-expanding-sketch={expandingSketch} data-resizing={resizing} style={{ '--split-ratio': split / 100, '--sketch-width': `${compactSketch ? 20 : split}fr`, '--preview-width': `${compactSketch ? 80 : 100 - split}fr` }}>
     {sketch}
-    <div className="workspace-divider" role="separator" aria-hidden={compactSketch} tabIndex={compactSketch ? -1 : 0} aria-label="Resize panels"
+    {ENABLE_MANUAL_CANVAS_RESIZE ? <div className="workspace-divider" role="separator" aria-hidden={compactSketch} tabIndex={compactSketch ? -1 : 0} aria-label="Resize panels"
       aria-orientation="vertical" aria-controls="sketch-pane preview-pane"
       aria-valuemin={minimum} aria-valuemax={67} aria-valuenow={Math.round(split)}
       aria-valuetext={`${Math.round(split)}% sketch, ${Math.round(100 - split)}% preview`}
       onPointerDown={startDrag} onPointerMove={moveDrag} onPointerUp={endDrag}
       onPointerCancel={endDrag} onLostPointerCapture={() => { drag.current = null; setResizing(false); }}
-      onKeyDown={resizeWithKeyboard} onDoubleClick={() => setSplit(50)}/>
+      onKeyDown={resizeWithKeyboard} onDoubleClick={() => setSplit(50)}/> :
+      <div className="workspace-gutter" aria-hidden="true"/>}
     {preview}
     {(compactSketch || expandingSketch) && SKETCH_THUMBNAIL_LAYOUT === 'overlay' &&
       <div className="compact-sketch-title"><span className="medium-wordmark">Poser</span></div>}

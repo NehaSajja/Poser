@@ -58,7 +58,7 @@
 .compact-sketch-title {
   position: absolute;
   top: var(--workspace-control-offset);
-  left: calc(var(--canvas-card-inset) + 1.5rem + 1px);
+  left: var(--compact-sketch-left);
   height: var(--workspace-pill-height);
   display: flex;
   align-items: center;
@@ -83,7 +83,6 @@
     --thumbnail-width: clamp(104px, 28vw, 152px);
     --thumbnail-top: calc(var(--workspace-control-offset) + 2 * var(--workspace-pill-height) + 2rem);
   }
-  .compact-sketch-title { left: calc(var(--canvas-card-inset) + .75rem + 1px); }
   .sketch-workspace[data-compact-sketch="true"][data-sketch-layout="overlay"] .poser2-back {
     left: calc(var(--canvas-card-inset) + 6.5rem);
   }
@@ -97,6 +96,7 @@
 .sketch-workspace[data-sketch-layout="overlay"] {
   /* Keep duration aligned with SKETCH_TRANSITION_MS so the editor returns after the card settles. */
   --sketch-motion: 800ms cubic-bezier(.4, 0, .2, 1);
+  --compact-sketch-left: calc(var(--canvas-card-inset) + var(--canvas-title-inline-inset) + 1px);
   --thumbnail-top: calc(var(--workspace-control-offset) + var(--workspace-pill-height) + 1.25rem);
   --thumbnail-width: clamp(160px, 18vw, 232px);
   --expanded-edge: calc((100% - var(--divider-width)) * var(--split-ratio));
@@ -107,7 +107,7 @@
   width: calc(var(--expanded-edge) - var(--canvas-card-inset));
   height: calc(100% - 2 * var(--canvas-card-inset));
   z-index: 22;
-  transition: top var(--sketch-motion), width var(--sketch-motion), height var(--sketch-motion), border-radius var(--sketch-motion);
+  transition: left var(--sketch-motion), top var(--sketch-motion), width var(--sketch-motion), height var(--sketch-motion), border-radius var(--sketch-motion);
 }
 .sketch-workspace[data-sketch-layout="overlay"] > .preview-pane {
   position: absolute; inset: 0 0 0 calc(var(--expanded-edge) + var(--divider-width));
@@ -118,7 +118,7 @@
   position: absolute; top: 0; bottom: 0; left: var(--expanded-edge); width: var(--divider-width);
 }
 .sketch-workspace[data-compact-sketch="true"][data-sketch-layout="overlay"] > .sketch-pane {
-  top: var(--thumbnail-top); width: var(--thumbnail-width); height: min(var(--thumbnail-width), 32dvh);
+  top: var(--thumbnail-top); left: var(--compact-sketch-left); width: var(--thumbnail-width); height: min(var(--thumbnail-width), 32dvh);
 }
 .sketch-workspace[data-compact-sketch="true"][data-sketch-layout="overlay"] > .preview-pane { left: 0; width: auto; }
 .sketch-workspace[data-sketch-layout="overlay"] .sketch-thumbnail {
@@ -142,6 +142,7 @@
 .sketch-workspace[data-sketch-layout="overlay"] .poser-tabs { transition: left var(--sketch-motion); }
 @media (max-width: 700px) {
   .sketch-workspace[data-sketch-layout="overlay"] {
+    --compact-sketch-left: calc(var(--canvas-card-inset) + var(--canvas-title-inline-inset) + 1px);
     --thumbnail-width: clamp(104px, 28vw, 152px);
     --thumbnail-top: calc(var(--workspace-control-offset) + 2 * var(--workspace-pill-height) + 2rem);
   }
@@ -169,4 +170,30 @@
   -webkit-backdrop-filter: blur(30px) saturate(135%) brightness(1.12);
   backdrop-filter: blur(30px) saturate(135%) brightness(1.12);
   pointer-events: none;
+}
+
+/* A smoothstep opacity curve feathers both ends; only the artwork viewport is masked. */
+.sketch-workspace[data-compact-sketch="false"] .reference-canvas {
+  --reference-edge-fade: clamp(72px, 10vw, 160px);
+  --reference-edge-stops:
+    rgb(0 0 0 / 0) 0px,
+    rgb(0 0 0 / .028) calc(var(--reference-edge-fade) * .1),
+    rgb(0 0 0 / .104) calc(var(--reference-edge-fade) * .2),
+    rgb(0 0 0 / .216) calc(var(--reference-edge-fade) * .3),
+    rgb(0 0 0 / .352) calc(var(--reference-edge-fade) * .4),
+    rgb(0 0 0 / .5) calc(var(--reference-edge-fade) * .5),
+    rgb(0 0 0 / .648) calc(var(--reference-edge-fade) * .6),
+    rgb(0 0 0 / .784) calc(var(--reference-edge-fade) * .7),
+    rgb(0 0 0 / .896) calc(var(--reference-edge-fade) * .8),
+    rgb(0 0 0 / .972) calc(var(--reference-edge-fade) * .9),
+    #000 var(--reference-edge-fade);
+  -webkit-mask-image: linear-gradient(90deg, var(--reference-edge-stops));
+  mask-image: linear-gradient(90deg, var(--reference-edge-stops));
+  mask-mode: alpha;
+}
+@supports (mask-image: linear-gradient(90deg in oklab, transparent, #000)) {
+  .sketch-workspace[data-compact-sketch="false"] .reference-canvas {
+    -webkit-mask-image: linear-gradient(90deg in oklab, var(--reference-edge-stops));
+    mask-image: linear-gradient(90deg in oklab, var(--reference-edge-stops));
+  }
 }

@@ -4,6 +4,9 @@
   --divider-width: .5rem;
   --canvas-card-inset: 1.5rem;
   --canvas-control-inset: 1.375rem;
+  /* Match the text's top clearance, including its centering in the 40px header row. */
+  --canvas-title-inline-inset: calc(var(--canvas-control-inset) + (var(--workspace-pill-height) - 1.5rem) / 2);
+  --canvas-zoom-inline-inset: calc(var(--canvas-control-inset) + (var(--workspace-pill-height) - .8125rem) / 2);
   --workspace-control-offset: calc(var(--canvas-card-inset) + var(--canvas-control-inset) + 1px);
   --scene-background: #edf0f2;
   padding: 0;
@@ -15,7 +18,9 @@
   margin: var(--canvas-card-inset) 0 var(--canvas-card-inset) var(--canvas-card-inset);
   border-radius: var(--panel-radius);
   background: #fff;
+  box-shadow: 0 2px 8px rgb(0 0 0 / .035);
 }
+.workspace-gutter { pointer-events: none; }
 .sketch-workspace.canvas-card-backdrop > .preview-pane {
   --panel-radius: 0;
   border: 0;
@@ -40,3 +45,6 @@
   .canvas-card-backdrop .poser2-dock-position { left: calc(var(--dock-inset) + .3125rem); }
   .canvas-card-backdrop .poser-panel:has(.reference-back) .poser-tabs { left: auto; }
 }
+
+.canvas-card-backdrop .tldraw-app .top-left { left: var(--canvas-title-inline-inset); }
+.canvas-card-backdrop .zoom-pill { right: var(--canvas-zoom-inline-inset); }

@@ -180,6 +180,11 @@
   transition: opacity 240ms ease-out, transform 320ms cubic-bezier(.23, 1, .32, 1);
 }
 .poser2-selection-grid svg { display: block; }
+/* Blend only the floor into the split-view gutter; retain the parent horizon fade. */
+.sketch-workspace[data-compact-sketch="false"] .poser2-selection-grid svg {
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, rgb(0 0 0 / .08) 4%, rgb(0 0 0 / .35) 10%, rgb(0 0 0 / .75) 18%, #000 28%);
+  mask-image: linear-gradient(to right, transparent 0%, rgb(0 0 0 / .08) 4%, rgb(0 0 0 / .35) 10%, rgb(0 0 0 / .75) 18%, #000 28%);
+}
 .poser2-selection-grid[data-hidden="true"] { opacity: 0; transform: perspective(900px) rotateX(18deg) translateY(48px); }
 @starting-style {
   .poser2-selection-grid { opacity: 0; transform: perspective(900px) rotateX(18deg) translateY(48px); }
