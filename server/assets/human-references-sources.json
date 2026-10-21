@@ -1,0 +1,50 @@
+[
+  {
+    "id": "switch-toogle_615",
+    "source": "https://raw.githubusercontent.com/soumikmohianuta/DoodleUINet/e38a92c7526742af4e20bdc3239eba8459cb6dab/CorrectDrawings/switch/toogle_615",
+    "sha256": "7d66a40fc12129815cd1d37c2fa477f77dbf0abb61edcc2f79ee3edd4adb1216",
+    "label": "switch: right thumb",
+    "mirrored": false,
+    "split": "dev"
+  },
+  {
+    "id": "switch-toogle_202",
+    "source": "https://raw.githubusercontent.com/soumikmohianuta/DoodleUINet/e38a92c7526742af4e20bdc3239eba8459cb6dab/CorrectDrawings/switch/toogle_202",
+    "sha256": "a12b97d99da10958b2676ff35193387af61fa747128b08a24682521b88c88b89",
+    "label": "switch: left thumb",
+    "mirrored": true,
+    "split": "dev"
+  },
+  {
+    "id": "dropDown-dropDown_604",
+    "source": "https://raw.githubusercontent.com/soumikmohianuta/DoodleUINet/e38a92c7526742af4e20bdc3239eba8459cb6dab/CorrectDrawings/dropDown/dropDown_604",
+    "sha256": "2156911cf9912397670353a110a2658c39931983e08e8f722be5e4c4fae45d7e",
+    "label": "select",
+    "mirrored": false,
+    "split": "dev"
+  },
+  {
+    "id": "dropDown-dropDown_300",
+    "source": "https://raw.githubusercontent.com/soumikmohianuta/DoodleUINet/e38a92c7526742af4e20bdc3239eba8459cb6dab/CorrectDrawings/dropDown/dropDown_300",
+    "sha256": "7074f858381a159cf6eba8ac4aac10d00e6c9a18ab590d45a026033c5378eba6",
+    "label": "select",
+    "mirrored": false,
+    "split": "dev"
+  },
+  {
+    "id": "checkbox-checkbox_306",
+    "source": "https://raw.githubusercontent.com/soumikmohianuta/DoodleUINet/e38a92c7526742af4e20bdc3239eba8459cb6dab/CorrectDrawings/checkbox/checkbox_306",
+    "sha256": "a9820672569cc3d63f5439c5ad28fd82f60318886f682a01b9172cbce6e82f39",
+    "label": "checkbox",
+    "mirrored": false,
+    "split": "dev"
+  },
+  {
+    "id": "cancel-cancel_631",
+    "source": "https://raw.githubusercontent.com/soumikmohianuta/DoodleUINet/e38a92c7526742af4e20bdc3239eba8459cb6dab/CorrectDrawings/cancel/cancel_631",
+    "sha256": "26319b99de2536c7683f15b8417ef5e36d9bd81f1a9baf1ed9881c44a3d5bf90",
+    "label": "unknown: cancel icon",
+    "mirrored": false,
+    "split": "dev"
+  }
+]

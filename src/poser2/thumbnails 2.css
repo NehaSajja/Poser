@@ -1,0 +1,199 @@
+.preview-pane[data-medium="poser2"] { container-type: size; }
+.poser2-carousel {
+  --pose-gap: 1.5rem;
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  padding-inline: 50cqw;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-snap-type: x mandatory;
+  overscroll-behavior: contain;
+  scrollbar-width: none;
+  cursor: grab;
+  user-select: none;
+  background: transparent;
+  outline: none;
+  transition: opacity 200ms ease-out;
+}
+.poser2-carousel[data-viewing="true"][data-orientation] { pointer-events: none; overflow: hidden; opacity: 0; }
+.poser2-carousel[data-viewing="true"][data-closing="true"] { opacity: 1; }
+.poser2-carousel[data-motion="instant"] { transition: none; }
+.poser2-carousel[data-viewing="true"] .poser2-slide[data-active="true"] :is(.poser2-model, .poser2-shadow) { opacity: 0 !important; }
+.poser2-carousel::-webkit-scrollbar { display: none; }
+.poser2-carousel:focus-visible { outline: none; }
+.poser2-carousel[data-orientation][data-dragging="true"] { cursor: grabbing; scroll-snap-type: none; }
+.poser2-slide {
+  /* Fit the actual silhouette in both dimensions. The square image frame
+     contains extra transparent pixels and must not decide layout spacing. */
+  --model-size: max(1px, min(
+    calc(50dvh / var(--body-height)),
+    calc((100cqw - 3rem) / var(--body-width)),
+    calc((100cqh - 6rem) / var(--body-height))
+  ));
+  --body-inline: calc(var(--model-size) * var(--body-width));
+  --body-block: calc(var(--model-size) * var(--body-height));
+  position: relative;
+  flex: 0 0 calc(var(--body-inline) + var(--pose-gap));
+  height: var(--body-block);
+  scroll-snap-align: center;
+  scroll-snap-stop: normal;
+  view-timeline: --pose-position inline;
+}
+.poser2-model, .poser2-shadow {
+  position: absolute;
+  left: calc((100% - var(--body-inline)) / 2);
+  top: calc((100% - var(--body-block)) / 2);
+  width: var(--body-inline);
+  height: var(--body-block);
+  transform: scale(.72);
+  opacity: .9;
+  transform-origin: center;
+  pointer-events: none;
+}
+.poser2-model { z-index: 2; pointer-events: auto; }
+.poser2-slide[data-active="true"] .poser2-model[data-rendered="true"] { cursor: pointer; }
+.poser2-carousel[data-dragging="true"] .poser2-slide .poser2-model { cursor: grabbing; }
+.poser2-image-frame {
+  position: absolute;
+  width: var(--model-size);
+  height: var(--model-size);
+  left: calc((100% - var(--model-size)) / 2);
+  top: calc((100% - var(--model-size)) / 2);
+  pointer-events: none;
+}
+.poser2-shadow { z-index: 0; }
+.poser2-slide[data-near="true"] :is(.poser2-model, .poser2-shadow) { will-change: transform, opacity; }
+.poser2-model img, .poser2-shadow img {
+  display: block;
+  width: 100%;
+  max-width: none;
+  height: 100%;
+  object-fit: contain;
+  pointer-events: none;
+  -webkit-user-drag: none;
+}
+.poser2-render, .poser2-shadow img { position: absolute; }
+.poser2-slide[data-active="true"] .poser2-model { z-index: 3; }
+.poser2-slide[data-active="true"] :is(.poser2-model, .poser2-shadow) { transform: none; opacity: 1; }
+@supports (animation-timeline: view(block)) {
+  @media (prefers-reduced-motion: no-preference) {
+    .poser2-slide :is(.poser2-model, .poser2-shadow) {
+      animation: poser2-coverflow linear both;
+      animation-timeline: --pose-position;
+    }
+  }
+}
+@keyframes poser2-coverflow {
+  0% { transform: scale(.6); opacity: .85; }
+  25% { transform: scale(.7); opacity: .9; }
+  38% { transform: scale(.82); opacity: .95; }
+  50% { transform: scale(1); opacity: 1; }
+  62% { transform: scale(.82); opacity: .95; }
+  75% { transform: scale(.7); opacity: .9; }
+  100% { transform: scale(.6); opacity: .85; }
+}
+
+.poser2-interactive, .poser2-interactive-canvas { position: absolute; inset: 0; }
+.poser2-interactive { z-index: 4; }
+.poser2-interactive-canvas canvas { display: block; width: 100%; height: 100%; outline: none; touch-action: none; cursor: grab; }
+.poser2-interactive-canvas canvas:active { cursor: grabbing; }
+.poser2-back {
+  position: absolute;
+  top: 1.375rem;
+  left: 1.5rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: .375rem;
+  height: 2.5rem;
+  padding-inline: .875rem;
+  border: 1px solid rgba(0, 0, 0, .08);
+  border-radius: 999rem;
+  background: var(--workspace-background);
+  color: var(--foreground);
+  font: 500 .8125rem/1 var(--app-font);
+  cursor: pointer;
+}
+.poser2-back:focus-visible { outline: 2px solid var(--ring); outline-offset: .2rem; }
+@media (hover: hover) { .poser2-back:hover { background: oklch(96% 1% 93deg); } }
+.poser2-view-status { position: absolute; inset: 0; display: grid; place-items: center; pointer-events: none; font-size: .8125rem; color: var(--muted-foreground); }
+@media (prefers-reduced-motion: reduce) { .poser2-carousel { transition: none; } }
+
+.poser2-joints { position: absolute; inset: 0; pointer-events: none; opacity: 0; transition: opacity 160ms ease-out; }
+.poser2-joints[data-visible="true"] { opacity: 1; }
+.poser2-joint {
+  position: absolute; width: 2.25rem; height: 2.25rem; padding: 0;
+  transform: translate(-50%, -50%); background: transparent; border: 0;
+  border-radius: 50%; pointer-events: auto; touch-action: none; cursor: grab;
+}
+.poser2-joint::after {
+  content: ''; position: absolute; inset: .75rem; border-radius: 50%;
+  background: oklch(99% 1% 93deg); border: 1px solid rgba(0, 0, 0, .3);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, .12);
+  transition: background 120ms ease, scale 120ms ease;
+}
+.poser2-joint[data-dragging="true"] { cursor: grabbing; z-index: 1000 !important; }
+.poser2-joint[data-dragging="true"]::after { background: #b3bbaa; scale: 1.2; }
+.poser2-joint:focus-visible { outline: 2px solid var(--ring); outline-offset: -.375rem; }
+@media (hover: hover) { .poser2-joint:hover::after { background: #d5d9cf; scale: 1.2; } }
+.poser2-dock-position {
+  --dock-disc-size: 3.5rem;
+  --dock-inset: var(--workspace-control-offset);
+  position: absolute; bottom: var(--workspace-control-offset); inset-inline: var(--dock-inset);
+  z-index: 1002; pointer-events: none;
+}
+.poser2-dock-position { --pose-tray-width: 11rem; }
+.poser2-dock-position[data-viewing="true"] { --pose-tray-width: 20rem; }
+.poser2-dock-position .drawing-tray { width: min(100cqw, var(--pose-tray-width)); }
+.poser2-dock-position .dock-content {
+  width: min(100cqw, var(--pose-tray-width));
+  transition: opacity 180ms ease-out, transform 240ms var(--dock-ease), filter 180ms ease-out, width 260ms var(--dock-ease);
+}
+.poser2-dock-position .drawing-dock:not([data-collapsed="true"]) .drawing-tray {
+  transition-duration: 260ms;
+}
+.poser2-dock-position[data-viewing="true"] .pose-selection-tools,
+.poser2-dock-position[data-viewing="false"] .pose-model-tools {
+  opacity: 0; transform: scale(.96); filter: blur(3px); pointer-events: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .poser2-dock-position :is(.drawing-tray, .dock-content, .dock-selected) { transition: none; }
+}
+@media (prefers-reduced-motion: reduce) { .poser2-joints, .poser2-joint::after { transition: none; } }
+
+/* Fade the projected floor toward its horizon without a finite plane edge. */
+.poser2-selection-grid {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  opacity: 1;
+  transform: none;
+  transform-origin: center bottom;
+  mask-image: linear-gradient(to bottom,
+    transparent 48%, rgb(0 0 0 / .015) 56%, rgb(0 0 0 / .08) 64%,
+    rgb(0 0 0 / .22) 73%, rgb(0 0 0 / .48) 84%, rgb(0 0 0 / .75) 94%, #000 100%);
+  transition: opacity 240ms ease-out, transform 320ms cubic-bezier(.23, 1, .32, 1);
+}
+.poser2-selection-grid svg { display: block; }
+.poser2-selection-grid[data-hidden="true"] { opacity: 0; transform: perspective(900px) rotateX(18deg) translateY(48px); }
+@starting-style {
+  .poser2-selection-grid { opacity: 0; transform: perspective(900px) rotateX(18deg) translateY(48px); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .poser2-selection-grid { transition: none; transform: none !important; }
+}
+
+
+
+/* The light itself is a scene mesh. This target only supplies keyboard access. */
+.poser2-light-keyboard {
+  position: absolute; width: 1px; height: 1px; padding: 0; border: 0;
+  overflow: hidden; clip-path: inset(50%); white-space: nowrap;
+}
+
+.pose-model-menu { min-width: 12.5rem; }
+.pose-model-error { padding: .5rem .75rem; font-size: .75rem; color: var(--muted-foreground); }

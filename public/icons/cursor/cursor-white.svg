@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64" fill="none">
+  <title>White cursor</title>
+  <defs>
+    <filter id="shadow" x="0" y="0" width="64" height="64" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB"><feDropShadow dx="0" dy="1.2" stdDeviation=".9" flood-color="#3b3328" flood-opacity=".16"/></filter>
+    
+  </defs>
+  <g filter="url(#shadow)"><g transform="rotate(20 32 32)">
+    <path d="M13 10 51.8 22.7Q54 23.5 51.8 24.5L40 29Q37.7 29.9 39.4 31.6L52 44.2Q53.5 45.7 52 47.2L48.2 51Q46.7 52.5 45.2 51L32.6 38.4Q30.9 36.7 30 39L25.5 50.8Q24.5 53 23.7 50.8L11 12Q10 9 13 10Z" transform="translate(0 2)" fill="#bfc2c4" stroke="#bfc2c4" stroke-width="1" stroke-linejoin="round"/>
+    <path d="M13 10 51.8 22.7Q54 23.5 51.8 24.5L40 29Q37.7 29.9 39.4 31.6L52 44.2Q53.5 45.7 52 47.2L48.2 51Q46.7 52.5 45.2 51L32.6 38.4Q30.9 36.7 30 39L25.5 50.8Q24.5 53 23.7 50.8L11 12Q10 9 13 10Z" fill="#fafaf8" stroke="#82878a" stroke-opacity=".85" stroke-width=".9" stroke-linejoin="round"/>
+  </g></g>
+</svg>

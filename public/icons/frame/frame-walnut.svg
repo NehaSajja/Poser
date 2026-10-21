@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64" fill="none">
+  <title>Walnut landscape frame</title>
+  <defs>
+    <filter id="shadow" x="0" y="0" width="64" height="64" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feDropShadow dx="0" dy="1.2" stdDeviation=".9" flood-color="#3b3328" flood-opacity=".16"/>
+    </filter>
+    <pattern id="woodPores" width="4.3" height="3.7" patternUnits="userSpaceOnUse">
+      <g fill="#4d2d19" opacity=".24">
+        <ellipse cx=".45" cy=".8" rx=".16" ry=".12"/><circle cx="2.6" cy=".4" r=".1"/>
+        <ellipse cx="1.7" cy="2.2" rx=".11" ry=".17"/><circle cx="3.6" cy="2.7" r=".14"/>
+        <circle cx=".6" cy="3.2" r=".08"/>
+      </g>
+      <g fill="#f0d0a1" opacity=".3"><circle cx="1.1" cy=".5" r=".12"/><circle cx="3.3" cy="1.6" r=".1"/><circle cx="2.2" cy="3.1" r=".12"/></g>
+    </pattern>
+    <clipPath id="woodClip"><path d="M13 12H51Q56 12 56 17V47Q56 52 51 52H13Q8 52 8 47V17Q8 12 13 12ZM15 18Q14 18 14 19V45Q14 46 15 46H49Q50 46 50 45V19Q50 18 49 18Z" clip-rule="evenodd"/></clipPath>
+    <clipPath id="picture"><rect x="13.8" y="17.8" width="36.4" height="28.4" rx="1.2"/></clipPath>
+    <linearGradient id="sky" x1="32" y1="17" x2="32" y2="47" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#82c4e3"/><stop offset=".65" stop-color="#d4eced"/><stop offset="1" stop-color="#e7efd1"/>
+    </linearGradient>
+    <radialGradient id="sunGlow"><stop stop-color="#fffde5" stop-opacity=".95"/><stop offset="1" stop-color="#fffde5" stop-opacity="0"/></radialGradient>
+    <linearGradient id="mountain" x1="17" y1="26" x2="35" y2="46" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#9ccfd1"/><stop offset="1" stop-color="#5cabb5"/>
+    </linearGradient>
+    <linearGradient id="hill" x1="35" y1="32" x2="46" y2="47" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#93d440"/><stop offset=".38" stop-color="#62b82b"/><stop offset="1" stop-color="#287a2a"/>
+    </linearGradient>
+    <linearGradient id="foreground" x1="21" y1="40" x2="29" y2="48" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#c9dc39"/><stop offset=".45" stop-color="#a5c62a"/><stop offset="1" stop-color="#679323"/>
+    </linearGradient>
+    <pattern id="landscapeGrain" width="2.3" height="2.7" patternUnits="userSpaceOnUse">
+      <g fill="#fff" opacity=".18"><circle cx=".4" cy=".5" r=".08"/><circle cx="1.8" cy="1.6" r=".1"/></g>
+      <g fill="#315b37" opacity=".12"><circle cx="1.3" cy=".7" r=".07"/><circle cx=".6" cy="2.2" r=".09"/></g>
+    </pattern>
+  </defs>
+  <g filter="url(#shadow)">
+    <g clip-path="url(#picture)">
+      <g transform="matrix(1.0705882353 0 0 .9466666667 -2.2588235294 1.7066666667)">
+      <rect x="15" y="17" width="34" height="30" fill="url(#sky)"/>
+      <circle cx="40" cy="22.9" r="4.6" fill="url(#sunGlow)"/>
+      <circle cx="40" cy="22.9" r="2.15" fill="#fff43f"/>
+      <path d="M14 30.9Q18.4 24.1 21.6 27.3Q27.7 32 36.6 43.8L39 48H14Z" fill="url(#mountain)"/>
+      <path d="M27.3 46Q33.8 34 39.9 32.2Q44.7 30.5 50.5 35.1V48H27Z" fill="url(#hill)"/>
+      <path d="M14 42.5Q20.6 36.8 27.8 41Q33.7 44.1 40.8 48H14Z" fill="url(#foreground)"/>
+      <path d="M14 30.9Q18.4 24.1 21.6 27.3Q27.7 32 36.6 43.8L39 48H14Z" fill="url(#landscapeGrain)"/>
+      <path d="M27.3 46Q33.8 34 39.9 32.2Q44.7 30.5 50.5 35.1V48H27Z" fill="url(#landscapeGrain)"/>
+      <path d="M14 42.5Q20.6 36.8 27.8 41Q33.7 44.1 40.8 48H14Z" fill="url(#landscapeGrain)"/>
+      </g>
+    </g>
+    <path d="M13 12H51Q56 12 56 17V47Q56 52 51 52H13Q8 52 8 47V17Q8 12 13 12ZM15 18Q14 18 14 19V45Q14 46 15 46H49Q50 46 50 45V19Q50 18 49 18Z" transform="translate(0 2)" fill="#66462f" fill-rule="evenodd" stroke="#66462f" stroke-width=".8" stroke-linejoin="round"/>
+    <path d="M13 12H51Q56 12 56 17V47Q56 52 51 52H13Q8 52 8 47V17Q8 12 13 12ZM15 18Q14 18 14 19V45Q14 46 15 46H49Q50 46 50 45V19Q50 18 49 18Z" fill="#906747" fill-rule="evenodd" stroke="#625c54" stroke-opacity=".23" stroke-width=".6" stroke-linejoin="round"/>
+    <rect x="8" y="12" width="48" height="40" fill="url(#woodPores)" clip-path="url(#woodClip)"/>
+    <path d="M10 14 14.5 18.5M54 14 49.5 18.5M10 50 14.5 45.5M54 50 49.5 45.5" stroke="#4e301c" stroke-opacity=".25" stroke-width=".55" stroke-linecap="round"/>
+    <path d="M15.2 18H48.8Q50 18 50 19.2V44.8Q50 46 48.8 46H15.2Q14 46 14 44.8V19.2Q14 18 15.2 18Z" stroke="#504b44" stroke-opacity=".18" stroke-width=".8"/>
+  </g>
+</svg>

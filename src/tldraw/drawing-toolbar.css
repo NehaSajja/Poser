@@ -1,0 +1,202 @@
+/* Toolbar treatment adapted from benjitaylor/drawesome (MIT).
+   Copyright (c) 2026 Benji Taylor. See ./drawesome/LICENSE. */
+.sketch-workspace .sketch-pane { container-name: sketch-canvas; }
+.drawing-dock, .toolbar-menu {
+  font-family: var(--app-font);
+  letter-spacing: var(--app-ui-tracking);
+  line-height: var(--app-ui-leading);
+}
+.tldraw-app .bottom.drawing-bottom {
+  --dock-disc-size: 3.5rem;
+  /* Match the collapsed circle's right and bottom spacing. */
+  --dock-inset: var(--workspace-control-offset);
+  flex-direction: column-reverse;
+  gap: .75rem;
+  bottom: var(--workspace-control-offset);
+  padding-inline: var(--dock-inset);
+}
+.drawing-dock {
+  --dock-height: 4rem;
+  --dock-scale: .875;
+  --dock-highlight: #0000000e;
+  --tool-icon-scale: 1.08;
+  --tool-icon-ease: cubic-bezier(.23, 1, .32, 1);
+  --dock-ease: cubic-bezier(.22, .9, .16, 1);
+  --dock-smooth: cubic-bezier(.19, 1, .22, 1);
+  --dock-snappy: cubic-bezier(.175, .885, .32, 1.1);
+  position: relative;
+  width: 100%;
+  height: var(--dock-height);
+  flex-shrink: 0;
+  container-type: inline-size;
+}
+.dock-anchor {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  translate: -50% 0;
+}
+.sketch-workspace .drawing-tray, .toolbar-menu {
+  box-shadow: inset 0 1px 0 hsla(0, 0%, 100%, .9), 0 1px 2px rgba(0, 0, 0, .02), 0 .375rem 1rem rgba(0, 0, 0, .025);
+}
+.medium-menu {
+  box-shadow: none;
+}
+.drawing-tray {
+  position: relative;
+  width: min(100cqw, 25rem);
+  height: var(--dock-height);
+  border-radius: calc(var(--dock-height) / 2);
+  background: var(--workspace-background);
+  overflow: hidden;
+  pointer-events: auto;
+  transform-origin: center;
+  translate: 0 0;
+  scale: 1;
+  transition: width 520ms var(--dock-ease), height 520ms var(--dock-ease), border-radius 440ms var(--dock-ease), translate 540ms var(--dock-ease), scale 540ms var(--dock-ease), transform 540ms var(--dock-ease), transform-origin 540ms var(--dock-ease);
+}
+.dock-content {
+  position: absolute;
+  inset: 0 auto auto 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: .125rem;
+  width: min(100cqw, 25rem);
+  height: var(--dock-height);
+  padding: 0 1.25rem;
+  opacity: 1;
+  filter: blur(0);
+  transform: scale(1);
+  transition: opacity 260ms var(--dock-smooth), filter 340ms var(--dock-smooth), transform 520ms var(--dock-ease);
+  transition-delay: 60ms, 60ms, 0ms;
+}
+.dock-actions, .dock-tools { display: flex; align-items: center; gap: .125rem; }
+.dock-actions { flex-shrink: 0; }
+.drawing-dock .dock-control, .sketch-workspace .drawing-dock .tool {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 2.25rem;
+  height: 2.25rem;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  color: #8a8a8e;
+  background: transparent;
+  font: inherit;
+  outline: none;
+  cursor: pointer;
+  transition: background-color 160ms var(--dock-ease), color 160ms var(--dock-ease), transform 140ms var(--dock-ease), opacity 200ms var(--dock-ease), box-shadow 160ms var(--dock-ease);
+}
+.sketch-workspace .drawing-dock .tool > svg { width: 1.25rem; height: 1.25rem; }
+.sketch-workspace .drawing-dock .tool { transition: none; }
+.sketch-workspace .drawing-dock .tool > :is(img, svg) {
+  transform: scale(1);
+  transform-origin: center;
+  transition: none;
+}
+.sketch-workspace .drawing-dock[data-motion="pointer"] .tool {
+  transition: transform 120ms var(--tool-icon-ease);
+}
+.sketch-workspace .drawing-dock[data-motion="pointer"] .tool > :is(img, svg) {
+  transition: transform 160ms var(--tool-icon-ease);
+}
+.sketch-workspace .drawing-dock .tool:is([aria-pressed="true"], [data-state="open"]) {
+  background: var(--dock-highlight);
+  box-shadow: none;
+}
+.sketch-workspace .drawing-dock .tool:is([aria-pressed="true"], [data-state="open"]) > :is(img, svg) { transform: scale(var(--tool-icon-scale)); }
+.drawing-dock .dock-control:disabled { opacity: .28; cursor: default; }
+.drawing-dock .dock-control:focus-visible, .sketch-workspace .drawing-dock .tool:focus-visible {
+  outline: 2px solid #8a8a8e;
+  outline-offset: 2px;
+}
+.dock-divider { flex: none; width: 1px; height: 1.375rem; margin: 0 .5rem; background: #0000001a; }
+.dock-trash { overflow: visible; }
+.dock-trash-lid { transform-origin: 3.6px 5.6px; transform-box: view-box; transition: transform 360ms var(--dock-snappy); }
+@media (hover: hover) and (pointer: fine) {
+  .drawing-dock .dock-control:hover:not(:disabled) { background: var(--dock-highlight); color: #111; }
+  .sketch-workspace .drawing-dock .tool:hover:not(:disabled) > :is(img, svg) { transform: scale(var(--tool-icon-scale)); }
+  .drawing-dock .dock-control[data-tone="danger"]:hover:not(:disabled) { background: #ff383c1f; color: #ff383c; }
+  .drawing-dock button:hover:not(:disabled) .dock-trash-lid { transform: rotate(-24deg) translate(.6px, -1.1px); }
+}
+.drawing-dock .dock-control:active:not(:disabled) { transform: scale(.9); }
+.sketch-workspace .drawing-dock .tool:active:not(:disabled) { transform: scale(.97); }
+@media (prefers-reduced-motion: reduce) {
+  .sketch-workspace .drawing-dock[data-motion="pointer"] .tool,
+  .sketch-workspace .drawing-dock[data-motion="pointer"] .tool > :is(img, svg) { transition: none; }
+}
+.drawing-dock button:active:not(:disabled) .dock-trash-lid { transform: rotate(-12deg) translate(.3px, -.5px); }
+.dock-selected {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  color: #55555a;
+  pointer-events: none;
+  opacity: 0;
+  filter: blur(6px);
+  transition: opacity 200ms ease-out, filter 200ms ease-out;
+}
+.dock-selected > :is(img, svg) { grid-area: 1 / 1; width: calc(1.5rem / var(--dock-scale)); height: calc(1.5rem / var(--dock-scale)); }
+/* Close along the long axis, then scale uniformly, as in Drawesome's MorphBar.
+   Translation is independent of scale, and the anchor handles centering. */
+.drawing-dock[data-collapsed="true"] .drawing-tray {
+  width: var(--dock-height);
+  scale: var(--dock-scale);
+  /* Compensate for center-origin scaling so the bottom inset stays fixed. */
+  translate: calc(50cqw - var(--dock-disc-size) / 2) calc((var(--dock-height) - var(--dock-disc-size)) / 2);
+}
+.drawing-dock[data-collapsed="true"] .dock-content {
+  opacity: 0; filter: blur(9px); transform: scale(.94); pointer-events: none;
+  transition: opacity 300ms ease-out, filter 260ms ease-out, transform 300ms ease-out;
+}
+.drawing-dock[data-collapsed="true"] .dock-selected { opacity: 1; filter: blur(0); transition: opacity 140ms ease-in, filter 320ms var(--dock-smooth); }
+.dock-expand { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; padding: 0; border-radius: 50%; background: none; cursor: pointer; }
+.dock-expand:focus-visible { outline: 2px solid #8a8a8e; outline-offset: -5px; }
+.toolbar-menu {
+  max-width: calc(100vw - 2rem);
+  padding: .5rem;
+  border: 1px solid rgba(0, 0, 0, .08);
+  border-radius: 1.5rem;
+  background: var(--workspace-background);
+  color: #55555a;
+}
+.frame-menu { min-width: 14rem; }
+.medium-options { min-width: 10rem; }
+.pen-menu { width: 13rem; }
+.pen-menu-physical { display: flex; align-items: center; gap: .125rem; }
+.pen-menu-physical > [role="menuitemradio"] { flex: 1; min-width: 0; }
+.toolbar-menu .pen-connect[data-slot="dropdown-menu-item"] {
+  flex: none; justify-content: center; width: 1.75rem; min-height: 1.75rem;
+  padding: 0; margin-right: .375rem; border-radius: 50%;
+}
+.pen-connect[data-disconnect="true"] > svg { rotate: 45deg; }
+.pen-menu-status { padding: .5rem .75rem; color: #8a8a8e; font-size: .75rem; line-height: 1.5; }
+.toolbar-menu [data-slot="dropdown-menu-item"] {
+  min-height: 2.5rem;
+  gap: .625rem;
+  padding: .625rem .75rem;
+  border-radius: 1rem;
+  font-size: .8125rem;
+  font-weight: 500;
+  line-height: var(--app-ui-leading);
+  cursor: pointer;
+  transition: background-color 160ms cubic-bezier(.22, .9, .16, 1), color 160ms cubic-bezier(.22, .9, .16, 1);
+}
+.toolbar-menu [data-slot="dropdown-menu-item"][data-highlighted] { background: #0000000e; color: #111; }
+.frame-menu [data-slot="dropdown-menu-item"] > svg { width: 1.25rem; height: 1.25rem; color: #8a8a8e; }
+.frame-menu [data-slot="dropdown-menu-item"] > span { color: #8a8a8e; font-size: .75rem; font-weight: 400; }
+@container sketch-canvas (max-width: 424px) {
+  .drawing-dock { --dock-height: 6rem; --dock-scale: .583333333; }
+  .dock-content { display: grid; grid-template-columns: 1fr auto; grid-template-rows: 2.25rem 2.25rem; gap: .5rem; align-content: center; padding: .5rem 1.5rem; }
+  .dock-tools { grid-column: 1 / -1; grid-row: 1; justify-content: center; }
+  .dock-actions { grid-column: 1 / -1; grid-row: 2; justify-content: center; }
+  .dock-content > .dock-divider { display: none; }
+}
+@container sketch-canvas (max-width: 380px) {
+  .dock-content { padding-inline: .75rem; }
+  .sketch-workspace .drawing-dock .tool { width: 2rem; height: 2rem; }
+}

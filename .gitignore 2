@@ -1,0 +1,16 @@
+node_modules/
+dist/
+.env
+.env.local
+output/
+.local/
+.vercel
+.env*.local
+.env.*
+!.env.example
+.playwright-cli/
+__pycache__/
+*.pyc
+.DS_Store
+deployment/assets/
+public/deployed/

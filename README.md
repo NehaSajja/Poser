@@ -1,95 +1,207 @@
 # Poser
 
-A drawing reference sandbox: sketch a pose, generate a figure, and adjust its articulated 3D model. Includes local joint editing, adjustable lighting and historical artwork references.
+A drawing workspace for finding and adjusting figure poses, exploring historical art references, and sketching interfaces. Built with React, tldraw, Three.js, and Vite.
 
-This repository contains Poser 2.0. It runs locally at **http://127.0.0.1:3001**.
+The **Mediums** menu has two options:
 
-## Start
+- **Poser** — draw a figure, browse four matching poses, adjust a model in 3D, and explore related artwork.
+- **Wireframe** — draw interface controls and turn them into editable canvas shapes with a live shadcn/ui preview.
 
-Node.js 22 or newer:
+Each medium keeps its own drawing page and camera. The two panels are resizable, with a minimum width of 33% each. Drawings persist locally in the browser; there is no account or cloud document sync.
+
+## Run locally
+
+Use Node.js 24, npm, and Python 3.11–3.13. Accept the GitHub collaborator invitation and authenticate Git with an account that has access to this private repository.
+
+1. Clone the repository and install the app and reference-search dependencies:
+
+   ```sh
+   git clone https://github.com/ananmaysharan/poser.git
+   cd poser
+   npm ci
+   npm run setup
+   ```
+
+2. Open `.env.local`, which setup creates from `.env.example`. Add your own API keys:
+
+   ```dotenv
+   GEMINI_API_KEY=your_gemini_api_key
+   OPENAI_API_KEY=your_openai_api_key
+   DECISIONS_PROVIDER=openai
+   DECISIONS_MODEL=gpt-6-luna
+   PORT=4317
+   ```
+
+   Gemini enables Poser sketch search and historical reference comparisons. OpenAI enables Wireframe recognition; leave its value blank if you only need Poser. Basic drawing works without either API key.
+
+   `VITE_TLDRAW_LICENSE_KEY` is optional on localhost. Only add it when preparing a licensed deployment. Keep real keys in `.env.local`, which Git ignores; never put them in `.env.example`. API keys stay on the server, while the tldraw license is included in the browser build.
+
+3. Start the app:
+
+   ```sh
+   npm run dev
+   ```
+
+   Open [http://127.0.0.1:4317](http://127.0.0.1:4317). `/` opens Poser; `/?medium=ui` opens Wireframe. `/tldraw` opens the same application. Restart the server after changing `.env.local`.
+
+`npm run setup` verifies the bundled assets, assembles MobileCLIP, creates `.venv`, installs pinned Python dependencies, and tests image/text encoding. The first run needs internet for Python packages. It creates `.env.local` only if the file is missing; rerunning setup preserves existing keys and repairs missing local weights.
+
+The pose catalogue, previews, three character models, Met index, and MobileCLIP weights all come from Git. They need no API keys or separate downloads. Fresh reference searches need internet for Gemini and museum images. Vercel, Blob, FAL, and old pose-detector settings are not needed for the current app.
+
+### Update an existing clone
+
+From the repository directory, stop the running server and run:
 
 ```sh
-npm install
-NEXT_TELEMETRY_DISABLED=1 npm run build
+git pull
+npm ci
+npm run setup
+npm run dev
+```
+
+Keep your existing `.env.local`; do not overwrite it with the example. If your file predates the current setup, remove `FAL_KEY`, `POSE_DETECTOR_CALIBRATION`, `POSE_DETECTOR_COREML`, `POSE_DETECTOR_WEIGHTS`, `BLOB_READ_WRITE_TOKEN`, and `VERCEL_OIDC_TOKEN`. Keep your Gemini/OpenAI keys, provider/model settings, port, and any tldraw license.
+
+After setup, daily startup only needs `npm run dev`.
+
+### Local data requirements
+
+**The pose data and three character models are included in the repository.** A normal clone or `git pull` downloads the runtime bundle; no zip, Git LFS, or external folder setup is needed. Add `GEMINI_API_KEY` to `.env.local` to enable pose search, then run `npm run dev`.
+
+| Data | Location |
+| --- | --- |
+| Pose catalogue, search index, embeddings and previews | `data/cloud-retrieval/` |
+| 1,361 pose scenes and Female, Male, Human models | `data/posemyart-library-final/` |
+| Met index and highlights | `data/met-art/index/` |
+| MobileCLIP model parts | `data/met-art/weights/` |
+| Assembled model and generated caches | `.local/met-art/` (created locally) |
+
+The bundled pose runtime is approximately 115 MiB. It excludes unused models, props, duplicate original scenes and research outputs. See [the asset README](data/README.md) for contents and provenance. The app defaults to these repository-relative paths on any machine. `POSE_LIBRARY_ROOT` is only needed to use a different library.
+
+**Historical References is bundled too.** `npm run setup` prepares the included 99,117-artwork search index and local MobileCLIP model. No separate dataset download or folder copy is needed. The Met files add approximately 560 MiB to the checkout. Fresh searches use Gemini and download artwork thumbnails from the museum; these caches are created locally.
+
+The Node server starts the project Python service on port `4318` when needed. Setup requires Python 3.11–3.13; choose a specific interpreter with `npm run setup -- --python /path/to/python3`. `MET_PYTHON` is an optional advanced runtime override, not required for a normal clone.
+
+**Model license:** the bundled Apple MobileCLIP model is research-only and excludes commercial use and product development. Its complete license and attribution are in [the Met bundle](data/met-art/README.md). See [the Met service README](tools/met-art/README.md) for provenance and evaluation.
+
+## Poser
+
+Draw a full-body figure. Search runs automatically after an 800 ms drawing pause, and new strokes cancel stale searches. Gemini describes and embeds the sketch, then searches the prepared index of 1,361 library poses. The UI shows up to four distinct ranked matches.
+
+### Models
+
+- Swipe, scroll, or drag the horizontal carousel. Its toolbar provides backward/forward navigation and a checkmark to select the front model. Only the front model is directly clickable.
+- Selection transitions into the existing 3D model. Drag to orbit, Shift-drag or right-drag to pan, and scroll to zoom.
+- **Rig** reveals draggable joint points. Pose edits support undo and redo.
+- **Light** reveals a draggable light-position orb. Orbit the view to adjust its position from another angle.
+- **Model** switches between Female, Male, and Human. Camera and lighting are preserved while the posture is transferred between bodies.
+- **Back** restores the original library pose and returns to the carousel.
+
+The floor grid appears in the carousel once models have loaded. It is hidden in the selected-model view.
+
+Body switching uses contact-aware retargeting: rest-pose-aligned rotations establish the posture, then a bounded IK solve preserves inferred hand/body contacts and floor support while retaining the target body's proportions. Contact intent is inferred from geometry. This is not a full-body physics or collision simulation; ambiguous poses can still need manual adjustment.
+
+### References
+
+The right panel has **Model** and **References** tabs. Reference searches start in the background for all four matches. The highest-ranked pose is used initially; confirming another model selects its prefetched references. The active tab stays selected as results change, and existing artwork remains visible during an update.
+
+References appear as staggered cards on an infinite canvas. Drag or scroll to pan; pinch or Control-scroll to zoom. Each card shows its title and an AI-assessed pose similarity score out of 100. Click a card to open a larger image with museum metadata, image fullscreen/close controls, and previous/next navigation. Back remains available in References and returns to model selection.
+
+Search covers 99,117 eligible artworks from the published Met MobileCLIP index. It retrieves up to 180 candidates, visually compares them with Gemini, individually checks up to 45 shortlisted works, and returns at most 30 passing references. Ranking favors drawings, prints, naturalistic sculpture, and relevant Met highlights. Similarity scores are judgments, not calibrated probabilities; references can be partial matches.
+
+Results and downloaded comparison images are cached. Shared requests and four-pose prefetch make completed results immediately available when switching. Search uses the selected **library pose and camera**; manually editing joints does not launch a new art search. See [the service README](tools/met-art/README.md) for measured performance and its limits.
+
+## Wireframe
+
+Draw controls freehand. Supported marks are recognized as shadcn/ui components, while uncertain drawings remain ink.
+
+| Control | Sketch |
+| --- | --- |
+| Rectangle | Empty rectangular outline |
+| Input | Field with a left caret or low entry baseline |
+| Button | Box with an action arrow |
+| Checkbox | Square with a tick |
+| Radio | Circle with a centered dot or smaller ring |
+| Switch | Horizontal track with a thumb on the left or right |
+| Select | Field with a chevron or triangle near the right edge |
+
+Recognition groups related strokes, waits 120 ms for the group to settle, and sends a 512 × 512 crop to the Decisions API. A component is accepted only when its outcome ranks first and reaches the application's 0.70 threshold. That threshold is not a calibrated accuracy claim. Additional ink can refine a recognized control; stale responses cannot overwrite newer drawing revisions.
+
+The right panel is a pannable, zoomable live preview. Desktop and Mobile frames organize the drawing, and frame labels can be renamed by double-clicking their pills. Recognition does not transcribe handwriting or automatically lay out a screen.
+
+## Drawing tools and smartpen
+
+The collapsible toolbar contains **Select**, **Draw**, **Eraser**, and **Frame**, followed by undo, redo, and Clear. Hold Space to pan the drawing canvas. Poser frames offer A4, A3, US Letter, and US Tabloid; Wireframe frames offer Desktop and Mobile.
+
+Open the pencil menu to choose:
+
+- **Virtual** — mouse, trackpad, or stylus input; the default on each load.
+- **Physical** — a Neo smartpen connected through Web Bluetooth. Use the inline **+** to connect and **×** to disconnect.
+
+For Physical input, use desktop Chrome or Edge, disconnect the pen from USB and other apps, and write on Ncode paper. **Start here** anchors the next pen position at the current canvas center. Switching back to Virtual disconnects the pen.
+
+Physical ink uses the same tldraw input pipeline as virtual drawing, including pressure, stabilization, history, recognition, and pose search. The first point establishes a paper-relative anchor; changing paper or canvas page resets it. Mouse editing remains available.
+
+## Development
+
+```sh
+npm test
+npm run build
+# Serve the built app locally:
 npm start
 ```
 
-For development, use `npm run dev` instead. Keep the server running. It binds to loopback only.
-
-## Use
-
-- Draw on the left and choose **Generate**. The reference image appears while SAM reconstructs the body once.
-- Click the **figure icon** below the 3D view for live editing. The left panel becomes a linked stick-figure guide. Drag a wrist, ankle, elbow, knee, head or torso in either panel; both update immediately. Hand/foot direction handles adjust those extremities. Orbit to a different angle to edit depth.
-- Click the **pencil** to redraw a limb, starting at its shoulder or hip and ending at its wrist or ankle. The path supplies the bend direction. The eraser resets the selected limb to its reconstructed pose. Undo/redo and the reset icon work on the rig. **Done** returns to the original freehand drawing, which is preserved.
-- Local rig edits autosave in this browser. Inspect → **Download current pose with editable rig** exports the posed, skinned GLB. Save view exports the current camera image. The Image tab retains the original generated image.
-- Arbitrary freehand revisions still use **Update pose**. Inspect → **AI redraw correction** retains the previous red-annotation workflow for major changes. These create a new image and mesh and take seconds; live rig edits make no API calls.
-- Drag the model background to orbit, Shift-drag to pan, scroll to zoom. The bulb icon retains light direction and intensity controls.
-- **Historical precedents:** click the museum icon after generation. A box identifies the matching person; the comparison strip shows your pose, that person's crop, body-part scores and specific differences. Click the crop to focus it, or the figure icon to reveal estimated joints. Browse with arrows or swipes; zoom/pan; hover or use the information icon for museum metadata and source links. The cube returns to 3D.
-- After a local edit, a museum search uses the **current posed mesh and camera projection**, not the original generated image. Frame the entire figure before searching. Completed comparisons are cached by the reference image.
-
-Shortcuts: B = pencil, E = eraser/reset limb, H = pan/move joints, Cmd/Ctrl+Z = undo, Shift+Cmd/Ctrl+Z = redo. Joint handles also accept arrow keys.
-
-## Architecture
-
-| Step | Implementation |
-| --- | --- |
-| App | Next.js 16.4.2 App Router + TypeScript; local server, no database or deployment. |
-| Drawing | Canvas 2D + perfect-freehand, Lucide icons. Minimal split screen, inspired by tldraw's drawing interaction. |
-| Fast interpretation | `gemini-3.1-flash-lite`, minimal thinking, at most 150 words describing screen-space pose geometry. Fast prompt is editable in Inspect steps. |
-| Image | `gemini-3.1-flash-lite-image`, minimal thinking, image-only response. Receives sketch, body reference and compact pose description. Nano Banana 2.1 and FLUX.2 remain selectable. |
-| Sketch update | Compare old/new sketches with the text model; send revised sketch + previous mannequin image + the identified changes to the image model. This avoids a full reinterpretation of unchanged limbs/camera. |
-| 3D annotation update | Capture the actual Three.js camera view. Send clean + red-marked views and optional text directly to image editing. Keep the previous model until the replacement succeeds. |
-| Reconstruction | `fal-ai/sam-3/3d-body`, exported GLB, retained MHR parameters. Queue polling reduced from 1.8 seconds to 0.6 seconds; no automatic paid resubmission. |
-| Live rig | Native Meta MHR LOD1 skin weights and 127-bone hierarchy; exact topology validation against SAM's 18,439-vertex mesh. SAM joint positions establish the bind pose. Analytic two-bone IK moves wrists/ankles; CCD adjusts other handles. Three.js SkinnedMesh deforms locally on the GPU. |
-| Viewing | Three.js GLTFLoader, OrbitControls, lighting; camera retained when switching to historical references. Local pose undo/redo, autosave and rigged GLB export. |
-| Artwork discovery | Gemini Flash Lite describes the pose and proposes three catalogue terms. Search public-domain 2D works in the Met v1.1 API, Cleveland Open Access API, and Art Institute of Chicago API. Interleave sources and terms, download a bounded shortlist. |
-| Figure detection | Gemini shortlists up to 8 of 30 museum works. SAM detects individual people and 2D keypoints, with up to 3 targeted region fallbacks for missed figures. Native detections are cached globally; up to 3 people per artwork continue to verification. |
-| Match verification | Compare segment directions with aspect correction, translation/scale invariance and a mirrored alternative. Gemini 3.8 Flash audits original crops plus joint overlays with a strict response schema. Wrong/occluded joints lose evidence weight. Per-part scores take the lower of geometric and visual scores, then combine 35% arms, 40% legs, 25% torso, visibility and viewing angle. Best audited person wins per artwork. Scores are uncalibrated similarity, never probability. |
-| Evidence UI | Full-artwork figure box, exact crop, target/crop side by side, optional skeletons, arms/legs/torso/view scores, similarities and differences. Museum metadata comes from the source APIs. |
-| Local cache | Inputs, images, meshes, stage timings and exact requests in `.local/runs/<UUID>/`. Museum metadata cached for seven days; completed searches are reused. |
-
-Provider adapters: `lib/server.ts`. Museum discovery/ranking: `lib/artworks.ts`, `artwork-pose.ts`, `pose-match.ts`. Live rig: `lib/rig.ts`, `components/LivePoseCanvas.tsx`. Drawing/3D/editing UI: `components/Studio.tsx`, `DrawingCanvas.tsx`, `ModelViewer.tsx`, `PoseOverlay.tsx`, `ArtworkPanel.tsx`.
-
-Inspect steps exposes model choices, prompts, run history, timing, GLB downloads and links to **exact model instructions**. Guided mode preserves the original long animator prompt. Sketch corrections use a separate old/new comparison prompt, recorded in `interpret-input.json`; overlay corrections use their recorded image-edit prompt. No training or fine-tuning is involved.
-
-## Limits
-
-- The live path edits a **linked joint guide**, not arbitrary original freehand strokes. Freehand reinterpretation and new body generation still need the AI workflow. Local editing preserves the same mesh, proportions and limb lengths.
-- This is linear blend skinning on the reconstructed pose. Extreme bends can distort the surface; there is no collision solver, ground-contact constraint or pose-dependent muscle correction. Fine finger articulation is not exposed. One supported MHR figure is required; unsupported topology falls back to a static viewer with an explanation.
-- Ambiguous sketches can still produce mirrored views or incorrect limbs. Use Guided mode, a clearer sketch, a local rig correction or AI redraw. Body references guide proportions but do not guarantee exact shape.
-- Museum discovery searches a bounded catalogue shortlist, **not an exhaustive pose index**. Title vocabulary limits recall. Some poses have only loose matches or none.
-- Scores are uncalibrated similarity, not confidence probabilities. SAM and the visual auditor can both misread stylized, clothed or occluded figures. Visible joint overlays and specific mismatches make these failures inspectable; they do not certify anatomical accuracy.
-- Keep the server open during inference. Queue request IDs are saved, so a timed-out pose-detection request resumes rather than being submitted and charged again.
-
-## Connections and privacy
-
-The link icon opens the local connection form. Existing keys are saved in `.local/connections.json` with user-only permissions, excluded from Git. Environment variables `GEMINI_API_KEY` / `GOOGLE_API_KEY` and `FAL_KEY` also work. The browser receives only connection-presence flags. Do not share `.local/` as source code.
-
-Generation and artwork matching use Gemini and fal and may incur API charges. Check spending in the provider dashboards. Live rig editing runs locally without inference calls. There are no automatic paid retries.
-
-Configure your own keys using the connection icon, or copy `.env.example` to `.env.local` and fill in the values. Keys and generated files are excluded from Git. This app is intended for local use; do not expose its server publicly without adding authentication and reviewing its storage and API routes.
-
-Sketches/body references and correction images go to the selected image providers when you press Generate/Update. Museum search sends the current pose and public museum images/crops to Gemini, and public artwork images to SAM via fal for joint detection. Only public-domain/CC0 artwork images are retained, with original source links. Downloads are bounded and restricted to official museum image hosts; model-produced IDs/scores/boxes are validated.
-
-## Check
+Run the Python service tests with the environment created by setup (macOS/Linux):
 
 ```sh
-npm run typecheck
-npm test
-NEXT_TELEMETRY_DISABLED=1 npm run build
+.venv/bin/python -m unittest discover -s tools/met-art -p 'test_*.py'
 ```
 
-Tests also cover native rig topology, identity skin binding, IK bone lengths, pose restore, geometric invariance, mirrored comparison and missing-joint penalties. Tests cover image validation, local-origin protection, provider/museum host restrictions, Gemini result extraction, and rejection of invented artwork IDs or invalid scores/boxes. Live quality requires visual checks; automated tests do not certify pose accuracy.
+On Windows, use `.venv\Scripts\python.exe` instead.
 
-## Rig assets and attribution
+Browser fixtures are available through the development server:
 
-`public/mhr-rig.json` is extracted from Meta's [MHR v1.0.1 release](https://github.com/facebookresearch/MHR/releases/tag/v1.0.1), licensed Apache 2.0. Copyright Meta Platforms, Inc. and affiliates. The license is retained in `public/licenses/MHR.txt`. `tools/extract_mhr_rig.py` reproduces the compact hierarchy/skin-weight asset from the official LOD1 FBX, using the attributed parser in `tools/mhr_fbx.py`. No training, fine-tuning, downloaded model runtime or new subscription is needed for local editing.
+| Page | Coverage |
+| --- | --- |
+| `/tests/poser2-carousel.html` | Pose carousel and selected-model interactions |
+| `/tests/poser2-human-review.html` | Body retargeting across varied poses and viewing angles |
+| `/tests/poser-references.html` | Reference cards, pose changes, prefetch, and persistent tabs |
+| `/tests/smartpen-replay.html` | Recorded physical-pen strokes through the drawing pipeline |
+| `/tests/tldraw-frames.html` | Frame presentation and editing |
+| `/tests/tldraw-recognition.html` | Drawing recognition |
 
-## References
+The Met playground runs separately at [http://127.0.0.1:4318](http://127.0.0.1:4318). Older benchmark files remain under `tests/`; their results should not be treated as measurements of the current app.
 
-- [Gemini Flash Lite image](https://ai.google.dev/gemini-api/docs/models/gemini-3.1-flash-lite-image)
-- [Gemini Flash Lite](https://ai.google.dev/gemini-api/docs/models/gemini-3.1-flash-lite)
-- [SAM 3D Body via fal](https://fal.ai/models/fal-ai/sam-3/3d-body/api)
-- [Met Collection API, including v1.1 migration](https://metmuseum.github.io/)
-- [Cleveland Open Access API](https://openaccess-api.clevelandart.org/)
-- [Art Institute of Chicago API](https://api.artic.edu/docs/)
+### Code map
+
+| Directory | Responsibility |
+| --- | --- |
+| `src/tldraw/` | Drawing editor, toolbar, frames, recognition, and Wireframe preview |
+| `src/poser/` | Pose retrieval, medium selection, tabs, and reference canvas |
+| `src/poser2/` | Current Poser carousel, Three.js viewer, rigging, lighting, and retargeting |
+| `src/smartpen/` | Bluetooth session and physical-pen input |
+| `server/pose-retrieval/` | Gemini-backed pose search and preview data |
+| `server/pose-library/` | Local rig and model assets |
+| `server/art-references/` | Proxy and lifecycle management for the Python service |
+| `tools/met-art/` | Met index preparation, search, playground, and evaluation |
+| `src/components/ui/` | shadcn/ui components |
+
+The visible mode is named **Poser**; `poser2` remains its internal identifier and directory name. The earlier generation backend under `server/poser/` is retained but is not connected to the current medium menu. Older Poser pages are migrated or archived to preserve existing drawings.
+
+## Repository and deployment
+
+This is a private GitHub repository. Environment files, assembled weights, caches, generated output, Python environments, and dependencies are excluded. Both pose and Met runtime assets are tracked under `data/`. Browser drawings use the local persistence key `sketch-ui-tldraw-v1`; they are not stored in Git.
+
+There is currently no Vercel deployment, and automatic Vercel deployments are disconnected. The app still depends on local files and the Python worker. A production build alone does not package those services or datasets.
+
+A deployed canvas also needs a valid [tldraw license](https://tldraw.dev/community/license), supplied through `VITE_TLDRAW_LICENSE_KEY`. The installed SDK hides an unlicensed canvas after five seconds on a production domain. Localhost development is unaffected.
+
+## Credits
+
+- [tldraw](https://tldraw.dev/) powers the drawing canvas; [Three.js](https://threejs.org/) powers the model viewer.
+- [Drawesome by Benji Taylor](https://github.com/benjitaylor/drawesome) supplies adapted toolbar icons and tooltip behavior. Its MIT license is retained in `src/tldraw/drawesome/LICENSE`.
+- The tab-selector motion follows [Paul Stamatiou's site](https://paulstamatiou.com/about).
+- [shadcn/ui](https://ui.shadcn.com/) and Radix provide interface components. The component sources retain their MIT license.
+- Interface typography uses [GT Maru](https://www.gt-maru.com/). The Poser and Wireframe wordmarks use locally hosted Poppins ExtraBold; its SIL Open Font License is included in `public/fonts/poppins/OFL.txt`.
+- The vendored [Neo Web SDK](https://github.com/NeoSmartpen/WEB-SDK2.0), commit `31e649a58311df0380f4bb68290b9196711426ba`, retains its GPL-3.0 license and upstream notice.
+- Historical artwork uses the Met's published Open Access metadata and image-embedding index with Apple MobileCLIP. Dataset and model sources are documented in [the Met service README](tools/met-art/README.md).
+- Pose scenes and character models come from the PoseMyArt library. The runtime subset is included under `data/`; its provenance and original collection notes are retained there.

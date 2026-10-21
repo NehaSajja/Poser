@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 256 256" fill="none">
+  <title>Opal glass and porcelain lightbulb</title>
+  <defs>
+    <radialGradient id="glass" cx=".43" cy=".66" r=".78">
+      <stop stop-color="#fffddc"/><stop offset=".24" stop-color="#fff1d0"/><stop offset=".49" stop-color="#f8ebdc"/><stop offset=".7" stop-color="#eee2d7"/><stop offset=".91" stop-color="#d8c9ba"/><stop offset="1" stop-color="#b7a694"/>
+    </radialGradient>
+    <radialGradient id="edge-glass" cx=".48" cy=".6" r=".65">
+      <stop offset=".75" stop-color="#fff9ee" stop-opacity="0"/><stop offset=".92" stop-color="#fffcf5" stop-opacity=".8"/><stop offset="1" stop-color="#bca997" stop-opacity=".35"/>
+    </radialGradient>
+    <linearGradient id="porcelain" x1="70" y1="141" x2="181" y2="148" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#c4beb6"/><stop offset=".16" stop-color="#f0ece5"/><stop offset=".32" stop-color="#e6e1d9"/><stop offset=".56" stop-color="#d1cbc1"/><stop offset=".79" stop-color="#aba498"/><stop offset="1" stop-color="#716b62"/>
+    </linearGradient>
+    <linearGradient id="ceramic-edge" x1="71" y1="151" x2="155" y2="132" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#fffdf9" stop-opacity=".75"/><stop offset="1" stop-color="#fffdf9" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="steel" x1="91" y1="192" x2="160" y2="191" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#4d4b46"/><stop offset=".08" stop-color="#c4beb2"/><stop offset=".17" stop-color="#fffdf4"/><stop offset=".3" stop-color="#d8d6d0"/><stop offset=".43" stop-color="#5c5a53"/><stop offset=".58" stop-color="#39372f"/><stop offset=".75" stop-color="#aca89e"/><stop offset=".88" stop-color="#d8d1c4"/><stop offset="1" stop-color="#4b4337"/>
+    </linearGradient>
+    <linearGradient id="ridge" x1="94" y1="0" x2="159" y2="0" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#797164"/><stop offset=".13" stop-color="#fcfaf2"/><stop offset=".27" stop-color="#e8e3d9"/><stop offset=".46" stop-color="#7c786e"/><stop offset=".63" stop-color="#575045"/><stop offset=".82" stop-color="#e8dfcd"/><stop offset="1" stop-color="#b3a68e"/>
+    </linearGradient>
+    <linearGradient id="reflection" x1="90" y1="0" x2="149" y2="0" gradientUnits="userSpaceOnUse">
+      <stop stop-color="white" stop-opacity=".6"/><stop offset=".27" stop-color="white" stop-opacity=".16"/><stop offset=".5" stop-color="white" stop-opacity="0"/>
+    </linearGradient>
+    <radialGradient id="contact"><stop stop-color="#aaa396"/><stop offset=".65" stop-color="#777064"/><stop offset="1" stop-color="#3c362d"/></radialGradient>
+    <filter id="grain" x="-3%" y="-3%" width="106%" height="106%" color-interpolation-filters="sRGB">
+      <feTurbulence type="fractalNoise" baseFrequency="1.1" numOctaves="3" seed="8"/>
+      <feColorMatrix type="saturate" values="0"/><feComponentTransfer><feFuncA type="linear" slope=".045"/></feComponentTransfer>
+      <feComposite in2="SourceGraphic" operator="in"/><feBlend in="SourceGraphic" mode="multiply"/>
+    </filter>
+    <filter id="metal-grain" x="-3%" y="-3%" width="106%" height="106%" color-interpolation-filters="sRGB">
+      <feTurbulence type="fractalNoise" baseFrequency=".08 2.8" numOctaves="2" seed="4"/>
+      <feColorMatrix type="saturate" values="0"/><feComponentTransfer><feFuncA type="linear" slope=".08"/></feComponentTransfer>
+      <feComposite in2="SourceGraphic" operator="in"/><feBlend in="SourceGraphic" mode="soft-light"/>
+    </filter>
+    <filter id="soft"><feGaussianBlur stdDeviation="1.25"/></filter>
+    <filter id="shadow" x="0" y="0" width="256" height="256" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feDropShadow dx=".5" dy="2" stdDeviation="2" flood-color="#382e24" flood-opacity=".18"/>
+    </filter>
+    <path id="dome" d="M64 116C59 103 61 82 68 66C79 42 99 26 126 26C156 25 179 43 189 68C195 83 198 104 192 116C169 125 88 126 64 116Z"/>
+  </defs>
+  <g transform="translate(128 128) scale(.92) translate(-128 -128)" filter="url(#shadow)">
+    <g transform="rotate(32 128 128)">
+      <path d="M102 216C108 228 117 233 127 233C138 233 148 228 153 217Z" fill="#39362f"/>
+      <ellipse cx="127" cy="230" rx="15" ry="5" fill="url(#contact)"/>
+      <path d="M97 168H159V210C159 221 145 227 128 227C111 227 97 221 97 211Z" fill="url(#steel)" filter="url(#metal-grain)"/>
+      <path d="M99 213C105 220 118 224 131 224C142 224 153 220 157 215" stroke="#211f1a" stroke-width="2.8" opacity=".8"/>
+      <!-- Thread roots are dark; offset ridges carry the metal reflections. -->
+      <g stroke-linecap="round">
+        <path d="M97 177C111 183 144 185 159 179M96 187C111 193 145 195 160 189M97 197C112 204 146 205 159 199M98 207C112 214 143 216 157 209" stroke="#443e33" stroke-width="4.6"/>
+        <path d="M96 175.3C111 181.3 144 183.3 160 177.3M95.5 185.3C111 191.3 145 193.3 160.5 187.3M96.5 195.3C112 202.3 146 203.3 159.5 197.3M97.5 205.3C112 212.3 143 214.3 157.5 207.3" stroke="url(#ridge)" stroke-width="5"/>
+        <path d="M96 174C111 180 144 182 160 176M95.5 184C111 190 145 192 160.5 186M96.5 194C112 201 146 202 159.5 196M97.5 204C112 211 143 213 157.5 206" stroke="url(#reflection)" stroke-width="1.55"/>
+      </g>
+      <path d="M64 115C65 130 73 139 82 149C89 158 91 167 95 171C104 178 149 179 160 171C163 160 169 152 176 143C185 132 191 125 192 115Z" fill="url(#porcelain)" filter="url(#grain)"/>
+      <path d="M66 119C70 135 87 149 91 164C93 169 94 170 97 171" stroke="url(#ceramic-edge)" stroke-width="1" stroke-linecap="round"/>
+      <path d="M80 132C85 143 96 154 100 167C103 170 109 171 114 171C107 155 98 146 92 130Z" fill="#fffdf6" opacity=".16" filter="url(#soft)"/>
+      <path d="M95 171C111 178 146 179 160 171" stroke="#585044" stroke-width="1.7"/>
+      <path d="M95 169.7C111 176.7 146 177.7 160 169.7" stroke="#f8f3e9" stroke-width="1.1" opacity=".8"/>
+      <use href="#dome" fill="url(#glass)" stroke="#cdbdab" stroke-width=".35"/>
+      <use href="#dome" fill="url(#edge-glass)"/>
+      <path d="M72 88C74 67 89 46 107 41C96 50 87 68 86 88Z" fill="white" opacity=".63" filter="url(#soft)"/>
+      <path d="M73 85C76 65 88 49 104 43" stroke="white" stroke-width="2.4" stroke-opacity=".26" filter="url(#soft)"/>
+      <path d="M149 32C177 43 194 77 190 102" stroke="#fffcf7" stroke-width="2.5" stroke-opacity=".53" stroke-linecap="round" filter="url(#soft)"/>
+      <path d="M64.8 115.5C89 124.8 168 124.8 191.2 115.5" stroke="#fff9ec" stroke-width="1.1" opacity=".85"/>
+    </g>
+  </g>
+</svg>

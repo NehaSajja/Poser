@@ -1,0 +1,22 @@
+:root {
+  --canvas-ease-out: cubic-bezier(.23, 1, .32, 1);
+}
+
+/* Keyboard responses are immediate. Toolbar motion has its own existing policy. */
+html[data-canvas-input="keyboard"] :is(.artwork-overlay, .artwork-detail, .artwork-detail *, .reference-card, .poser2-back, .poser2-carousel, .poser2-selection-grid, .poser2-joints),
+html[data-canvas-input="keyboard"] .poser2-joint::after {
+  animation: none !important;
+  transition: none !important;
+}
+
+.sketch-workspace :is(.reference-card, .poser2-back), .artwork-detail button {
+  transition: scale 120ms var(--canvas-ease-out);
+}
+html[data-canvas-input="pointer"] :is(.reference-card, .poser2-back, .artwork-detail button):active:not(:disabled) {
+  scale: .97;
+}
+.reference-canvas[data-dragging="true"] .reference-card { scale: 1; }
+
+@media (prefers-reduced-motion: reduce) {
+  :is(.reference-card, .poser2-back, .artwork-detail button):active { scale: 1 !important; }
+}

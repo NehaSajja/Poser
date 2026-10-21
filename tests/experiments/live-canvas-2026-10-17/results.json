@@ -1,0 +1,2775 @@
+{
+  "model": "gpt-6-luna",
+  "repetitions": 2,
+  "threshold": 0.7,
+  "summary": {
+    "current": {
+      "total": 16,
+      "topCorrect": 10,
+      "acceptedCorrect": 8,
+      "wrongAccepted": 0,
+      "medianMs": 175
+    },
+    "symbols": {
+      "total": 16,
+      "topCorrect": 14,
+      "acceptedCorrect": 10,
+      "wrongAccepted": 2,
+      "medianMs": 147.5
+    }
+  },
+  "rows": [
+    {
+      "name": "select",
+      "expected": "select",
+      "repetition": 1,
+      "method": "current",
+      "kind": "checkbox",
+      "probability": 0.37,
+      "accepted": false,
+      "elapsedMs": 498,
+      "correct": false,
+      "raw": {
+        "model": "gpt-6-luna",
+        "answers": [
+          {
+            "type": "choice",
+            "name": "component",
+            "choice": "checkbox",
+            "probabilities": [
+              {
+                "value": "container",
+                "probability": 0.11
+              },
+              {
+                "value": "input",
+                "probability": 0.03
+              },
+              {
+                "value": "button",
+                "probability": 0.18
+              },
+              {
+                "value": "checkbox",
+                "probability": 0.37
+              },
+              {
+                "value": "radio",
+                "probability": 0.01
+              },
+              {
+                "value": "switch_left",
+                "probability": 0.01
+              },
+              {
+                "value": "switch_right",
+                "probability": 0.02
+              },
+              {
+                "value": "select",
+                "probability": 0.05
+              },
+              {
+                "value": "unknown",
+                "probability": 0.22
+              }
+            ],
+            "confidence": 0.29
+          }
+        ],
+        "usage": {
+          "input_tokens": 680,
+          "input_tokens_details": {
+            "cached_tokens": 0,
+            "cache_write_tokens": 0
+          },
+          "output_tokens": 0,
+          "output_tokens_details": {
+            "reasoning_tokens": 0
+          },
+          "total_tokens": 680
+        }
+      }
+    },
+    {
+      "name": "select",
+      "expected": "select",
+      "repetition": 1,
+      "method": "symbols",
+      "kind": "checkbox",
+      "probability": 0.84,
+      "accepted": true,
+      "outline": "box",
+      "outlineProbability": 1,
+      "symbol": "tick",
+      "symbolProbability": 0.84,
+      "elapsedMs": 220,
+      "correct": false,
+      "raw": {
+        "model": "gpt-6-luna",
+        "answers": [
+          {
+            "type": "choice",
+            "name": "outline",
+            "choice": "box",
+            "probabilities": [
+              {
+                "value": "box",
+                "probability": 1
+              },
+              {
+                "value": "round",
+                "probability": 0
+              },
+              {
+                "value": "other",
+                "probability": 0
+              }
+            ],
+            "confidence": 1
+          },
+          {
+            "type": "choice",
+            "name": "symbol",
+            "choice": "tick",
+            "probabilities": [
+              {
+                "value": "empty",
+                "probability": 0.01
+              },
+              {
+                "value": "caret_left",
+                "probability": 0.02
+              },
+              {
+                "value": "baseline",
+                "probability": 0.01
+              },
+              {
+                "value": "arrow",
+                "probability": 0.01
+              },
+              {
+                "value": "tick",
+                "probability": 0.84
+              },
+              {
+                "value": "chevron_right",
+                "probability": 0.04
+              },
+              {
+                "value": "loop_left",
+                "probability": 0.01
+              },
+              {
+                "value": "loop_right",
+                "probability": 0.03
+              },
+              {
+                "value": "loop_center",
+                "probability": 0.01
+              },
+              {
+                "value": "other",
+                "probability": 0.02
+              }
+            ],
+            "confidence": 0.82
+          }
+        ],
+        "usage": {
+          "input_tokens": 864,
+          "input_tokens_details": {
+            "cached_tokens": 0,
+            "cache_write_tokens": 0
+          },
+          "output_tokens": 0,
+          "output_tokens_details": {
+            "reasoning_tokens": 0
+          },
+          "total_tokens": 864
+        }
+      }
+    },
+    {
+      "name": "checkbox",
+      "expected": "checkbox",
+      "repetition": 1,
+      "method": "current",
+      "kind": "checkbox",
+      "probability": 0.47,
+      "accepted": false,
+      "elapsedMs": 160,
+      "correct": true,
+      "raw": {
+        "model": "gpt-6-luna",
+        "answers": [
+          {
+            "type": "choice",
+            "name": "component",
+            "choice": "checkbox",
+            "probabilities": [
+              {
+                "value": "container",
+                "probability": 0.03
+              },
+              {
+                "value": "input",
+                "probability": 0.03
+              },
+              {
+                "value": "button",
+                "probability": 0.23
+              },
+              {
+                "value": "checkbox",
+                "probability": 0.47
+              },
+              {
+                "value": "radio",
+                "probability": 0.01
+              },
+              {
+                "value": "switch_left",
+                "probability": 0.01
+              },
+              {
+                "value": "switch_right",
+                "probability": 0.01
+              },
+              {
+                "value": "select",
+                "probability": 0.03
+              },
+              {
+                "value": "unknown",
+                "probability": 0.18
+              }
+            ],
+            "confidence": 0.4
+          }
+        ],
+        "usage": {
+          "input_tokens": 680,
+          "input_tokens_details": {
+            "cached_tokens": 0,
+            "cache_write_tokens": 0
+          },
+          "output_tokens": 0,
+          "output_tokens_details": {
+            "reasoning_tokens": 0
+          },
+          "total_tokens": 680
+        }
+      }
+    },
+    {
+      "name": "checkbox",
+      "expected": "checkbox",
+      "repetition": 1,
+      "method": "symbols",
+      "kind": "checkbox",
+      "probability": 0.66,
+      "accepted": false,
+      "outline": "box",
+      "outlineProbability": 1,
+      "symbol": "tick",
+      "symbolProbability": 0.66,
+      "elapsedMs": 137,
+      "correct": true,
+      "raw": {
+        "model": "gpt-6-luna",
+        "answers": [
+          {
+            "type": "choice",
+            "name": "outline",
+            "choice": "box",
+            "probabilities": [
+              {
+                "value": "box",
+                "probability": 1
+              },
+              {
+                "value": "round",
+                "probability": 0
+              },
+              {
+                "value": "other",
+                "probability": 0
+              }
+            ],
+            "confidence": 1
+          },
+          {
+            "type": "choice",
+            "name": "symbol",
+            "choice": "tick",
+            "probabilities": [
+              {
+                "value": "empty",
+                "probability": 0.01
+              },
+              {
+                "value": "caret_left",
+                "probability": 0
+              },
+              {
+                "value": "baseline",
+                "probability": 0.01
+              },
+              {
+                "value": "arrow",
+                "probability": 0.21
+              },
+              {
+                "value": "tick",
+                "probability": 0.66
+              },
+              {
+                "value": "chevron_right",
+                "probability": 0.01
+              },
+              {
+                "value": "loop_left",
+                "probability": 0
+              },
+              {
+                "value": "loop_right",
+                "probability": 0.01
+              },
+              {
+                "value": "loop_center",
+                "probability": 0.01
+              },
+              {
+                "value": "other",
+                "probability": 0.08
+              }
+            ],
+            "confidence": 0.62
+          }
+        ],
+        "usage": {
+          "input_tokens": 864,
+          "input_tokens_details": {
+            "cached_tokens": 0,
+            "cache_write_tokens": 0
+          },
+          "output_tokens": 0,
+          "output_tokens_details": {
+            "reasoning_tokens": 0
+          },
+          "total_tokens": 864
+        }
+      }
+    },
+    {
+      "name": "switch",
+      "expected": "switch_left",
+      "repetition": 1,
+      "method": "current",
+      "kind": "unknown",
+      "probability": 0.54,
+      "accepted": false,
+      "elapsedMs": 226,
+      "correct": false,
+      "raw": {
+        "model": "gpt-6-luna",
+        "answers": [
+          {
+            "type": "choice",
+            "name": "component",
+            "choice": "unknown",
+            "probabilities": [
+              {
+                "value": "container",
+                "probability": 0.1
+              },
+              {
+                "value": "input",
+                "probability": 0.05
+              },
+              {
+                "value": "button",
+                "probability": 0.01
+              },
+              {
+                "value": "checkbox",
+                "probability": 0.01
+              },
+              {
+                "value": "radio",
+                "probability": 0.01
+              },
+              {
+                "value": "switch_left",
+                "probability": 0.23
+              },
+              {
+                "value": "switch_right",
+                "probability": 0.03
+              },
+              {
+                "value": "select",
+                "probability": 0.02
+              },
+              {
+                "value": "unknown",
+                "probability": 0.54
+              }
+            ],
+            "confidence": 0.48
+          }
+        ],
+        "usage": {
+          "input_tokens": 680,
+          "input_tokens_details": {
+            "cached_tokens": 0,
+            "cache_write_tokens": 0
+          },
+          "output_tokens": 0,
+          "output_tokens_details": {
+            "reasoning_tokens": 0
+          },
+          "total_tokens": 680
+        }
+      }
+    },
+    {
+      "name": "switch",
+      "expected": "switch_left",
+      "repetition": 1,
+      "method": "symbols",
+      "kind": "switch_left",
+      "probability": 0.95,
+      "accepted": true,
+      "outline": "box",
+      "outlineProbability": 1,
+      "symbol": "loop_left",
+      "symbolProbability": 0.95,
+      "elapsedMs": 139,
+      "correct": true,
+      "raw": {
+        "model": "gpt-6-luna",
+        "answers": [
+          {
+            "type": "choice",
+            "name": "outline",
+            "choice": "box",
+            "probabilities": [
+              {
+                "value": "box",
+                "probability": 1
+              },
+              {
+                "value": "round",
+                "probability": 0
+              },
+              {
+                "value": "other",
+                "probability": 0
+              }
+            ],
+            "confidence": 1
+          },
+          {
+            "type": "choice",
+            "name": "symbol",
+            "choice": "loop_left",
+            "probabilities": [
+              {
+                "value": "empty",
+                "probability": 0.01
+              },
+              {
+                "value": "caret_left",
+                "probability": 0.01
+              },
+              {
+                "value": "baseline",
+                "probability": 0
+              },
+              {
+                "value": "arrow",
+                "probability": 0
+              },
+              {
+                "value": "tick",
+                "probability": 0
+              },
+              {
+                "value": "chevron_right",
+                "probability": 0.01
+              },
+              {
+                "value": "loop_left",
+                "probability": 0.95
+              },
+              {
+                "value": "loop_right",
+                "probability": 0.01
+              },
+              {
+                "value": "loop_center",
+                "probability": 0
+              },
+              {
+                "value": "other",
+                "probability": 0.01
+              }
+            ],
+            "confidence": 0.94
+          }
+        ],
+        "usage": {
+          "input_tokens": 864,
+          "input_tokens_details": {
+            "cached_tokens": 0,
+            "cache_write_tokens": 0
+          },
+          "output_tokens": 0,
+          "output_tokens_details": {
+            "reasoning_tokens": 0
+          },
+          "total_tokens": 864
+        }
+      }
+    },
+    {
+      "name": "roughRadio",
+      "expected": "radio",
+      "repetition": 1,
+      "method": "current",
+      "kind": "unknown",
+      "probability": 0.43,
+      "accepted": false,
+      "elapsedMs": 138,
+      "correct": false,
+      "raw": {
+        "model": "gpt-6-luna",
+        "answers": [
+          {
+            "type": "choice",
+            "name": "component",
+            "choice": "unknown",
+            "probabilities": [
+              {
+                "value": "container",
+                "probability": 0.12
+              },
+              {
+                "value": "input",
+                "probability": 0.02
+              },
+              {
+                "value": "button",
+                "probability": 0.01
+              },
+              {
+                "value": "checkbox",
+                "probability": 0.06
+              },
+              {
+                "value": "radio",
+                "probability": 0.24
+              },
+              {
+                "value": "switch_left",
+                "probability": 0.05
+              },
+              {
+                "value": "switch_right",
+                "probability": 0.04
+              },
+              {
+                "value": "select",
+                "probability": 0.03
+              },
+              {
+                "value": "unknown",
+                "probability": 0.43
+              }
+            ],
+            "confidence": 0.36
+          }
+        ],
+        "usage": {
+          "input_tokens": 680,
+          "input_tokens_details": {
+            "cached_tokens": 0,
+            "cache_write_tokens": 0
+          },
+          "output_tokens": 0,
+          "output_tokens_details": {
+            "reasoning_tokens": 0
+          },
+          "total_tokens": 680
+        }
+      }
+    },
+    {
+      "name": "roughRadio",
+      "expected": "radio",
+      "repetition": 1,
+      "method": "symbols",
+      "kind": "radio",
+      "probability": 0.39,
+      "accepted": false,
+      "outline": "round",
+      "outlineProbability": 0.86,
+      "symbol": "loop_center",
+      "symbolProbability": 0.39,
+      "elapsedMs": 246,
+      "correct": true,
+      "raw": {
+        "model": "gpt-6-luna",
+        "answers": [
+          {
+            "type": "choice",
+            "name": "outline",
+            "choice": "round",
+            "probabilities": [
+              {
+                "value": "box",
+                "probability": 0.07
+              },
+              {
+                "value": "round",
+                "probability": 0.86
+              },
+              {
+                "value": "other",
+                "probability": 0.07
+              }
+            ],
+            "confidence": 0.79
+          },
+          {
+            "type": "choice",
+            "name": "symbol",
+            "choice": "loop_center",
+            "probabilities": [
+              {
+                "value": "empty",
+                "probability": 0.05
+              },
+              {
+                "value": "caret_left",
+                "probability": 0
+              },
+              {
+                "value": "baseline",
+                "probability": 0.02
+              },
+              {
+                "value": "arrow",
+                "probability": 0.01
+              },
+              {
+                "value": "tick",
+                "probability": 0.01
+              },
+              {
+                "value": "chevron_right",
+                "probability": 0.01
+              },
+              {
+                "value": "loop_left",
+                "probability": 0.06
+              },
+              {
+                "value": "loop_right",
+                "probability": 0.08
+              },
+              {
+                "value": "loop_center",
+                "probability": 0.39
+              },
+              {
+                "value": "other",
+                "probability": 0.37
+              }
+            ],
+            "confidence": 0.32
+          }
+        ],
+        "usage": {
+          "input_tokens": 864,
+          "input_tokens_details": {
+            "cached_tokens": 0,
+            "cache_write_tokens": 0
+          },
+          "output_tokens": 0,
+          "output_tokens_details": {
+            "reasoning_tokens": 0
+          },
+          "total_tokens": 864
+        }
+      }
+    },
+    {
+      "name": "nativeRadio",
+      "expected": "radio",
+      "repetition": 1,
+      "method": "current",
+      "kind": "radio",
+      "probability": 0.77,
+      "accepted": true,
+      "elapsedMs": 174,
+      "correct": true,
+      "raw": {
+        "model": "gpt-6-luna",
+        "answers": [
+          {
+            "type": "choice",
+            "name": "component",
+            "choice": "radio",
+            "probabilities": [
+              {
+                "value": "container",
+                "probability": 0.02
+              },
+              {
+                "value": "input",
+                "probability": 0
+              },
+              {
+                "value": "button",
+                "probability": 0
+              },
+              {
+                "value": "checkbox",
+                "probability": 0.01
+              },
+              {
+                "value": "radio",
+                "probability": 0.77
+              },
+              {
+                "value": "switch_left",
+                "probability": 0.01
+              },
+              {
+                "value": "switch_right",
+                "probability": 0
+              },
+              {
+                "value": "select",
+                "probability": 0.01
+              },
+              {
+                "value": "unknown",
+                "probability": 0.18
+              }
+            ],
+            "confidence": 0.74
+          }
+        ],
+        "usage": {
+          "input_tokens": 680,
+          "input_tokens_details": {
+            "cached_tokens": 0,
+            "cache_write_tokens": 0
+          },
+          "output_tokens": 0,
+          "output_tokens_details": {
+            "reasoning_tokens": 0
+          },
+          "total_tokens": 680
+        }
+      }
+    },
+    {
+      "name": "nativeRadio",
+      "expected": "radio",
+      "repetition": 1,
+      "method": "symbols",
+      "kind": "radio",
+      "probability": 0.9,
+      "accepted": true,
+      "outline": "round",
+      "outlineProbability": 1,
+      "symbol": "loop_center",
+      "symbolProbability": 0.9,
+      "elapsedMs": 353,
+      "correct": true,
+      "raw": {
+        "model": "gpt-6-luna",
+        "answers": [
+          {
+            "type": "choice",
+            "name": "outline",
+            "choice": "round",
+            "probabilities": [
+              {
+                "value": "box",
+                "probability": 0
+              },
+              {
+                "value": "round",
+                "probability": 1
+              },
+              {
+                "value": "other",
+                "probability": 0
+              }
+            ],
+            "confidence": 1
+          },
+          {
+            "type": "choice",
+            "name": "symbol",
+            "choice": "loop_center",
+            "probabilities": [
+              {
+                "value": "empty",
+                "probability": 0.04
+              },
+              {
+                "value": "caret_left",
+                "probability": 0.01
+              },
+              {
+                "value": "baseline",
+                "probability": 0.01
+              },
+              {
+                "value": "arrow",
+                "probability": 0
+              },
+              {
+                "value": "tick",
+                "probability": 0
+              },
+              {
+                "value": "chevron_right",
+                "probability": 0
+              },
+              {
+                "value": "loop_left",
+                "probability": 0
+              },
+              {
+                "value": "loop_right",
+                "probability": 0.01
+              },
+              {
+                "value": "loop_center",
+                "probability": 0.9
+              },
+              {
+                "value": "other",
+                "probability": 0.03
+              }
+            ],
+            "confidence": 0.89
+          }
+        ],
+        "usage": {
+          "input_tokens": 864,
+          "input_tokens_details": {
+            "cached_tokens": 0,
+            "cache_write_tokens": 0
+          },
+          "output_tokens": 0,
+          "output_tokens_details": {
+            "reasoning_tokens": 0
+          },
+          "total_tokens": 864
+        }
+      }
+    },
+    {
+      "name": "button",
+      "expected": "button",
+      "repetition": 1,
+      "method": "current",
+      "kind": "button",
+      "probability": 0.92,
+      "accepted": true,
+      "elapsedMs": 121,
+      "correct": true,
+      "raw": {
+        "model": "gpt-6-luna",
+        "answers": [
+          {
+            "type": "choice",
+            "name": "component",
+            "choice": "button",
+            "probabilities": [
+              {
+                "value": "container",
+                "probability": 0.02
+              },
+              {
+                "value": "input",
+                "probability": 0.01
+              },
+              {
+                "value": "button",
+                "probability": 0.92
+              },
+              {
+                "value": "checkbox",
+                "probability": 0.01
+              },
+              {
+                "value": "radio",
+                "probability": 0
+              },
+              {
+                "value": "switch_left",
+                "probability": 0
+              },
+              {
+                "value": "switch_right",
+                "probability": 0
+              },
+              {
+                "value": "select",
+                "probability": 0
+              },
+              {
+                "value": "unknown",
+                "probability": 0.04
+              }
+            ],
+            "confidence": 0.91
+          }
+        ],
+        "usage": {
+          "input_tokens": 680,
+          "input_tokens_details": {
+            "cached_tokens": 0,
+            "cache_write_tokens": 0
+          },
+          "output_tokens": 0,
+          "output_tokens_details": {
+            "reasoning_tokens": 0
+          },
+          "total_tokens": 680
+        }
+      }
+    },
+    {
+      "name": "button",
+      "expected": "button",
+      "repetition": 1,
+      "method": "symbols",
+      "kind": "button",
+      "probability": 0.93,
+      "accepted": true,
+      "outline": "box",
+      "outlineProbability": 0.99,
+      "symbol": "arrow",
+      "symbolProbability": 0.93,
+      "elapsedMs": 135,
+      "correct": true,
+      "raw": {
+        "model": "gpt-6-luna",
+        "answers": [
+          {
+            "type": "choice",
+            "name": "outline",
+            "choice": "box",
+            "probabilities": [
+              {
+                "value": "box",
+                "probability": 0.99
+              },
+              {
+                "value": "round",
+                "probability": 0
+              },
+              {
+                "value": "other",
+                "probability": 0.01
+              }
+            ],
+            "confidence": 0.99
+          },
+          {
+            "type": "choice",
+            "name": "symbol",
+            "choice": "arrow",
+            "probabilities": [
+              {
+                "value": "empty",
+                "probability": 0.01
+              },
+              {
+                "value": "caret_left",
+                "probability": 0
+              },
+              {
+                "value": "baseline",
+                "probability": 0.02
+              },
+              {
+                "value": "arrow",
+                "probability": 0.93
+              },
+              {
+                "value": "tick",
+                "probability": 0.01
+              },
+              {
+                "value": "chevron_right",
+                "probability": 0
+              },
+              {
+                "value": "loop_left",
+                "probability": 0
+              },
+              {
+                "value": "loop_right",
+                "probability": 0.01
+              },
+              {
+                "value": "loop_center",
+                "probability": 0.01
+              },
+              {
+                "value": "other",
+                "probability": 0.01
+              }
+            ],
+            "confidence": 0.92
+          }
+        ],
+        "usage": {
+          "input_tokens": 864,
+          "input_tokens_details": {
+            "cached_tokens": 0,
+            "cache_write_tokens": 0
+          },
+          "output_tokens": 0,
+          "output_tokens_details": {
+            "reasoning_tokens": 0
+          },
+          "total_tokens": 864
+        }
+      }
+    },
+    {
+      "name": "rectangle",
+      "expected": "container",
+      "repetition": 1,
+      "method": "current",
+      "kind": "container",
+      "probability": 0.75,
+      "accepted": true,
+      "elapsedMs": 267,
+      "correct": true,
+      "raw": {
+        "model": "gpt-6-luna",
+        "answers": [
+          {
+            "type": "choice",
+            "name": "component",
+            "choice": "container",
+            "probabilities": [
+              {
+                "value": "container",
+                "probability": 0.75
+              },
+              {
+                "value": "input",
+                "probability": 0.02
+              },
+              {
+                "value": "button",
+                "probability": 0.01
+              },
+              {
+                "value": "checkbox",
+                "probability": 0.01
+              },
+              {
+                "value": "radio",
+                "probability": 0
+              },
+              {
+                "value": "switch_left",
+                "probability": 0
+              },
+              {
+                "value": "switch_right",
+                "probability": 0
+              },
+              {
+                "value": "select",
+                "probability": 0
+              },
+              {
+                "value": "unknown",
+                "probability": 0.21
+              }
+            ],
+            "confidence": 0.72
+          }
+        ],
+        "usage": {
+          "input_tokens": 680,
+          "input_tokens_details": {
+            "cached_tokens": 0,
+            "cache_write_tokens": 0
+          },
+          "output_tokens": 0,
+          "output_tokens_details": {
+            "reasoning_tokens": 0
+          },
+          "total_tokens": 680
+        }
+      }
+    },
+    {
+      "name": "rectangle",
+      "expected": "container",
+      "repetition": 1,
+      "method": "symbols",
+      "kind": "container",
+      "probability": 0.76,
+      "accepted": true,
+      "outline": "box",
+      "outlineProbability": 1,
+      "symbol": "empty",
+      "symbolProbability": 0.76,
+      "elapsedMs": 129,
+      "correct": true,
+      "raw": {
+        "model": "gpt-6-luna",
+        "answers": [
+          {
+            "type": "choice",
+            "name": "outline",
+            "choice": "box",
+            "probabilities": [
+              {
+                "value": "box",
+                "probability": 1
+              },
+              {
+                "value": "round",
+                "probability": 0
+              },
+              {
+                "value": "other",
+                "probability": 0
+              }
+            ],
+            "confidence": 1
+          },
+          {
+            "type": "choice",
+            "name": "symbol",
+            "choice": "empty",
+            "probabilities": [
+              {
+                "value": "empty",
+                "probability": 0.76
+              },
+              {
+                "value": "caret_left",
+                "probability": 0.04
+              },
+              {
+                "value": "baseline",
+                "probability": 0.1
+              },
+              {
+                "value": "arrow",
+                "probability": 0
+              },
+              {
+                "value": "tick",
+                "probability": 0.01
+              },
+              {
+                "value": "chevron_right",
+                "probability": 0
+              },
+              {
+                "value": "loop_left",
+                "probability": 0
+              },
+              {
+                "value": "loop_right",
+                "probability": 0.01
+              },
+              {
+                "value": "loop_center",
+                "probability": 0
+              },
+              {
+                "value": "other",
+                "probability": 0.08
+              }
+            ],
+            "confidence": 0.73
+          }
+        ],
+        "usage": {
+          "input_tokens": 864,
+          "input_tokens_details": {
+            "cached_tokens": 0,
+            "cache_write_tokens": 0
+          },
+          "output_tokens": 0,
+          "output_tokens_details": {
+            "reasoning_tokens": 0
+          },
+          "total_tokens": 864
+        }
+      }
+    },
+    {
+      "name": "input",
+      "expected": "input",
+      "repetition": 1,
+      "method": "current",
+      "kind": "input",
+      "probability": 0.98,
+      "accepted": true,
+      "elapsedMs": 393,
+      "correct": true,
+      "raw": {
+        "model": "gpt-6-luna",
+        "answers": [
+          {
+            "type": "choice",
+            "name": "component",
+            "choice": "input",
+            "probabilities": [
+              {
+                "value": "container",
+                "probability": 0.01
+              },
+              {
+                "value": "input",
+                "probability": 0.98
+              },
+              {
+                "value": "button",
+                "probability": 0
+              },
+              {
+                "value": "checkbox",
+                "probability": 0
+              },
+              {
+                "value": "radio",
+                "probability": 0
+              },
+              {
+                "value": "switch_left",
+                "probability": 0
+              },
+              {
+                "value": "switch_right",
+                "probability": 0
+              },
+              {
+                "value": "select",
+                "probability": 0
+              },
+              {
+                "value": "unknown",
+                "probability": 0.01
+              }
+            ],
+            "confidence": 0.98
+          }
+        ],
+        "usage": {
+          "input_tokens": 680,
+          "input_tokens_details": {
+            "cached_tokens": 0,
+            "cache_write_tokens": 0
+          },
+          "output_tokens": 0,
+          "output_tokens_details": {
+            "reasoning_tokens": 0
+          },
+          "total_tokens": 680
+        }
+      }
+    },
+    {
+      "name": "input",
+      "expected": "input",
+      "repetition": 1,
+      "method": "symbols",
+      "kind": "input",
+      "probability": 1,
+      "accepted": true,
+      "outline": "box",
+      "outlineProbability": 1,
+      "symbol": "caret_left",
+      "symbolProbability": 1,
+      "elapsedMs": 149,
+      "correct": true,
+      "raw": {
+        "model": "gpt-6-luna",
+        "answers": [
+          {
+            "type": "choice",
+            "name": "outline",
+            "choice": "box",
+            "probabilities": [
+              {
+                "value": "box",
+                "probability": 1
+              },
+              {
+                "value": "round",
+                "probability": 0
+              },
+              {
+                "value": "other",
+                "probability": 0
+              }
+            ],
+            "confidence": 1
+          },
+          {
+            "type": "choice",
+            "name": "symbol",
+            "choice": "caret_left",
+            "probabilities": [
+              {
+                "value": "empty",
+                "probability": 0
+              },
+              {
+                "value": "caret_left",
+                "probability": 1
+              },
+              {
+                "value": "baseline",
+                "probability": 0
+              },
+              {
+                "value": "arrow",
+                "probability": 0
+              },
+              {
+                "value": "tick",
+                "probability": 0
+              },
+              {
+                "value": "chevron_right",
+                "probability": 0
+              },
+              {
+                "value": "loop_left",
+                "probability": 0
+              },
+              {
+                "value": "loop_right",
+                "probability": 0
+              },
+              {
+                "value": "loop_center",
+                "probability": 0
+              },
+              {
+                "value": "other",
+                "probability": 0
+              }
+            ],
+            "confidence": 1
+          }
+        ],
+        "usage": {
+          "input_tokens": 864,
+          "input_tokens_details": {
+            "cached_tokens": 0,
+            "cache_write_tokens": 0
+          },
+          "output_tokens": 0,
+          "output_tokens_details": {
+            "reasoning_tokens": 0
+          },
+          "total_tokens": 864
+        }
+      }
+    },
+    {
+      "name": "select",
+      "expected": "select",
+      "repetition": 2,
+      "method": "symbols",
+      "kind": "checkbox",
+      "probability": 0.84,
+      "accepted": true,
+      "outline": "box",
+      "outlineProbability": 1,
+      "symbol": "tick",
+      "symbolProbability": 0.84,
+      "elapsedMs": 170,
+      "correct": false,
+      "raw": {
+        "model": "gpt-6-luna",
+        "answers": [
+          {
+            "type": "choice",
+            "name": "outline",
+            "choice": "box",
+            "probabilities": [
+              {
+                "value": "box",
+                "probability": 1
+              },
+              {
+                "value": "round",
+                "probability": 0
+              },
+              {
+                "value": "other",
+                "probability": 0
+              }
+            ],
+            "confidence": 1
+          },
+          {
+            "type": "choice",
+            "name": "symbol",
+            "choice": "tick",
+            "probabilities": [
+              {
+                "value": "empty",
+                "probability": 0.01
+              },
+              {
+                "value": "caret_left",
+                "probability": 0.02
+              },
+              {
+                "value": "baseline",
+                "probability": 0.01
+              },
+              {
+                "value": "arrow",
+                "probability": 0.01
+              },
+              {
+                "value": "tick",
+                "probability": 0.84
+              },
+              {
+                "value": "chevron_right",
+                "probability": 0.04
+              },
+              {
+                "value": "loop_left",
+                "probability": 0.01
+              },
+              {
+                "value": "loop_right",
+                "probability": 0.03
+              },
+              {
+                "value": "loop_center",
+                "probability": 0.01
+              },
+              {
+                "value": "other",
+                "probability": 0.02
+              }
+            ],
+            "confidence": 0.82
+          }
+        ],
+        "usage": {
+          "input_tokens": 864,
+          "input_tokens_details": {
+            "cached_tokens": 0,
+            "cache_write_tokens": 0
+          },
+          "output_tokens": 0,
+          "output_tokens_details": {
+            "reasoning_tokens": 0
+          },
+          "total_tokens": 864
+        }
+      }
+    },
+    {
+      "name": "select",
+      "expected": "select",
+      "repetition": 2,
+      "method": "current",
+      "kind": "checkbox",
+      "probability": 0.37,
+      "accepted": false,
+      "elapsedMs": 201,
+      "correct": false,
+      "raw": {
+        "model": "gpt-6-luna",
+        "answers": [
+          {
+            "type": "choice",
+            "name": "component",
+            "choice": "checkbox",
+            "probabilities": [
+              {
+                "value": "container",
+                "probability": 0.11
+              },
+              {
+                "value": "input",
+                "probability": 0.03
+              },
+              {
+                "value": "button",
+                "probability": 0.18
+              },
+              {
+                "value": "checkbox",
+                "probability": 0.37
+              },
+              {
+                "value": "radio",
+                "probability": 0.01
+              },
+              {
+                "value": "switch_left",
+                "probability": 0.01
+              },
+              {
+                "value": "switch_right",
+                "probability": 0.02
+              },
+              {
+                "value": "select",
+                "probability": 0.05
+              },
+              {
+                "value": "unknown",
+                "probability": 0.22
+              }
+            ],
+            "confidence": 0.29
+          }
+        ],
+        "usage": {
+          "input_tokens": 680,
+          "input_tokens_details": {
+            "cached_tokens": 0,
+            "cache_write_tokens": 0
+          },
+          "output_tokens": 0,
+          "output_tokens_details": {
+            "reasoning_tokens": 0
+          },
+          "total_tokens": 680
+        }
+      }
+    },
+    {
+      "name": "checkbox",
+      "expected": "checkbox",
+      "repetition": 2,
+      "method": "symbols",
+      "kind": "checkbox",
+      "probability": 0.66,
+      "accepted": false,
+      "outline": "box",
+      "outlineProbability": 1,
+      "symbol": "tick",
+      "symbolProbability": 0.66,
+      "elapsedMs": 172,
+      "correct": true,
+      "raw": {
+        "model": "gpt-6-luna",
+        "answers": [
+          {
+            "type": "choice",
+            "name": "outline",
+            "choice": "box",
+            "probabilities": [
+              {
+                "value": "box",
+                "probability": 1
+              },
+              {
+                "value": "round",
+                "probability": 0
+              },
+              {
+                "value": "other",
+                "probability": 0
+              }
+            ],
+            "confidence": 1
+          },
+          {
+            "type": "choice",
+            "name": "symbol",
+            "choice": "tick",
+            "probabilities": [
+              {
+                "value": "empty",
+                "probability": 0.01
+              },
+              {
+                "value": "caret_left",
+                "probability": 0
+              },
+              {
+                "value": "baseline",
+                "probability": 0.01
+              },
+              {
+                "value": "arrow",
+                "probability": 0.21
+              },
+              {
+                "value": "tick",
+                "probability": 0.66
+              },
+              {
+                "value": "chevron_right",
+                "probability": 0.01
+              },
+              {
+                "value": "loop_left",
+                "probability": 0
+              },
+              {
+                "value": "loop_right",
+                "probability": 0.01
+              },
+              {
+                "value": "loop_center",
+                "probability": 0.01
+              },
+              {
+                "value": "other",
+                "probability": 0.08
+              }
+            ],
+            "confidence": 0.62
+          }
+        ],
+        "usage": {
+          "input_tokens": 864,
+          "input_tokens_details": {
+            "cached_tokens": 0,
+            "cache_write_tokens": 0
+          },
+          "output_tokens": 0,
+          "output_tokens_details": {
+            "reasoning_tokens": 0
+          },
+          "total_tokens": 864
+        }
+      }
+    },
+    {
+      "name": "checkbox",
+      "expected": "checkbox",
+      "repetition": 2,
+      "method": "current",
+      "kind": "checkbox",
+      "probability": 0.47,
+      "accepted": false,
+      "elapsedMs": 185,
+      "correct": true,
+      "raw": {
+        "model": "gpt-6-luna",
+        "answers": [
+          {
+            "type": "choice",
+            "name": "component",
+            "choice": "checkbox",
+            "probabilities": [
+              {
+                "value": "container",
+                "probability": 0.03
+              },
+              {
+                "value": "input",
+                "probability": 0.03
+              },
+              {
+                "value": "button",
+                "probability": 0.23
+              },
+              {
+                "value": "checkbox",
+                "probability": 0.47
+              },
+              {
+                "value": "radio",
+                "probability": 0.01
+              },
+              {
+                "value": "switch_left",
+                "probability": 0.01
+              },
+              {
+                "value": "switch_right",
+                "probability": 0.01
+              },
+              {
+                "value": "select",
+                "probability": 0.03
+              },
+              {
+                "value": "unknown",
+                "probability": 0.18
+              }
+            ],
+            "confidence": 0.4
+          }
+        ],
+        "usage": {
+          "input_tokens": 680,
+          "input_tokens_details": {
+            "cached_tokens": 0,
+            "cache_write_tokens": 0
+          },
+          "output_tokens": 0,
+          "output_tokens_details": {
+            "reasoning_tokens": 0
+          },
+          "total_tokens": 680
+        }
+      }
+    },
+    {
+      "name": "switch",
+      "expected": "switch_left",
+      "repetition": 2,
+      "method": "symbols",
+      "kind": "switch_left",
+      "probability": 0.95,
+      "accepted": true,
+      "outline": "box",
+      "outlineProbability": 1,
+      "symbol": "loop_left",
+      "symbolProbability": 0.95,
+      "elapsedMs": 168,
+      "correct": true,
+      "raw": {
+        "model": "gpt-6-luna",
+        "answers": [
+          {
+            "type": "choice",
+            "name": "outline",
+            "choice": "box",
+            "probabilities": [
+              {
+                "value": "box",
+                "probability": 1
+              },
+              {
+                "value": "round",
+                "probability": 0
+              },
+              {
+                "value": "other",
+                "probability": 0
+              }
+            ],
+            "confidence": 1
+          },
+          {
+            "type": "choice",
+            "name": "symbol",
+            "choice": "loop_left",
+            "probabilities": [
+              {
+                "value": "empty",
+                "probability": 0.01
+              },
+              {
+                "value": "caret_left",
+                "probability": 0.01
+              },
+              {
+                "value": "baseline",
+                "probability": 0
+              },
+              {
+                "value": "arrow",
+                "probability": 0
+              },
+              {
+                "value": "tick",
+                "probability": 0
+              },
+              {
+                "value": "chevron_right",
+                "probability": 0.01
+              },
+              {
+                "value": "loop_left",
+                "probability": 0.95
+              },
+              {
+                "value": "loop_right",
+                "probability": 0.01
+              },
+              {
+                "value": "loop_center",
+                "probability": 0
+              },
+              {
+                "value": "other",
+                "probability": 0.01
+              }
+            ],
+            "confidence": 0.94
+          }
+        ],
+        "usage": {
+          "input_tokens": 864,
+          "input_tokens_details": {
+            "cached_tokens": 0,
+            "cache_write_tokens": 0
+          },
+          "output_tokens": 0,
+          "output_tokens_details": {
+            "reasoning_tokens": 0
+          },
+          "total_tokens": 864
+        }
+      }
+    },
+    {
+      "name": "switch",
+      "expected": "switch_left",
+      "repetition": 2,
+      "method": "current",
+      "kind": "unknown",
+      "probability": 0.54,
+      "accepted": false,
+      "elapsedMs": 137,
+      "correct": false,
+      "raw": {
+        "model": "gpt-6-luna",
+        "answers": [
+          {
+            "type": "choice",
+            "name": "component",
+            "choice": "unknown",
+            "probabilities": [
+              {
+                "value": "container",
+                "probability": 0.1
+              },
+              {
+                "value": "input",
+                "probability": 0.05
+              },
+              {
+                "value": "button",
+                "probability": 0.01
+              },
+              {
+                "value": "checkbox",
+                "probability": 0.01
+              },
+              {
+                "value": "radio",
+                "probability": 0.01
+              },
+              {
+                "value": "switch_left",
+                "probability": 0.23
+              },
+              {
+                "value": "switch_right",
+                "probability": 0.03
+              },
+              {
+                "value": "select",
+                "probability": 0.02
+              },
+              {
+                "value": "unknown",
+                "probability": 0.54
+              }
+            ],
+            "confidence": 0.48
+          }
+        ],
+        "usage": {
+          "input_tokens": 680,
+          "input_tokens_details": {
+            "cached_tokens": 0,
+            "cache_write_tokens": 0
+          },
+          "output_tokens": 0,
+          "output_tokens_details": {
+            "reasoning_tokens": 0
+          },
+          "total_tokens": 680
+        }
+      }
+    },
+    {
+      "name": "roughRadio",
+      "expected": "radio",
+      "repetition": 2,
+      "method": "symbols",
+      "kind": "radio",
+      "probability": 0.39,
+      "accepted": false,
+      "outline": "round",
+      "outlineProbability": 0.86,
+      "symbol": "loop_center",
+      "symbolProbability": 0.39,
+      "elapsedMs": 134,
+      "correct": true,
+      "raw": {
+        "model": "gpt-6-luna",
+        "answers": [
+          {
+            "type": "choice",
+            "name": "outline",
+            "choice": "round",
+            "probabilities": [
+              {
+                "value": "box",
+                "probability": 0.07
+              },
+              {
+                "value": "round",
+                "probability": 0.86
+              },
+              {
+                "value": "other",
+                "probability": 0.07
+              }
+            ],
+            "confidence": 0.79
+          },
+          {
+            "type": "choice",
+            "name": "symbol",
+            "choice": "loop_center",
+            "probabilities": [
+              {
+                "value": "empty",
+                "probability": 0.05
+              },
+              {
+                "value": "caret_left",
+                "probability": 0
+              },
+              {
+                "value": "baseline",
+                "probability": 0.02
+              },
+              {
+                "value": "arrow",
+                "probability": 0.01
+              },
+              {
+                "value": "tick",
+                "probability": 0.01
+              },
+              {
+                "value": "chevron_right",
+                "probability": 0.01
+              },
+              {
+                "value": "loop_left",
+                "probability": 0.06
+              },
+              {
+                "value": "loop_right",
+                "probability": 0.08
+              },
+              {
+                "value": "loop_center",
+                "probability": 0.39
+              },
+              {
+                "value": "other",
+                "probability": 0.37
+              }
+            ],
+            "confidence": 0.32
+          }
+        ],
+        "usage": {
+          "input_tokens": 864,
+          "input_tokens_details": {
+            "cached_tokens": 0,
+            "cache_write_tokens": 0
+          },
+          "output_tokens": 0,
+          "output_tokens_details": {
+            "reasoning_tokens": 0
+          },
+          "total_tokens": 864
+        }
+      }
+    },
+    {
+      "name": "roughRadio",
+      "expected": "radio",
+      "repetition": 2,
+      "method": "current",
+      "kind": "unknown",
+      "probability": 0.43,
+      "accepted": false,
+      "elapsedMs": 144,
+      "correct": false,
+      "raw": {
+        "model": "gpt-6-luna",
+        "answers": [
+          {
+            "type": "choice",
+            "name": "component",
+            "choice": "unknown",
+            "probabilities": [
+              {
+                "value": "container",
+                "probability": 0.12
+              },
+              {
+                "value": "input",
+                "probability": 0.02
+              },
+              {
+                "value": "button",
+                "probability": 0.01
+              },
+              {
+                "value": "checkbox",
+                "probability": 0.06
+              },
+              {
+                "value": "radio",
+                "probability": 0.24
+              },
+              {
+                "value": "switch_left",
+                "probability": 0.05
+              },
+              {
+                "value": "switch_right",
+                "probability": 0.04
+              },
+              {
+                "value": "select",
+                "probability": 0.03
+              },
+              {
+                "value": "unknown",
+                "probability": 0.43
+              }
+            ],
+            "confidence": 0.36
+          }
+        ],
+        "usage": {
+          "input_tokens": 680,
+          "input_tokens_details": {
+            "cached_tokens": 0,
+            "cache_write_tokens": 0
+          },
+          "output_tokens": 0,
+          "output_tokens_details": {
+            "reasoning_tokens": 0
+          },
+          "total_tokens": 680
+        }
+      }
+    },
+    {
+      "name": "nativeRadio",
+      "expected": "radio",
+      "repetition": 2,
+      "method": "symbols",
+      "kind": "radio",
+      "probability": 0.9,
+      "accepted": true,
+      "outline": "round",
+      "outlineProbability": 1,
+      "symbol": "loop_center",
+      "symbolProbability": 0.9,
+      "elapsedMs": 146,
+      "correct": true,
+      "raw": {
+        "model": "gpt-6-luna",
+        "answers": [
+          {
+            "type": "choice",
+            "name": "outline",
+            "choice": "round",
+            "probabilities": [
+              {
+                "value": "box",
+                "probability": 0
+              },
+              {
+                "value": "round",
+                "probability": 1
+              },
+              {
+                "value": "other",
+                "probability": 0
+              }
+            ],
+            "confidence": 1
+          },
+          {
+            "type": "choice",
+            "name": "symbol",
+            "choice": "loop_center",
+            "probabilities": [
+              {
+                "value": "empty",
+                "probability": 0.04
+              },
+              {
+                "value": "caret_left",
+                "probability": 0.01
+              },
+              {
+                "value": "baseline",
+                "probability": 0.01
+              },
+              {
+                "value": "arrow",
+                "probability": 0
+              },
+              {
+                "value": "tick",
+                "probability": 0
+              },
+              {
+                "value": "chevron_right",
+                "probability": 0
+              },
+              {
+                "value": "loop_left",
+                "probability": 0
+              },
+              {
+                "value": "loop_right",
+                "probability": 0.01
+              },
+              {
+                "value": "loop_center",
+                "probability": 0.9
+              },
+              {
+                "value": "other",
+                "probability": 0.03
+              }
+            ],
+            "confidence": 0.89
+          }
+        ],
+        "usage": {
+          "input_tokens": 864,
+          "input_tokens_details": {
+            "cached_tokens": 0,
+            "cache_write_tokens": 0
+          },
+          "output_tokens": 0,
+          "output_tokens_details": {
+            "reasoning_tokens": 0
+          },
+          "total_tokens": 864
+        }
+      }
+    },
+    {
+      "name": "nativeRadio",
+      "expected": "radio",
+      "repetition": 2,
+      "method": "current",
+      "kind": "radio",
+      "probability": 0.77,
+      "accepted": true,
+      "elapsedMs": 146,
+      "correct": true,
+      "raw": {
+        "model": "gpt-6-luna",
+        "answers": [
+          {
+            "type": "choice",
+            "name": "component",
+            "choice": "radio",
+            "probabilities": [
+              {
+                "value": "container",
+                "probability": 0.02
+              },
+              {
+                "value": "input",
+                "probability": 0
+              },
+              {
+                "value": "button",
+                "probability": 0
+              },
+              {
+                "value": "checkbox",
+                "probability": 0.01
+              },
+              {
+                "value": "radio",
+                "probability": 0.77
+              },
+              {
+                "value": "switch_left",
+                "probability": 0.01
+              },
+              {
+                "value": "switch_right",
+                "probability": 0
+              },
+              {
+                "value": "select",
+                "probability": 0.01
+              },
+              {
+                "value": "unknown",
+                "probability": 0.18
+              }
+            ],
+            "confidence": 0.74
+          }
+        ],
+        "usage": {
+          "input_tokens": 680,
+          "input_tokens_details": {
+            "cached_tokens": 0,
+            "cache_write_tokens": 0
+          },
+          "output_tokens": 0,
+          "output_tokens_details": {
+            "reasoning_tokens": 0
+          },
+          "total_tokens": 680
+        }
+      }
+    },
+    {
+      "name": "button",
+      "expected": "button",
+      "repetition": 2,
+      "method": "symbols",
+      "kind": "button",
+      "probability": 0.93,
+      "accepted": true,
+      "outline": "box",
+      "outlineProbability": 0.99,
+      "symbol": "arrow",
+      "symbolProbability": 0.93,
+      "elapsedMs": 141,
+      "correct": true,
+      "raw": {
+        "model": "gpt-6-luna",
+        "answers": [
+          {
+            "type": "choice",
+            "name": "outline",
+            "choice": "box",
+            "probabilities": [
+              {
+                "value": "box",
+                "probability": 0.99
+              },
+              {
+                "value": "round",
+                "probability": 0
+              },
+              {
+                "value": "other",
+                "probability": 0.01
+              }
+            ],
+            "confidence": 0.99
+          },
+          {
+            "type": "choice",
+            "name": "symbol",
+            "choice": "arrow",
+            "probabilities": [
+              {
+                "value": "empty",
+                "probability": 0.01
+              },
+              {
+                "value": "caret_left",
+                "probability": 0
+              },
+              {
+                "value": "baseline",
+                "probability": 0.02
+              },
+              {
+                "value": "arrow",
+                "probability": 0.93
+              },
+              {
+                "value": "tick",
+                "probability": 0.01
+              },
+              {
+                "value": "chevron_right",
+                "probability": 0
+              },
+              {
+                "value": "loop_left",
+                "probability": 0
+              },
+              {
+                "value": "loop_right",
+                "probability": 0.01
+              },
+              {
+                "value": "loop_center",
+                "probability": 0.01
+              },
+              {
+                "value": "other",
+                "probability": 0.01
+              }
+            ],
+            "confidence": 0.92
+          }
+        ],
+        "usage": {
+          "input_tokens": 864,
+          "input_tokens_details": {
+            "cached_tokens": 0,
+            "cache_write_tokens": 0
+          },
+          "output_tokens": 0,
+          "output_tokens_details": {
+            "reasoning_tokens": 0
+          },
+          "total_tokens": 864
+        }
+      }
+    },
+    {
+      "name": "button",
+      "expected": "button",
+      "repetition": 2,
+      "method": "current",
+      "kind": "button",
+      "probability": 0.92,
+      "accepted": true,
+      "elapsedMs": 200,
+      "correct": true,
+      "raw": {
+        "model": "gpt-6-luna",
+        "answers": [
+          {
+            "type": "choice",
+            "name": "component",
+            "choice": "button",
+            "probabilities": [
+              {
+                "value": "container",
+                "probability": 0.02
+              },
+              {
+                "value": "input",
+                "probability": 0.01
+              },
+              {
+                "value": "button",
+                "probability": 0.92
+              },
+              {
+                "value": "checkbox",
+                "probability": 0.01
+              },
+              {
+                "value": "radio",
+                "probability": 0
+              },
+              {
+                "value": "switch_left",
+                "probability": 0
+              },
+              {
+                "value": "switch_right",
+                "probability": 0
+              },
+              {
+                "value": "select",
+                "probability": 0
+              },
+              {
+                "value": "unknown",
+                "probability": 0.04
+              }
+            ],
+            "confidence": 0.91
+          }
+        ],
+        "usage": {
+          "input_tokens": 680,
+          "input_tokens_details": {
+            "cached_tokens": 0,
+            "cache_write_tokens": 0
+          },
+          "output_tokens": 0,
+          "output_tokens_details": {
+            "reasoning_tokens": 0
+          },
+          "total_tokens": 680
+        }
+      }
+    },
+    {
+      "name": "rectangle",
+      "expected": "container",
+      "repetition": 2,
+      "method": "symbols",
+      "kind": "container",
+      "probability": 0.76,
+      "accepted": true,
+      "outline": "box",
+      "outlineProbability": 1,
+      "symbol": "empty",
+      "symbolProbability": 0.76,
+      "elapsedMs": 201,
+      "correct": true,
+      "raw": {
+        "model": "gpt-6-luna",
+        "answers": [
+          {
+            "type": "choice",
+            "name": "outline",
+            "choice": "box",
+            "probabilities": [
+              {
+                "value": "box",
+                "probability": 1
+              },
+              {
+                "value": "round",
+                "probability": 0
+              },
+              {
+                "value": "other",
+                "probability": 0
+              }
+            ],
+            "confidence": 1
+          },
+          {
+            "type": "choice",
+            "name": "symbol",
+            "choice": "empty",
+            "probabilities": [
+              {
+                "value": "empty",
+                "probability": 0.76
+              },
+              {
+                "value": "caret_left",
+                "probability": 0.04
+              },
+              {
+                "value": "baseline",
+                "probability": 0.1
+              },
+              {
+                "value": "arrow",
+                "probability": 0
+              },
+              {
+                "value": "tick",
+                "probability": 0.01
+              },
+              {
+                "value": "chevron_right",
+                "probability": 0
+              },
+              {
+                "value": "loop_left",
+                "probability": 0
+              },
+              {
+                "value": "loop_right",
+                "probability": 0.01
+              },
+              {
+                "value": "loop_center",
+                "probability": 0
+              },
+              {
+                "value": "other",
+                "probability": 0.08
+              }
+            ],
+            "confidence": 0.73
+          }
+        ],
+        "usage": {
+          "input_tokens": 864,
+          "input_tokens_details": {
+            "cached_tokens": 0,
+            "cache_write_tokens": 0
+          },
+          "output_tokens": 0,
+          "output_tokens_details": {
+            "reasoning_tokens": 0
+          },
+          "total_tokens": 864
+        }
+      }
+    },
+    {
+      "name": "rectangle",
+      "expected": "container",
+      "repetition": 2,
+      "method": "current",
+      "kind": "container",
+      "probability": 0.75,
+      "accepted": true,
+      "elapsedMs": 176,
+      "correct": true,
+      "raw": {
+        "model": "gpt-6-luna",
+        "answers": [
+          {
+            "type": "choice",
+            "name": "component",
+            "choice": "container",
+            "probabilities": [
+              {
+                "value": "container",
+                "probability": 0.75
+              },
+              {
+                "value": "input",
+                "probability": 0.02
+              },
+              {
+                "value": "button",
+                "probability": 0.01
+              },
+              {
+                "value": "checkbox",
+                "probability": 0.01
+              },
+              {
+                "value": "radio",
+                "probability": 0
+              },
+              {
+                "value": "switch_left",
+                "probability": 0
+              },
+              {
+                "value": "switch_right",
+                "probability": 0
+              },
+              {
+                "value": "select",
+                "probability": 0
+              },
+              {
+                "value": "unknown",
+                "probability": 0.21
+              }
+            ],
+            "confidence": 0.72
+          }
+        ],
+        "usage": {
+          "input_tokens": 680,
+          "input_tokens_details": {
+            "cached_tokens": 0,
+            "cache_write_tokens": 0
+          },
+          "output_tokens": 0,
+          "output_tokens_details": {
+            "reasoning_tokens": 0
+          },
+          "total_tokens": 680
+        }
+      }
+    },
+    {
+      "name": "input",
+      "expected": "input",
+      "repetition": 2,
+      "method": "symbols",
+      "kind": "input",
+      "probability": 1,
+      "accepted": true,
+      "outline": "box",
+      "outlineProbability": 1,
+      "symbol": "caret_left",
+      "symbolProbability": 1,
+      "elapsedMs": 145,
+      "correct": true,
+      "raw": {
+        "model": "gpt-6-luna",
+        "answers": [
+          {
+            "type": "choice",
+            "name": "outline",
+            "choice": "box",
+            "probabilities": [
+              {
+                "value": "box",
+                "probability": 1
+              },
+              {
+                "value": "round",
+                "probability": 0
+              },
+              {
+                "value": "other",
+                "probability": 0
+              }
+            ],
+            "confidence": 1
+          },
+          {
+            "type": "choice",
+            "name": "symbol",
+            "choice": "caret_left",
+            "probabilities": [
+              {
+                "value": "empty",
+                "probability": 0
+              },
+              {
+                "value": "caret_left",
+                "probability": 1
+              },
+              {
+                "value": "baseline",
+                "probability": 0
+              },
+              {
+                "value": "arrow",
+                "probability": 0
+              },
+              {
+                "value": "tick",
+                "probability": 0
+              },
+              {
+                "value": "chevron_right",
+                "probability": 0
+              },
+              {
+                "value": "loop_left",
+                "probability": 0
+              },
+              {
+                "value": "loop_right",
+                "probability": 0
+              },
+              {
+                "value": "loop_center",
+                "probability": 0
+              },
+              {
+                "value": "other",
+                "probability": 0
+              }
+            ],
+            "confidence": 1
+          }
+        ],
+        "usage": {
+          "input_tokens": 864,
+          "input_tokens_details": {
+            "cached_tokens": 0,
+            "cache_write_tokens": 0
+          },
+          "output_tokens": 0,
+          "output_tokens_details": {
+            "reasoning_tokens": 0
+          },
+          "total_tokens": 864
+        }
+      }
+    },
+    {
+      "name": "input",
+      "expected": "input",
+      "repetition": 2,
+      "method": "current",
+      "kind": "input",
+      "probability": 0.98,
+      "accepted": true,
+      "elapsedMs": 110,
+      "correct": true,
+      "raw": {
+        "model": "gpt-6-luna",
+        "answers": [
+          {
+            "type": "choice",
+            "name": "component",
+            "choice": "input",
+            "probabilities": [
+              {
+                "value": "container",
+                "probability": 0.01
+              },
+              {
+                "value": "input",
+                "probability": 0.98
+              },
+              {
+                "value": "button",
+                "probability": 0
+              },
+              {
+                "value": "checkbox",
+                "probability": 0
+              },
+              {
+                "value": "radio",
+                "probability": 0
+              },
+              {
+                "value": "switch_left",
+                "probability": 0
+              },
+              {
+                "value": "switch_right",
+                "probability": 0
+              },
+              {
+                "value": "select",
+                "probability": 0
+              },
+              {
+                "value": "unknown",
+                "probability": 0.01
+              }
+            ],
+            "confidence": 0.98
+          }
+        ],
+        "usage": {
+          "input_tokens": 680,
+          "input_tokens_details": {
+            "cached_tokens": 0,
+            "cache_write_tokens": 0
+          },
+          "output_tokens": 0,
+          "output_tokens_details": {
+            "reasoning_tokens": 0
+          },
+          "total_tokens": 680
+        }
+      }
+    }
+  ]
+}

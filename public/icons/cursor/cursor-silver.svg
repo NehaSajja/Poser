@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64" fill="none">
+  <title>Silver cursor</title>
+  <defs>
+    <linearGradient id="surface" x1="13" y1="10" x2="51" y2="54" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#888f96"/><stop offset=".15" stop-color="#ced3d9"/><stop offset=".33" stop-color="#f6f8fa"/><stop offset=".56" stop-color="#bfc7ce"/><stop offset=".85" stop-color="#8b959e"/><stop offset="1" stop-color="#68737d"/></linearGradient>
+    <linearGradient id="edge" x1="11" y1="10" x2="53" y2="54" gradientUnits="userSpaceOnUse"><stop stop-color="#fff" stop-opacity=".85"/><stop offset=".55" stop-color="#fff" stop-opacity=".38"/><stop offset="1" stop-color="#fff" stop-opacity=".12"/></linearGradient>
+    <linearGradient id="thickness" x1="20" y1="20" x2="44" y2="57" gradientUnits="userSpaceOnUse"><stop stop-color="#8b959e"/><stop offset="1" stop-color="#68737d"/></linearGradient>
+    <filter id="shadow" x="0" y="0" width="64" height="64" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB"><feDropShadow dx="0" dy="1.2" stdDeviation=".9" flood-color="#3b3328" flood-opacity=".16"/></filter>
+    
+  </defs>
+  <g filter="url(#shadow)">
+    <path d="M13 10 51.8 22.7Q54 23.5 51.8 24.5L40 29Q37.7 29.9 39.4 31.6L52 44.2Q53.5 45.7 52 47.2L48.2 51Q46.7 52.5 45.2 51L32.6 38.4Q30.9 36.7 30 39L25.5 50.8Q24.5 53 23.7 50.8L11 12Q10 9 13 10Z" transform="translate(0 2)" fill="url(#thickness)" stroke="url(#thickness)" stroke-width="1" stroke-linejoin="round"/>
+    <path d="M13 10 51.8 22.7Q54 23.5 51.8 24.5L40 29Q37.7 29.9 39.4 31.6L52 44.2Q53.5 45.7 52 47.2L48.2 51Q46.7 52.5 45.2 51L32.6 38.4Q30.9 36.7 30 39L25.5 50.8Q24.5 53 23.7 50.8L11 12Q10 9 13 10Z" fill="url(#surface)" stroke="#5a554e" stroke-opacity=".28" stroke-width=".65" stroke-linejoin="round"/>
+    <path d="M13.1 11.1 50.3 23.2Q51.1 23.5 50.2 23.9L39.6 28.1Q36.4 29.3 38.8 32.1L51.1 44.8Q52 45.7 51.1 46.6L47.6 50.1Q46.7 51 45.8 50.1L33.3 37.7Q30.8 35.2 29.2 38.6L24.9 49.4Q24.6 50.2 24.3 49.3L12.1 12.4Q11.4 10.5 13.1 11.1Z" stroke="url(#edge)" stroke-width=".8" stroke-linejoin="round"/>
+  </g>
+</svg>

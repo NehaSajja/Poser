@@ -1,0 +1,407 @@
+{
+  "repository": "https://github.com/soumikmohianuta/DoodleUINet",
+  "commit": "e38a92c7526742af4e20bdc3239eba8459cb6dab",
+  "selection": "SHA256 sorted path, seed sketch-eval-v1; first 6 development, next 4 holdout per class",
+  "samples": [
+    {
+      "id": "checkbox-00",
+      "category": "checkbox",
+      "split": "dev",
+      "source": "https://raw.githubusercontent.com/soumikmohianuta/DoodleUINet/e38a92c7526742af4e20bdc3239eba8459cb6dab/CorrectDrawings/checkbox/checkbox_132",
+      "path": "CorrectDrawings/checkbox/checkbox_132",
+      "sha256": "b725d2b5dba1f55f7a94a64281a288a82817025c4ab02e87a0c4c8f7a60f71c3"
+    },
+    {
+      "id": "checkbox-01",
+      "category": "checkbox",
+      "split": "dev",
+      "source": "https://raw.githubusercontent.com/soumikmohianuta/DoodleUINet/e38a92c7526742af4e20bdc3239eba8459cb6dab/CorrectDrawings/checkbox/checkbox_531",
+      "path": "CorrectDrawings/checkbox/checkbox_531",
+      "sha256": "b813b91c636d1031f4cae6d35048a149458edd2b6bbf4406de1e246e243491ce"
+    },
+    {
+      "id": "checkbox-02",
+      "category": "checkbox",
+      "split": "dev",
+      "source": "https://raw.githubusercontent.com/soumikmohianuta/DoodleUINet/e38a92c7526742af4e20bdc3239eba8459cb6dab/CorrectDrawings/checkbox/checkbox_561",
+      "path": "CorrectDrawings/checkbox/checkbox_561",
+      "sha256": "06465d1022982ee973ed175831f8f815d54820e8345d4a5029b3c0a71067c279"
+    },
+    {
+      "id": "checkbox-03",
+      "category": "checkbox",
+      "split": "dev",
+      "source": "https://raw.githubusercontent.com/soumikmohianuta/DoodleUINet/e38a92c7526742af4e20bdc3239eba8459cb6dab/CorrectDrawings/checkbox/checkbox_296",
+      "path": "CorrectDrawings/checkbox/checkbox_296",
+      "sha256": "7e57c8be09845c3f78827e5cade161c0675aa5e6504997e95f3b5025bafbb965"
+    },
+    {
+      "id": "checkbox-04",
+      "category": "checkbox",
+      "split": "dev",
+      "source": "https://raw.githubusercontent.com/soumikmohianuta/DoodleUINet/e38a92c7526742af4e20bdc3239eba8459cb6dab/CorrectDrawings/checkbox/checkbox_497",
+      "path": "CorrectDrawings/checkbox/checkbox_497",
+      "sha256": "b9d6bedb39c95e0ff1536418cbae29b3c6ede2b662b85db8a45c0345a44a83a9"
+    },
+    {
+      "id": "checkbox-05",
+      "category": "checkbox",
+      "split": "dev",
+      "source": "https://raw.githubusercontent.com/soumikmohianuta/DoodleUINet/e38a92c7526742af4e20bdc3239eba8459cb6dab/CorrectDrawings/checkbox/checkbox_306",
+      "path": "CorrectDrawings/checkbox/checkbox_306",
+      "sha256": "a9820672569cc3d63f5439c5ad28fd82f60318886f682a01b9172cbce6e82f39"
+    },
+    {
+      "id": "checkbox-06",
+      "category": "checkbox",
+      "split": "holdout",
+      "source": "https://raw.githubusercontent.com/soumikmohianuta/DoodleUINet/e38a92c7526742af4e20bdc3239eba8459cb6dab/CorrectDrawings/checkbox/checkbox_355",
+      "path": "CorrectDrawings/checkbox/checkbox_355",
+      "sha256": "12fc64dd72673e0e1ae8a06ea1b82e1c716e5fc948043269181a5edbbffea9dd"
+    },
+    {
+      "id": "checkbox-07",
+      "category": "checkbox",
+      "split": "holdout",
+      "source": "https://raw.githubusercontent.com/soumikmohianuta/DoodleUINet/e38a92c7526742af4e20bdc3239eba8459cb6dab/CorrectDrawings/checkbox/checkbox_584",
+      "path": "CorrectDrawings/checkbox/checkbox_584",
+      "sha256": "a98c94b8e1c46fda7ed2c71ca885ef6800b01d8e294be98ac029464baffb3bec"
+    },
+    {
+      "id": "checkbox-08",
+      "category": "checkbox",
+      "split": "holdout",
+      "source": "https://raw.githubusercontent.com/soumikmohianuta/DoodleUINet/e38a92c7526742af4e20bdc3239eba8459cb6dab/CorrectDrawings/checkbox/checkbox_273",
+      "path": "CorrectDrawings/checkbox/checkbox_273",
+      "sha256": "e4e19a47a7ced62e270544daf6e874c094f076c223d86d5339fe98c0bc3e9a85"
+    },
+    {
+      "id": "checkbox-09",
+      "category": "checkbox",
+      "split": "holdout",
+      "source": "https://raw.githubusercontent.com/soumikmohianuta/DoodleUINet/e38a92c7526742af4e20bdc3239eba8459cb6dab/CorrectDrawings/checkbox/checkbox_134",
+      "path": "CorrectDrawings/checkbox/checkbox_134",
+      "sha256": "112b97c676217fa01147ef127bed23acd83b20e4b3c3199e1523a74680ef82a6"
+    },
+    {
+      "id": "switch-00",
+      "category": "switch",
+      "split": "dev",
+      "source": "https://raw.githubusercontent.com/soumikmohianuta/DoodleUINet/e38a92c7526742af4e20bdc3239eba8459cb6dab/CorrectDrawings/switch/toogle_360",
+      "path": "CorrectDrawings/switch/toogle_360",
+      "sha256": "5a79a0a6aa5050584f7e76bc7d76f54e8e71f56f908c5867e7abc36523ff06b3"
+    },
+    {
+      "id": "switch-01",
+      "category": "switch",
+      "split": "dev",
+      "source": "https://raw.githubusercontent.com/soumikmohianuta/DoodleUINet/e38a92c7526742af4e20bdc3239eba8459cb6dab/CorrectDrawings/switch/toogle_154",
+      "path": "CorrectDrawings/switch/toogle_154",
+      "sha256": "3764d20cd73be94c4f831cbb8d281513a435faa6b43625366a59efe042c95406"
+    },
+    {
+      "id": "switch-02",
+      "category": "switch",
+      "split": "dev",
+      "source": "https://raw.githubusercontent.com/soumikmohianuta/DoodleUINet/e38a92c7526742af4e20bdc3239eba8459cb6dab/CorrectDrawings/switch/toogle_420",
+      "path": "CorrectDrawings/switch/toogle_420",
+      "sha256": "e39ae6baa188a1ff59ad44f7ee1c4ae510cb61c5a7222fde81e6c2fa3ee821ca"
+    },
+    {
+      "id": "switch-03",
+      "category": "switch",
+      "split": "dev",
+      "source": "https://raw.githubusercontent.com/soumikmohianuta/DoodleUINet/e38a92c7526742af4e20bdc3239eba8459cb6dab/CorrectDrawings/switch/toogle_202",
+      "path": "CorrectDrawings/switch/toogle_202",
+      "sha256": "a12b97d99da10958b2676ff35193387af61fa747128b08a24682521b88c88b89"
+    },
+    {
+      "id": "switch-04",
+      "category": "switch",
+      "split": "dev",
+      "source": "https://raw.githubusercontent.com/soumikmohianuta/DoodleUINet/e38a92c7526742af4e20bdc3239eba8459cb6dab/CorrectDrawings/switch/toogle_456",
+      "path": "CorrectDrawings/switch/toogle_456",
+      "sha256": "afe9f165288e692b8cb35a042909319571314fdf52aafc36b84552d814a76021"
+    },
+    {
+      "id": "switch-05",
+      "category": "switch",
+      "split": "dev",
+      "source": "https://raw.githubusercontent.com/soumikmohianuta/DoodleUINet/e38a92c7526742af4e20bdc3239eba8459cb6dab/CorrectDrawings/switch/toogle_615",
+      "path": "CorrectDrawings/switch/toogle_615",
+      "sha256": "7d66a40fc12129815cd1d37c2fa477f77dbf0abb61edcc2f79ee3edd4adb1216"
+    },
+    {
+      "id": "switch-06",
+      "category": "switch",
+      "split": "holdout",
+      "source": "https://raw.githubusercontent.com/soumikmohianuta/DoodleUINet/e38a92c7526742af4e20bdc3239eba8459cb6dab/CorrectDrawings/switch/toogle_204",
+      "path": "CorrectDrawings/switch/toogle_204",
+      "sha256": "a3444c4bb39f07ba94c426136c9e9c058a2c113f82aa23b6cb1d9001793e8e96"
+    },
+    {
+      "id": "switch-07",
+      "category": "switch",
+      "split": "holdout",
+      "source": "https://raw.githubusercontent.com/soumikmohianuta/DoodleUINet/e38a92c7526742af4e20bdc3239eba8459cb6dab/CorrectDrawings/switch/toogle_43",
+      "path": "CorrectDrawings/switch/toogle_43",
+      "sha256": "ca52e44490676b90c9d07e86f02f4d9af494850c6dbd317df8b56d08fa4d06a4"
+    },
+    {
+      "id": "switch-08",
+      "category": "switch",
+      "split": "holdout",
+      "source": "https://raw.githubusercontent.com/soumikmohianuta/DoodleUINet/e38a92c7526742af4e20bdc3239eba8459cb6dab/CorrectDrawings/switch/toogle_732",
+      "path": "CorrectDrawings/switch/toogle_732",
+      "sha256": "eeae4fbd3821672ff9763354f479092b79b890f072a706bbc5139bd1654b57d1"
+    },
+    {
+      "id": "switch-09",
+      "category": "switch",
+      "split": "holdout",
+      "source": "https://raw.githubusercontent.com/soumikmohianuta/DoodleUINet/e38a92c7526742af4e20bdc3239eba8459cb6dab/CorrectDrawings/switch/toogle_400",
+      "path": "CorrectDrawings/switch/toogle_400",
+      "sha256": "cf151074c02fe3fdc58aecc3a73138590db9a992e63e828cdc97e5e483bf854f"
+    },
+    {
+      "id": "dropDown-00",
+      "category": "dropDown",
+      "split": "dev",
+      "source": "https://raw.githubusercontent.com/soumikmohianuta/DoodleUINet/e38a92c7526742af4e20bdc3239eba8459cb6dab/CorrectDrawings/dropDown/dropDown_27",
+      "path": "CorrectDrawings/dropDown/dropDown_27",
+      "sha256": "cae46e0c63abf7f37b7f9e628e19a170378eff24d0e88ff04cf3dd6ab235beb2"
+    },
+    {
+      "id": "dropDown-01",
+      "category": "dropDown",
+      "split": "dev",
+      "source": "https://raw.githubusercontent.com/soumikmohianuta/DoodleUINet/e38a92c7526742af4e20bdc3239eba8459cb6dab/CorrectDrawings/dropDown/dropDown_300",
+      "path": "CorrectDrawings/dropDown/dropDown_300",
+      "sha256": "7074f858381a159cf6eba8ac4aac10d00e6c9a18ab590d45a026033c5378eba6"
+    },
+    {
+      "id": "dropDown-02",
+      "category": "dropDown",
+      "split": "dev",
+      "source": "https://raw.githubusercontent.com/soumikmohianuta/DoodleUINet/e38a92c7526742af4e20bdc3239eba8459cb6dab/CorrectDrawings/dropDown/dropDown_154",
+      "path": "CorrectDrawings/dropDown/dropDown_154",
+      "sha256": "232acf598cabcb3fbfacc66707a06178d35c002be0dbebcd4735c4008d7103ea"
+    },
+    {
+      "id": "dropDown-03",
+      "category": "dropDown",
+      "split": "dev",
+      "source": "https://raw.githubusercontent.com/soumikmohianuta/DoodleUINet/e38a92c7526742af4e20bdc3239eba8459cb6dab/CorrectDrawings/dropDown/dropDown_625",
+      "path": "CorrectDrawings/dropDown/dropDown_625",
+      "sha256": "a6fca8c96db292e530dee96b56b1e51ac27ec076ae871adfdbaa71dccb17a00a"
+    },
+    {
+      "id": "dropDown-04",
+      "category": "dropDown",
+      "split": "dev",
+      "source": "https://raw.githubusercontent.com/soumikmohianuta/DoodleUINet/e38a92c7526742af4e20bdc3239eba8459cb6dab/CorrectDrawings/dropDown/dropDown_254",
+      "path": "CorrectDrawings/dropDown/dropDown_254",
+      "sha256": "59dbc827e3e711c63857165f6605ea4e99ed3b8e9c0b033f36ec4198c57c9557"
+    },
+    {
+      "id": "dropDown-05",
+      "category": "dropDown",
+      "split": "dev",
+      "source": "https://raw.githubusercontent.com/soumikmohianuta/DoodleUINet/e38a92c7526742af4e20bdc3239eba8459cb6dab/CorrectDrawings/dropDown/dropDown_604",
+      "path": "CorrectDrawings/dropDown/dropDown_604",
+      "sha256": "2156911cf9912397670353a110a2658c39931983e08e8f722be5e4c4fae45d7e"
+    },
+    {
+      "id": "dropDown-06",
+      "category": "dropDown",
+      "split": "holdout",
+      "source": "https://raw.githubusercontent.com/soumikmohianuta/DoodleUINet/e38a92c7526742af4e20bdc3239eba8459cb6dab/CorrectDrawings/dropDown/dropDown_430",
+      "path": "CorrectDrawings/dropDown/dropDown_430",
+      "sha256": "f1fb61d05b323ae6782d72503d45b6581ec1cf72a289f682eedfde07472fbef1"
+    },
+    {
+      "id": "dropDown-07",
+      "category": "dropDown",
+      "split": "holdout",
+      "source": "https://raw.githubusercontent.com/soumikmohianuta/DoodleUINet/e38a92c7526742af4e20bdc3239eba8459cb6dab/CorrectDrawings/dropDown/dropDown_87",
+      "path": "CorrectDrawings/dropDown/dropDown_87",
+      "sha256": "4e11706b949c34ddcaa175839a42512dffa1c978cd32cbbb9f44f1a689147022"
+    },
+    {
+      "id": "dropDown-08",
+      "category": "dropDown",
+      "split": "holdout",
+      "source": "https://raw.githubusercontent.com/soumikmohianuta/DoodleUINet/e38a92c7526742af4e20bdc3239eba8459cb6dab/CorrectDrawings/dropDown/dropDown_177",
+      "path": "CorrectDrawings/dropDown/dropDown_177",
+      "sha256": "8a035e1098fc0fed6c74932ce8492b98cb8a9ce578258d9efd47557e5860a93a"
+    },
+    {
+      "id": "dropDown-09",
+      "category": "dropDown",
+      "split": "holdout",
+      "source": "https://raw.githubusercontent.com/soumikmohianuta/DoodleUINet/e38a92c7526742af4e20bdc3239eba8459cb6dab/CorrectDrawings/dropDown/dropDown_374",
+      "path": "CorrectDrawings/dropDown/dropDown_374",
+      "sha256": "45853f4135b54688c9528de9e958323494193dffb27e9f3e6cc933560f8d02c2"
+    },
+    {
+      "id": "cancel-00",
+      "category": "cancel",
+      "split": "dev",
+      "source": "https://raw.githubusercontent.com/soumikmohianuta/DoodleUINet/e38a92c7526742af4e20bdc3239eba8459cb6dab/CorrectDrawings/cancel/cancel_479",
+      "path": "CorrectDrawings/cancel/cancel_479",
+      "sha256": "8258c7d04d01c9cf82b9c2f7b504c602ed8f53888f2752918e4d9c550b6e7638"
+    },
+    {
+      "id": "cancel-01",
+      "category": "cancel",
+      "split": "dev",
+      "source": "https://raw.githubusercontent.com/soumikmohianuta/DoodleUINet/e38a92c7526742af4e20bdc3239eba8459cb6dab/CorrectDrawings/cancel/cancel_579",
+      "path": "CorrectDrawings/cancel/cancel_579",
+      "sha256": "a33b7debcf3d8a4217bbba199fb1a9bf4c254eb8a87d749c130c5a8cd241f32a"
+    },
+    {
+      "id": "cancel-02",
+      "category": "cancel",
+      "split": "dev",
+      "source": "https://raw.githubusercontent.com/soumikmohianuta/DoodleUINet/e38a92c7526742af4e20bdc3239eba8459cb6dab/CorrectDrawings/cancel/cancel_666",
+      "path": "CorrectDrawings/cancel/cancel_666",
+      "sha256": "9a503e762ee3e0a18ac136fef89efc7645f7e90f4240aede427afded73919399"
+    },
+    {
+      "id": "cancel-03",
+      "category": "cancel",
+      "split": "dev",
+      "source": "https://raw.githubusercontent.com/soumikmohianuta/DoodleUINet/e38a92c7526742af4e20bdc3239eba8459cb6dab/CorrectDrawings/cancel/cancel_691",
+      "path": "CorrectDrawings/cancel/cancel_691",
+      "sha256": "9a6b9078ae68a5b9d8e1b09918457662ffeee944d990d176e434a2d9c1db6cbc"
+    },
+    {
+      "id": "cancel-04",
+      "category": "cancel",
+      "split": "dev",
+      "source": "https://raw.githubusercontent.com/soumikmohianuta/DoodleUINet/e38a92c7526742af4e20bdc3239eba8459cb6dab/CorrectDrawings/cancel/cancel_589",
+      "path": "CorrectDrawings/cancel/cancel_589",
+      "sha256": "e640b0d8f816ebfeab4b732d406c4cd2cd1d42104be29957b5569b111caa3133"
+    },
+    {
+      "id": "cancel-05",
+      "category": "cancel",
+      "split": "dev",
+      "source": "https://raw.githubusercontent.com/soumikmohianuta/DoodleUINet/e38a92c7526742af4e20bdc3239eba8459cb6dab/CorrectDrawings/cancel/cancel_631",
+      "path": "CorrectDrawings/cancel/cancel_631",
+      "sha256": "26319b99de2536c7683f15b8417ef5e36d9bd81f1a9baf1ed9881c44a3d5bf90"
+    },
+    {
+      "id": "cancel-06",
+      "category": "cancel",
+      "split": "holdout",
+      "source": "https://raw.githubusercontent.com/soumikmohianuta/DoodleUINet/e38a92c7526742af4e20bdc3239eba8459cb6dab/CorrectDrawings/cancel/cancel_560",
+      "path": "CorrectDrawings/cancel/cancel_560",
+      "sha256": "6327b46e3594169fe800c841d72d55607c609c08bdcb3902e764e9e6329c3947"
+    },
+    {
+      "id": "cancel-07",
+      "category": "cancel",
+      "split": "holdout",
+      "source": "https://raw.githubusercontent.com/soumikmohianuta/DoodleUINet/e38a92c7526742af4e20bdc3239eba8459cb6dab/CorrectDrawings/cancel/cancel_142",
+      "path": "CorrectDrawings/cancel/cancel_142",
+      "sha256": "575fb8d356b5e61a25cdb7dfe493ec51bf3fec9eae2f0535d5539a49de47a0fd"
+    },
+    {
+      "id": "cancel-08",
+      "category": "cancel",
+      "split": "holdout",
+      "source": "https://raw.githubusercontent.com/soumikmohianuta/DoodleUINet/e38a92c7526742af4e20bdc3239eba8459cb6dab/CorrectDrawings/cancel/cancel_371",
+      "path": "CorrectDrawings/cancel/cancel_371",
+      "sha256": "463f77dd4af24a29080c4377df9888ded621b0570046949ed9dab1ebc999567a"
+    },
+    {
+      "id": "cancel-09",
+      "category": "cancel",
+      "split": "holdout",
+      "source": "https://raw.githubusercontent.com/soumikmohianuta/DoodleUINet/e38a92c7526742af4e20bdc3239eba8459cb6dab/CorrectDrawings/cancel/cancel_440",
+      "path": "CorrectDrawings/cancel/cancel_440",
+      "sha256": "48a85aa36e6c30b26a480f1e3040018932bf26667df24a595e921e0cd20ab91e"
+    },
+    {
+      "id": "squiggle-00",
+      "category": "squiggle",
+      "split": "dev",
+      "source": "https://raw.githubusercontent.com/soumikmohianuta/DoodleUINet/e38a92c7526742af4e20bdc3239eba8459cb6dab/CorrectDrawings/squiggle/text_509",
+      "path": "CorrectDrawings/squiggle/text_509",
+      "sha256": "0f87e64c70ce0995e13e067f1ac6da884ba4c4a1f652d2af323941dee0d96b49"
+    },
+    {
+      "id": "squiggle-01",
+      "category": "squiggle",
+      "split": "dev",
+      "source": "https://raw.githubusercontent.com/soumikmohianuta/DoodleUINet/e38a92c7526742af4e20bdc3239eba8459cb6dab/CorrectDrawings/squiggle/text_42",
+      "path": "CorrectDrawings/squiggle/text_42",
+      "sha256": "81a8638f98c88767585ece163a23f9ddd2da042ac5a35382c12f70db7e500e12"
+    },
+    {
+      "id": "squiggle-02",
+      "category": "squiggle",
+      "split": "dev",
+      "source": "https://raw.githubusercontent.com/soumikmohianuta/DoodleUINet/e38a92c7526742af4e20bdc3239eba8459cb6dab/CorrectDrawings/squiggle/text_719",
+      "path": "CorrectDrawings/squiggle/text_719",
+      "sha256": "12cb3958380a12be21aac9ec48b7a2d8bc6191f256845e3f405cc3122cd304e6"
+    },
+    {
+      "id": "squiggle-03",
+      "category": "squiggle",
+      "split": "dev",
+      "source": "https://raw.githubusercontent.com/soumikmohianuta/DoodleUINet/e38a92c7526742af4e20bdc3239eba8459cb6dab/CorrectDrawings/squiggle/text_196",
+      "path": "CorrectDrawings/squiggle/text_196",
+      "sha256": "3fb0e91ad662dedae2a3f2c3933161e5110e20eb8a9a2cd6f2d6f80506eab51c"
+    },
+    {
+      "id": "squiggle-04",
+      "category": "squiggle",
+      "split": "dev",
+      "source": "https://raw.githubusercontent.com/soumikmohianuta/DoodleUINet/e38a92c7526742af4e20bdc3239eba8459cb6dab/CorrectDrawings/squiggle/text_693",
+      "path": "CorrectDrawings/squiggle/text_693",
+      "sha256": "daf56898f40a96066c81d7a8771942188bf6f5040c8cdb8a5eeb3d088115e28b"
+    },
+    {
+      "id": "squiggle-05",
+      "category": "squiggle",
+      "split": "dev",
+      "source": "https://raw.githubusercontent.com/soumikmohianuta/DoodleUINet/e38a92c7526742af4e20bdc3239eba8459cb6dab/CorrectDrawings/squiggle/text_728",
+      "path": "CorrectDrawings/squiggle/text_728",
+      "sha256": "ede38ceceefe329e9cec462b1979814768a372cb2db2c1b9d764e6fa7e72b554"
+    },
+    {
+      "id": "squiggle-06",
+      "category": "squiggle",
+      "split": "holdout",
+      "source": "https://raw.githubusercontent.com/soumikmohianuta/DoodleUINet/e38a92c7526742af4e20bdc3239eba8459cb6dab/CorrectDrawings/squiggle/text_414",
+      "path": "CorrectDrawings/squiggle/text_414",
+      "sha256": "bd3303e69ab8db2322333a4897439d3648983083d9ca8b2125c2d504a5a90d6e"
+    },
+    {
+      "id": "squiggle-07",
+      "category": "squiggle",
+      "split": "holdout",
+      "source": "https://raw.githubusercontent.com/soumikmohianuta/DoodleUINet/e38a92c7526742af4e20bdc3239eba8459cb6dab/CorrectDrawings/squiggle/text_185",
+      "path": "CorrectDrawings/squiggle/text_185",
+      "sha256": "5ad73633069fdedbdebfcf58c0a61c78e14454bae82a9b4cdaabb1aa36a10dd6"
+    },
+    {
+      "id": "squiggle-08",
+      "category": "squiggle",
+      "split": "holdout",
+      "source": "https://raw.githubusercontent.com/soumikmohianuta/DoodleUINet/e38a92c7526742af4e20bdc3239eba8459cb6dab/CorrectDrawings/squiggle/text_95",
+      "path": "CorrectDrawings/squiggle/text_95",
+      "sha256": "b707c2bb6e8850b8a932483ace4736dedd673c7e01d14f338c3299ce4eb07655"
+    },
+    {
+      "id": "squiggle-09",
+      "category": "squiggle",
+      "split": "holdout",
+      "source": "https://raw.githubusercontent.com/soumikmohianuta/DoodleUINet/e38a92c7526742af4e20bdc3239eba8459cb6dab/CorrectDrawings/squiggle/text_534",
+      "path": "CorrectDrawings/squiggle/text_534",
+      "sha256": "a6b1091a250e511aca6b640565e6e8778e4bc2c9572078138e5ea87a704ddb4b"
+    }
+  ]
+}

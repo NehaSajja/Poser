@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64" fill="none">
+  <title>Oak frame</title>
+  <defs>
+    <linearGradient id="surface" x1="13" y1="10" x2="51" y2="54" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#a9814d"/><stop offset=".15" stop-color="#d6b57e"/><stop offset=".33" stop-color="#e9ce9f"/><stop offset=".56" stop-color="#d9b985"/><stop offset=".85" stop-color="#bb965e"/><stop offset="1" stop-color="#96713f"/></linearGradient>
+    <linearGradient id="edge" x1="11" y1="10" x2="53" y2="54" gradientUnits="userSpaceOnUse"><stop stop-color="#fff" stop-opacity=".85"/><stop offset=".55" stop-color="#fff" stop-opacity=".38"/><stop offset="1" stop-color="#fff" stop-opacity=".12"/></linearGradient>
+    <linearGradient id="thickness" x1="20" y1="20" x2="44" y2="57" gradientUnits="userSpaceOnUse"><stop stop-color="#bb965e"/><stop offset="1" stop-color="#96713f"/></linearGradient>
+    <filter id="shadow" x="0" y="0" width="64" height="64" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB"><feDropShadow dx="0" dy="1.2" stdDeviation=".9" flood-color="#3b3328" flood-opacity=".16"/></filter>
+    <clipPath id="grainClip"><path d="M13 12H51Q56 12 56 17V47Q56 52 51 52H13Q8 52 8 47V17Q8 12 13 12ZM15 18Q14 18 14 19V45Q14 46 15 46H49Q50 46 50 45V19Q50 18 49 18Z" clip-rule="evenodd"/></clipPath>
+    <clipPath id="picture"><rect x="13.8" y="17.8" width="36.4" height="28.4" rx="1.2"/></clipPath>
+    <linearGradient id="sky" x1="32" y1="18" x2="32" y2="46" gradientUnits="userSpaceOnUse"><stop stop-color="#8cc5e1"/><stop offset="1" stop-color="#e2ebd8"/></linearGradient>
+    <linearGradient id="meadow" x1="22" y1="33" x2="34" y2="47" gradientUnits="userSpaceOnUse"><stop stop-color="#8eae6d"/><stop offset="1" stop-color="#4b7d55"/></linearGradient>
+  </defs>
+  <g filter="url(#shadow)">
+    <g clip-path="url(#picture)">
+      <rect x="13.8" y="17.8" width="36.4" height="28.4" fill="url(#sky)"/>
+      <circle cx="40.5" cy="24.5" r="3.1" fill="#fff2c7"/>
+      <path d="M12 37 23 25Q24 24 25 25L35 35 43 29Q44 28 45 29L53 37V48H12Z" fill="#7d9f9c"/>
+      <path d="m20.3 28 2.7-3Q24 24 25 25L28.5 28.6 25.2 27.8 24 28.5 22.6 27.3Z" fill="#ecf0e5"/>
+      <path d="M12 37Q21 31 31 37T53 35V48H12Z" fill="#a4bd80"/>
+      <path d="M12 42Q24 34 37 40T53 39V48H12Z" fill="url(#meadow)"/>
+      <path d="M39 37Q32 40 34 42T31 47" stroke="#e4d5ac" stroke-width="1.3" fill="none"/>
+    </g>
+    <path d="M13 12H51Q56 12 56 17V47Q56 52 51 52H13Q8 52 8 47V17Q8 12 13 12ZM15 18Q14 18 14 19V45Q14 46 15 46H49Q50 46 50 45V19Q50 18 49 18Z" transform="translate(0 2)" fill="url(#thickness)" fill-rule="evenodd" stroke="url(#thickness)" stroke-width=".8" stroke-linejoin="round"/>
+    <path d="M13 12H51Q56 12 56 17V47Q56 52 51 52H13Q8 52 8 47V17Q8 12 13 12ZM15 18Q14 18 14 19V45Q14 46 15 46H49Q50 46 50 45V19Q50 18 49 18Z" fill="url(#surface)" fill-rule="evenodd" stroke="#625c54" stroke-opacity=".23" stroke-width=".6" stroke-linejoin="round"/>
+    <g clip-path="url(#grainClip)" stroke="#28170c" stroke-opacity=".17" stroke-width=".4" fill="none"><path d="M9 14.8Q21 13.4 32 15T55 14.8M9 16.3Q20 15.4 31 16.7T55 16M9 48Q21 47 34 48.7T55 48M9 50Q22 49 35 50.4T55 50M10.5 14Q11.7 28 10.8 38T11 52M12.5 14Q13 29 12.5 40T13 52M52 14Q51 28 52.2 39T52 52M54 14Q53 31 54 43T54 52"/></g><path d="M13.2 12.9H50.8Q55.1 12.9 55.1 17.2V46.8Q55.1 51.1 50.8 51.1H13.2Q8.9 51.1 8.9 46.8V17.2Q8.9 12.9 13.2 12.9Z" stroke="url(#edge)" stroke-opacity=".5" stroke-width=".8"/>
+    <path d="M15.2 18H48.8Q50 18 50 19.2V44.8Q50 46 48.8 46H15.2Q14 46 14 44.8V19.2Q14 18 15.2 18Z" stroke="#504b44" stroke-opacity=".18" stroke-width=".8"/>
+  </g>
+</svg>

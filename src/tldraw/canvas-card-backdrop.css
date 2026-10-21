@@ -1,0 +1,42 @@
+/* Layout preview: a white drawing card over the continuous 3D background.
+   The prior two-card and edge-to-edge styles remain available for rollback. */
+.sketch-workspace.canvas-card-backdrop {
+  --divider-width: .5rem;
+  --canvas-card-inset: 1.5rem;
+  --canvas-control-inset: 1.375rem;
+  --workspace-control-offset: calc(var(--canvas-card-inset) + var(--canvas-control-inset) + 1px);
+  --scene-background: #edf0f2;
+  padding: 0;
+  background: var(--scene-background);
+}
+.sketch-workspace.canvas-card-backdrop > .sketch-pane {
+  --workspace-control-offset: var(--canvas-control-inset);
+  --panel-radius: 2.5rem;
+  margin: var(--canvas-card-inset) 0 var(--canvas-card-inset) var(--canvas-card-inset);
+  border-radius: var(--panel-radius);
+  background: #fff;
+}
+.sketch-workspace.canvas-card-backdrop > .preview-pane {
+  --panel-radius: 0;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  background: var(--scene-background);
+}
+.canvas-card-backdrop .poser2-back { left: 2.0625rem; }
+.canvas-card-backdrop .poser-tabs { left: calc(50% - .5rem); }
+.canvas-card-backdrop .poser2-dock-position {
+  --dock-inset: var(--canvas-control-inset);
+  left: calc(var(--dock-inset) + .5625rem);
+  right: calc(var(--dock-inset) + var(--canvas-card-inset) + 1px);
+}
+@media (max-width: 700px) {
+  .sketch-workspace.canvas-card-backdrop {
+    --canvas-card-inset: 1rem;
+    --canvas-control-inset: .75rem;
+  }
+  .canvas-card-backdrop .poser2-back { left: 1.0625rem; }
+  .canvas-card-backdrop .poser-tabs { left: calc(50% - .25rem); }
+  .canvas-card-backdrop .poser2-dock-position { left: calc(var(--dock-inset) + .3125rem); }
+  .canvas-card-backdrop .poser-panel:has(.reference-back) .poser-tabs { left: auto; }
+}

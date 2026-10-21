@@ -1,0 +1,17 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Symbol recognition experiment</title>
+<style>body{font:14px system-ui;margin:24px}textarea{width:100%;height:70px}#images{display:flex;flex-wrap:wrap;gap:12px}figure{margin:0}img{width:160px;height:160px}pre{white-space:pre-wrap}</style>
+<label>Cases<textarea id="cases"></textarea></label>
+<button id="run">Compare</button>
+<div id="images"></div><pre id="results">Ready</pre>
+<script type="module">
+import { strokeImage } from '/src/sketch.js';
+document.querySelector('#run').onclick=async()=>{
+ const fixtures=JSON.parse(document.querySelector('#cases').value).map(c=>({...c,image:strokeImage(c.strokes)}));
+ document.querySelector('#run').disabled=true;document.querySelector('#results').textContent='Running';
+ for(const c of fixtures){const figure=document.createElement('figure');const img=document.createElement('img');img.src=c.image;img.alt=c.name;const caption=document.createElement('figcaption');caption.textContent=c.name;figure.append(img,caption);document.querySelector('#images').append(figure);}
+ try{const response=await fetch('http://127.0.0.1:4327/run',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(fixtures)});document.querySelector('#results').textContent=JSON.stringify(await response.json(),null,2);}catch(e){document.querySelector('#results').textContent=e.message;}
+ document.querySelector('#run').textContent='Complete';
+};
+</script>

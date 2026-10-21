@@ -1,0 +1,566 @@
+{
+  "version": 1,
+  "model": {
+    "parts": [
+      "weights/mobileclip-s1.part-01",
+      "weights/mobileclip-s1.part-02",
+      "weights/mobileclip-s1.part-03",
+      "weights/mobileclip-s1.part-04",
+      "weights/mobileclip-s1.part-05"
+    ],
+    "bytes": 170325138,
+    "sha256": "1b6c6fae43c22e3dc0fa3ae5087d84bb16d672a104fdb9a07a3f4b04f4f6bb27"
+  },
+  "files": [
+    {
+      "path": "index/apple-mobileclip-ml-s1-00000-of-00052.npz",
+      "bytes": 5158442,
+      "sha256": "abc95e3cc9945d476598277938a450b461ab27322dc1f2352be3a56d50599849"
+    },
+    {
+      "path": "index/apple-mobileclip-ml-s1-00001-of-00052.npz",
+      "bytes": 5157410,
+      "sha256": "9bff3bb05af5482c2f5fbbee42b890c56c72d09a6e66b30daee628a4f62f22cf"
+    },
+    {
+      "path": "index/apple-mobileclip-ml-s1-00002-of-00052.npz",
+      "bytes": 5156378,
+      "sha256": "fbf79dea04cdca52587050dbc8ca43226590e49e0341bcfa88ebbc0dccb7f499"
+    },
+    {
+      "path": "index/apple-mobileclip-ml-s1-00003-of-00052.npz",
+      "bytes": 5153282,
+      "sha256": "4c371f943da45ea11fe11314b9ef288b599e61f641b0be66003f1dc0e17d5c9b"
+    },
+    {
+      "path": "index/apple-mobileclip-ml-s1-00004-of-00052.npz",
+      "bytes": 5142962,
+      "sha256": "f450f8b8706d33aba8773077028212fc66710ee09a3d4d9a79ad569f5a12d7b7"
+    },
+    {
+      "path": "index/apple-mobileclip-ml-s1-00005-of-00052.npz",
+      "bytes": 5152250,
+      "sha256": "6ba6bdcfcff16ca6c0a0fdacc6ec37465c7a24922ea52e17a852efc591714575"
+    },
+    {
+      "path": "index/apple-mobileclip-ml-s1-00006-of-00052.npz",
+      "bytes": 5157410,
+      "sha256": "e6db6ebf24e8bf1a0ef645bf274297c34c96baca29025e78ed2c95f06f22f714"
+    },
+    {
+      "path": "index/apple-mobileclip-ml-s1-00007-of-00052.npz",
+      "bytes": 5154314,
+      "sha256": "8922e5611579734a34b4ab937540ebf4556ab3f5dc6e4ae282350e225bd39d6b"
+    },
+    {
+      "path": "index/apple-mobileclip-ml-s1-00008-of-00052.npz",
+      "bytes": 5150186,
+      "sha256": "825e7cabad30f529733130f1e21bbe7af458ab8a5209572d337c45a92834aa6d"
+    },
+    {
+      "path": "index/apple-mobileclip-ml-s1-00009-of-00052.npz",
+      "bytes": 5158442,
+      "sha256": "3ba6dc754c514f59ac7b11830f2ce2cc872f197c8b4c7b1036f7e4ffb436b431"
+    },
+    {
+      "path": "index/apple-mobileclip-ml-s1-00010-of-00052.npz",
+      "bytes": 5153282,
+      "sha256": "97b80759403d55fd23f3dff9328838b09d1a9a8fb1a4c367c659957a604a7795"
+    },
+    {
+      "path": "index/apple-mobileclip-ml-s1-00011-of-00052.npz",
+      "bytes": 5152250,
+      "sha256": "6d95938ad42231125b5d227283b3c7a810577a06cf5588dc378ee093e78766b3"
+    },
+    {
+      "path": "index/apple-mobileclip-ml-s1-00012-of-00052.npz",
+      "bytes": 5153282,
+      "sha256": "b144bac6219453d2441c6be31fdb8f90f8b4c0f74f5f0fa5c34f2352aafbb6ba"
+    },
+    {
+      "path": "index/apple-mobileclip-ml-s1-00013-of-00052.npz",
+      "bytes": 5149154,
+      "sha256": "1f321903050db0a87f0e25a0c77ba8946be43bf683395e53cf2902279cad5317"
+    },
+    {
+      "path": "index/apple-mobileclip-ml-s1-00014-of-00052.npz",
+      "bytes": 5148122,
+      "sha256": "060f1440e484dee8d1adbc45792692a4f4c92efd6cdd7c9feb350d0847828a3d"
+    },
+    {
+      "path": "index/apple-mobileclip-ml-s1-00015-of-00052.npz",
+      "bytes": 5159474,
+      "sha256": "0ccf06148a4a3d8b2b337af5b63b1559aae6f47915db98f182a30adbab5827b2"
+    },
+    {
+      "path": "index/apple-mobileclip-ml-s1-00016-of-00052.npz",
+      "bytes": 5158442,
+      "sha256": "5e1ee3b5b37808c4cdd937c2bdf7a82be695c0f82584524571549e8b65276d44"
+    },
+    {
+      "path": "index/apple-mobileclip-ml-s1-00017-of-00052.npz",
+      "bytes": 5160506,
+      "sha256": "c37f7634806eb0f7bec6c476074b29904b35caf2d747ebeb7f7b45358d256511"
+    },
+    {
+      "path": "index/apple-mobileclip-ml-s1-00018-of-00052.npz",
+      "bytes": 5155346,
+      "sha256": "3adffa364a2f74005699a3847a8fc37350482ba5e7d6609a9421326f019d985a"
+    },
+    {
+      "path": "index/apple-mobileclip-ml-s1-00019-of-00052.npz",
+      "bytes": 5153282,
+      "sha256": "e4d8245ada55f28b418c5b3e18f5202199935df758638843702f42340e7a82b5"
+    },
+    {
+      "path": "index/apple-mobileclip-ml-s1-00020-of-00052.npz",
+      "bytes": 5158442,
+      "sha256": "1d9aefb6cf7d32f981f4b97d0f9edcbd941675cf0cff08564e580be7a6068b01"
+    },
+    {
+      "path": "index/apple-mobileclip-ml-s1-00021-of-00052.npz",
+      "bytes": 5149154,
+      "sha256": "f1cc49d4ffba5e4fc527fcaa0c251cf0e19fb751afed1a3ccb907a5d172e81e2"
+    },
+    {
+      "path": "index/apple-mobileclip-ml-s1-00022-of-00052.npz",
+      "bytes": 5158442,
+      "sha256": "eed6d2a7b7b6df7cf28727858307cfbaf821eebc75370c2375289b06e5ea74af"
+    },
+    {
+      "path": "index/apple-mobileclip-ml-s1-00023-of-00052.npz",
+      "bytes": 5153282,
+      "sha256": "13e906c38d48debeeb7b20b446d540952794f2f9ab2fb6caa4d9dcb6ece45844"
+    },
+    {
+      "path": "index/apple-mobileclip-ml-s1-00024-of-00052.npz",
+      "bytes": 5155346,
+      "sha256": "fdb96ea1f70976e4860d5bf9df666b6aa12d3c7d3d7525555df3039f319459c9"
+    },
+    {
+      "path": "index/apple-mobileclip-ml-s1-00025-of-00052.npz",
+      "bytes": 5158442,
+      "sha256": "f0afd40fb25f41e0a15d3948e816dbc3081eb44411b29adf4a35e73e495edc1e"
+    },
+    {
+      "path": "index/apple-mobileclip-ml-s1-00026-of-00052.npz",
+      "bytes": 5159474,
+      "sha256": "7188f63eb4257e3cd6d9ed5e60db8f90261f9f5d3216b45fd8231fac8cb8c8cb"
+    },
+    {
+      "path": "index/apple-mobileclip-ml-s1-00027-of-00052.npz",
+      "bytes": 5156378,
+      "sha256": "9574f35f268337d53e2f72085d5e6dea20f3c31a8c4b5bed660a2e4912d07d5c"
+    },
+    {
+      "path": "index/apple-mobileclip-ml-s1-00028-of-00052.npz",
+      "bytes": 5159474,
+      "sha256": "b43f20ec15ef40166e0f8f8321b72a744a452977d243634bbe6f9de16cec085a"
+    },
+    {
+      "path": "index/apple-mobileclip-ml-s1-00029-of-00052.npz",
+      "bytes": 5157410,
+      "sha256": "3cbcc3d1ba34e358ded43fd7211e6312e11ae8407ba01e470e2684b6be002a62"
+    },
+    {
+      "path": "index/apple-mobileclip-ml-s1-00030-of-00052.npz",
+      "bytes": 5159474,
+      "sha256": "c9cf98aec094df5d9276bd0f73ad91ab66459bab571ca31ca9853029dd375f7b"
+    },
+    {
+      "path": "index/apple-mobileclip-ml-s1-00031-of-00052.npz",
+      "bytes": 5160506,
+      "sha256": "f5df72aeafdbd1e8e4314e7cc34ec8c2e5a83b45638cba16d880511b883b19d0"
+    },
+    {
+      "path": "index/apple-mobileclip-ml-s1-00032-of-00052.npz",
+      "bytes": 5160506,
+      "sha256": "eef7d924f6ea947a52fcd6a8bc94cbcb17040d9b6951d3e62313a90b64e07e33"
+    },
+    {
+      "path": "index/apple-mobileclip-ml-s1-00033-of-00052.npz",
+      "bytes": 5160506,
+      "sha256": "fd11512d02a4eda47bcac63e497d489e119af020674678def3e6b6c74b6125a1"
+    },
+    {
+      "path": "index/apple-mobileclip-ml-s1-00034-of-00052.npz",
+      "bytes": 5147090,
+      "sha256": "2b7f750252e187871e668ed18decea68193323c8b50e47d69515d390552a8155"
+    },
+    {
+      "path": "index/apple-mobileclip-ml-s1-00035-of-00052.npz",
+      "bytes": 5157410,
+      "sha256": "7370219b4a0da2add05ffd6a5172364d5f4c625c9d4d15f889f6fc287c076b70"
+    },
+    {
+      "path": "index/apple-mobileclip-ml-s1-00036-of-00052.npz",
+      "bytes": 5150186,
+      "sha256": "5decc0aa5b554b8d498f6d7230b49d77cfff91d83beb74a7c9e566635fd44922"
+    },
+    {
+      "path": "index/apple-mobileclip-ml-s1-00037-of-00052.npz",
+      "bytes": 5153282,
+      "sha256": "c34b41a75c1d9d9955d5999ae35634435f9d76aaccd4068744afcc9a0f5d7412"
+    },
+    {
+      "path": "index/apple-mobileclip-ml-s1-00038-of-00052.npz",
+      "bytes": 5153282,
+      "sha256": "3a8359919bea5cf25cd7ff9734b190494e665942e29bcf469a376e18bd6e0987"
+    },
+    {
+      "path": "index/apple-mobileclip-ml-s1-00039-of-00052.npz",
+      "bytes": 5132642,
+      "sha256": "f04fd83ab84bae897edf940dd6b36b9630436849c860571d502628713e24a119"
+    },
+    {
+      "path": "index/apple-mobileclip-ml-s1-00040-of-00052.npz",
+      "bytes": 5145026,
+      "sha256": "296eb9a3d7bc16c055bf86bc340a721d8ceb4fb19ebd591ddfff6caf73d0e95c"
+    },
+    {
+      "path": "index/apple-mobileclip-ml-s1-00041-of-00052.npz",
+      "bytes": 5139866,
+      "sha256": "8ddd7f7a59d8dceba82ea1c5a093626c560c1554dd71397011427b8bbf469c87"
+    },
+    {
+      "path": "index/apple-mobileclip-ml-s1-00042-of-00052.npz",
+      "bytes": 5156378,
+      "sha256": "7b3b83b8cc96fa3d5a0f77956694e341a1d5332ccb28c74c7b9cbeeccf678a7d"
+    },
+    {
+      "path": "index/apple-mobileclip-ml-s1-00043-of-00052.npz",
+      "bytes": 5160506,
+      "sha256": "45c60bec9cc79f340f4955d5aa82a3cc2ce54322c8c405329c63301e46562dee"
+    },
+    {
+      "path": "index/apple-mobileclip-ml-s1-00044-of-00052.npz",
+      "bytes": 5158442,
+      "sha256": "2f4b3f65e7d2caa44811ff7ea93321104a8de8838ab0d09c633b9a187f13943c"
+    },
+    {
+      "path": "index/apple-mobileclip-ml-s1-00045-of-00052.npz",
+      "bytes": 5159474,
+      "sha256": "2cabfe39dfebeaae297793ab92f07bed3cd4e0b00f5e8f2f5d1ab74292280490"
+    },
+    {
+      "path": "index/apple-mobileclip-ml-s1-00046-of-00052.npz",
+      "bytes": 5159474,
+      "sha256": "f02a726936d7425c603ec5ea7351aaaa998c082f377dbe5e8d690e58aefeed8c"
+    },
+    {
+      "path": "index/apple-mobileclip-ml-s1-00047-of-00052.npz",
+      "bytes": 5159474,
+      "sha256": "7a626de7dd394246adb5eed3fd8b2d9bdcbd2938aa144dbde2bb5dc2908d5176"
+    },
+    {
+      "path": "index/apple-mobileclip-ml-s1-00048-of-00052.npz",
+      "bytes": 5155346,
+      "sha256": "b94248273be094f8b6f52b72ba29be41f290cf3fb8add87fe934cc6536117247"
+    },
+    {
+      "path": "index/apple-mobileclip-ml-s1-00049-of-00052.npz",
+      "bytes": 5154314,
+      "sha256": "0f6d2f11d6e44f335d92127c50563068496d006649b9cf1d82a2e2e7c1db55d8"
+    },
+    {
+      "path": "index/apple-mobileclip-ml-s1-00050-of-00052.npz",
+      "bytes": 5158442,
+      "sha256": "96955aeb04aaf68dbb45b83cb4996950150322cf39734646fcec40e3bfcb0724"
+    },
+    {
+      "path": "index/apple-mobileclip-ml-s1-00051-of-00052.npz",
+      "bytes": 5001578,
+      "sha256": "3f1f8460d62b831a6e8712934204d633b1ea0c93a25f67a3b30944dc06d42c06"
+    },
+    {
+      "path": "index/highlights.json",
+      "bytes": 18302,
+      "sha256": "be6c9d855c22e82e6f48bd295e6a34cadbd85c7b296b99ced727e942bb82411b"
+    },
+    {
+      "path": "index/meta-openaccess-00000-of-00052.json",
+      "bytes": 2596160,
+      "sha256": "7c41c91c2d2f1bb005fe640cdd44a2a463354387864512b5144958987cb23d8e"
+    },
+    {
+      "path": "index/meta-openaccess-00001-of-00052.json",
+      "bytes": 2674246,
+      "sha256": "6c8392b7b2aeb033d9dbf4a084237ff8fdcb524b3fe2326adaaf359d73d1aa4a"
+    },
+    {
+      "path": "index/meta-openaccess-00002-of-00052.json",
+      "bytes": 2833105,
+      "sha256": "e05cbafebf2ca31990b0800f89d2a876dc61901797a735695fe34c686edf257e"
+    },
+    {
+      "path": "index/meta-openaccess-00003-of-00052.json",
+      "bytes": 2902173,
+      "sha256": "ea149fa1797eac64a1d240a985ac5082b14803e4b18631881300c95384048a42"
+    },
+    {
+      "path": "index/meta-openaccess-00004-of-00052.json",
+      "bytes": 2768778,
+      "sha256": "fc014a1344078fa42e159617f5e62d3b622fbf53d9461f26d9f9fb699443715f"
+    },
+    {
+      "path": "index/meta-openaccess-00005-of-00052.json",
+      "bytes": 2843568,
+      "sha256": "d2110db5758cc0ead6ef741d0881023127b6ad459a84d65c44c5e852663d81cf"
+    },
+    {
+      "path": "index/meta-openaccess-00006-of-00052.json",
+      "bytes": 2957478,
+      "sha256": "1c69419ad56c5970789e0285d87413e9c30865b60c2dabf4f8fc167a921ae6f0"
+    },
+    {
+      "path": "index/meta-openaccess-00007-of-00052.json",
+      "bytes": 2842769,
+      "sha256": "74c7318c7fba742811d1270fe45c0452d07be9f57ce1b7d223f7f3f648bbe0fa"
+    },
+    {
+      "path": "index/meta-openaccess-00008-of-00052.json",
+      "bytes": 2700917,
+      "sha256": "cb9603a57d597471baad373ab0608e8d901d6f314e48aee0feec2a0191254f5b"
+    },
+    {
+      "path": "index/meta-openaccess-00009-of-00052.json",
+      "bytes": 2770889,
+      "sha256": "74a0d9a4151d102872dbbb6828c8e03c3e60c8b5eb0142bf4f9e64801da091f4"
+    },
+    {
+      "path": "index/meta-openaccess-00010-of-00052.json",
+      "bytes": 2566396,
+      "sha256": "d71782d1a21fae99352533ec747a3b0149f1866fd39ed2c1be3e488819dbcdcb"
+    },
+    {
+      "path": "index/meta-openaccess-00011-of-00052.json",
+      "bytes": 2994758,
+      "sha256": "d6689545713ab7ee6e5e2e5a303b16a0679738691015db32e77df1e261cd466f"
+    },
+    {
+      "path": "index/meta-openaccess-00012-of-00052.json",
+      "bytes": 2797831,
+      "sha256": "0102be44e9a40b98d8dae80ca91d37f1a815f5355e7be20c5d014ae2fe034c7d"
+    },
+    {
+      "path": "index/meta-openaccess-00013-of-00052.json",
+      "bytes": 2854145,
+      "sha256": "6bac953e7d507c01fd2f0499fec334b1f58a0eec620b4415dc809e17b409f822"
+    },
+    {
+      "path": "index/meta-openaccess-00014-of-00052.json",
+      "bytes": 2949114,
+      "sha256": "5ca7db7bbfc7af4d5bd9e24b2e8388596f4a76c475821b30b4736c8f062b22cf"
+    },
+    {
+      "path": "index/meta-openaccess-00015-of-00052.json",
+      "bytes": 2896783,
+      "sha256": "c3bce5deb3e4151eaca5f6a6b008d2e9485e3ed64a7700c6d653dfa331fcc527"
+    },
+    {
+      "path": "index/meta-openaccess-00016-of-00052.json",
+      "bytes": 2667791,
+      "sha256": "8c71f5131fe7a2df59cb28ff61041904180e33a5a0e3ba3ddba8c550fd639849"
+    },
+    {
+      "path": "index/meta-openaccess-00017-of-00052.json",
+      "bytes": 2714229,
+      "sha256": "b3060a5e82cdb0126b2b799c831968c0db0586a1bf602a9c5d4fe06c125bdc0c"
+    },
+    {
+      "path": "index/meta-openaccess-00018-of-00052.json",
+      "bytes": 2872008,
+      "sha256": "88abef29b13b15cfada2dc185484ccbfe8f70cb82191e0b594c1d8688dfc9f25"
+    },
+    {
+      "path": "index/meta-openaccess-00019-of-00052.json",
+      "bytes": 2821274,
+      "sha256": "ed6b02d24c3c36a464ce546fb9a737649c98d92d5a8136beec353b45fd8f00ca"
+    },
+    {
+      "path": "index/meta-openaccess-00020-of-00052.json",
+      "bytes": 2638948,
+      "sha256": "7ccee9e404a348c7426425d5e076fc04651d8f92ccf074a0f15a99c580f43d50"
+    },
+    {
+      "path": "index/meta-openaccess-00021-of-00052.json",
+      "bytes": 2776527,
+      "sha256": "a313d52166ca2d1518fbb415f3a5cd7ddfb6eefdb612b0b7531effffa55a459b"
+    },
+    {
+      "path": "index/meta-openaccess-00022-of-00052.json",
+      "bytes": 2947047,
+      "sha256": "e22ee6c4af371f27683bdaa9fc5bf914212b8a5c018dd0d59c803025bcdf2e03"
+    },
+    {
+      "path": "index/meta-openaccess-00023-of-00052.json",
+      "bytes": 2930717,
+      "sha256": "ee760a4973daaae721810ae917aed9e5d92c70da584c5105758e68017b68acef"
+    },
+    {
+      "path": "index/meta-openaccess-00024-of-00052.json",
+      "bytes": 2680139,
+      "sha256": "cde0155325fd25221a303a69f559c5c7ca6040a9c6e30557ce7c47352d72b578"
+    },
+    {
+      "path": "index/meta-openaccess-00025-of-00052.json",
+      "bytes": 2929250,
+      "sha256": "7ef09c37c408f14f4e51aec8ebe2ec06f28744917dd970a741dfbc32710ec399"
+    },
+    {
+      "path": "index/meta-openaccess-00026-of-00052.json",
+      "bytes": 3107973,
+      "sha256": "911a8faa77d242c46eeb6e4dfa2c24fed38c041497005bdb1ff0e80ec3d940fa"
+    },
+    {
+      "path": "index/meta-openaccess-00027-of-00052.json",
+      "bytes": 3008882,
+      "sha256": "9d5f4cfa337560c825a7c4ada62368bad4bcdb3239ba4bdf5cc018853e1d2cdd"
+    },
+    {
+      "path": "index/meta-openaccess-00028-of-00052.json",
+      "bytes": 2974327,
+      "sha256": "ff72ff756ef57cc5cb5b650156ac9ad0d8a0974875d94e83e0ac2cb3216c1bb9"
+    },
+    {
+      "path": "index/meta-openaccess-00029-of-00052.json",
+      "bytes": 2948945,
+      "sha256": "136f0647066438486fa7b5e582623f64d28b3918322643f93213dbfa52f1c668"
+    },
+    {
+      "path": "index/meta-openaccess-00030-of-00052.json",
+      "bytes": 2953020,
+      "sha256": "8a42e2efc3410719f8687701a32a4f93b53c3a741fec6540cf42f712c6b904f0"
+    },
+    {
+      "path": "index/meta-openaccess-00031-of-00052.json",
+      "bytes": 3142953,
+      "sha256": "37b8796194d0893cf22b663bfb559adb3dea992538b4a8584afaefe709aaee4f"
+    },
+    {
+      "path": "index/meta-openaccess-00032-of-00052.json",
+      "bytes": 3220938,
+      "sha256": "8d07c2bd7d1d9d1c6cda28dbc93f030f9a854e36e660b9f742f9cb69841f0816"
+    },
+    {
+      "path": "index/meta-openaccess-00033-of-00052.json",
+      "bytes": 3239281,
+      "sha256": "1a7b14f63c32dc824696d1f032d4f3d6c9b9187702fe87eaa34e1362b398095d"
+    },
+    {
+      "path": "index/meta-openaccess-00034-of-00052.json",
+      "bytes": 2790412,
+      "sha256": "ceecda1b7638ff3cd7d309d382e4a1a91f6975c28b70d726fd06253a0a778de3"
+    },
+    {
+      "path": "index/meta-openaccess-00035-of-00052.json",
+      "bytes": 2727748,
+      "sha256": "1f2693631728158b9f83585df126a68ca1c499e3927a2b0476abd79b4a2c824a"
+    },
+    {
+      "path": "index/meta-openaccess-00036-of-00052.json",
+      "bytes": 2837373,
+      "sha256": "77d7f37474abd6c82dade0e3b4bc9899a9c4b270db5d5b92bafa17a82bfc4934"
+    },
+    {
+      "path": "index/meta-openaccess-00037-of-00052.json",
+      "bytes": 2799426,
+      "sha256": "1722eb3a9baab724c5f54adeabc3d1f5811a04c68a83010dbd742ffe7181bffd"
+    },
+    {
+      "path": "index/meta-openaccess-00038-of-00052.json",
+      "bytes": 2664577,
+      "sha256": "293f5c3ab9784156e76f7f25e75ea38ac14efa8cb878533c8093eeed6dc62252"
+    },
+    {
+      "path": "index/meta-openaccess-00039-of-00052.json",
+      "bytes": 2798256,
+      "sha256": "0991c4d490560b40ccf2fdf862f0b857e16304dc5ddaee51ed646d150787abd9"
+    },
+    {
+      "path": "index/meta-openaccess-00040-of-00052.json",
+      "bytes": 2695878,
+      "sha256": "3610942b71f0651d70ed5c95f667a027b568192ff3bef5fa11976cd82955c43b"
+    },
+    {
+      "path": "index/meta-openaccess-00041-of-00052.json",
+      "bytes": 2688194,
+      "sha256": "d57ac5e42762f232dc4f4744458fc718abfba529583ea19c4b20b5bc7affebb5"
+    },
+    {
+      "path": "index/meta-openaccess-00042-of-00052.json",
+      "bytes": 3154131,
+      "sha256": "3d693b3415738cfd2c63e65c8bb11c49fa85cd6555d4c0792ece1f3268e27084"
+    },
+    {
+      "path": "index/meta-openaccess-00043-of-00052.json",
+      "bytes": 3059977,
+      "sha256": "0c8e696df01f638a654c563af458266e0c67f80f679c2581779b76aa46e19f05"
+    },
+    {
+      "path": "index/meta-openaccess-00044-of-00052.json",
+      "bytes": 3026238,
+      "sha256": "f2fc19ffbf88b87de6af01b4a4d12bf2acda0a95cf18addf38238409ff425122"
+    },
+    {
+      "path": "index/meta-openaccess-00045-of-00052.json",
+      "bytes": 3087512,
+      "sha256": "8b80a9edc7720e43ab5240af8f34cf06a6282e095b040754c72a0dd33437ad9e"
+    },
+    {
+      "path": "index/meta-openaccess-00046-of-00052.json",
+      "bytes": 3180763,
+      "sha256": "8d29d4046ad507a54b6481dce1adde51ec63a22ed72df93784c82aac54ec0c72"
+    },
+    {
+      "path": "index/meta-openaccess-00047-of-00052.json",
+      "bytes": 3187061,
+      "sha256": "76f7645c328658a3695556956988cd9b7ccd919703def3640d540fed42564824"
+    },
+    {
+      "path": "index/meta-openaccess-00048-of-00052.json",
+      "bytes": 2938740,
+      "sha256": "8b6c66095f2e9451588939f3ff813aa362968fe2bcd3458505e458b0bf396005"
+    },
+    {
+      "path": "index/meta-openaccess-00049-of-00052.json",
+      "bytes": 3099343,
+      "sha256": "2dfbedd6eec15745d71bd7cd0aa6db4ae17a43d3bd91240b08fc5fa804e5dd3f"
+    },
+    {
+      "path": "index/meta-openaccess-00050-of-00052.json",
+      "bytes": 3002898,
+      "sha256": "46e97de4c7785413d6f92a36214e8ac01904cc00aba1706aa112b8d0fc7cc828"
+    },
+    {
+      "path": "index/meta-openaccess-00051-of-00052.json",
+      "bytes": 2920638,
+      "sha256": "793c5ed4636ea35d9d1b7819ea1a658f1fec37d96e57bff2193eaffb0d0feda2"
+    },
+    {
+      "path": "weights/mobileclip-s1.part-01",
+      "bytes": 41943040,
+      "sha256": "f4080113e9cb6dee0b74af78fe1f11f220e9eaacd6c57cada08d220026b3132c"
+    },
+    {
+      "path": "weights/mobileclip-s1.part-02",
+      "bytes": 41943040,
+      "sha256": "59e52d9cbfb8e7062fb53c44ebc2db148d82164f4e1c58d3bfb1b707b7fd958e"
+    },
+    {
+      "path": "weights/mobileclip-s1.part-03",
+      "bytes": 41943040,
+      "sha256": "eabc5daa6a034ca5e0699a62d0589b72739acdf8db2183f5a1c3b5098080580d"
+    },
+    {
+      "path": "weights/mobileclip-s1.part-04",
+      "bytes": 41943040,
+      "sha256": "d2eb06a34e1c513d955cc472840ee21709cf2656ef79bcb69ca9946de450ad44"
+    },
+    {
+      "path": "weights/mobileclip-s1.part-05",
+      "bytes": 2552978,
+      "sha256": "727cacf8e8a5f4fc3834d05cd286cb14744d9a9e65903dfed054d7fe0dc2bd77"
+    }
+  ]
+}

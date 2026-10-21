@@ -1,0 +1,43 @@
+/* Reversible layout preview: remove the edge-to-edge class to restore cards. */
+.sketch-workspace.edge-to-edge {
+  --divider-width: .5rem;
+  --previous-outer-space: 1.5rem;
+  --previous-control-offset: 1.375rem;
+  --workspace-control-offset: calc(var(--previous-outer-space) + var(--previous-control-offset) + 1px);
+  padding: 0;
+}
+.sketch-workspace.edge-to-edge > .sketch-pane,
+.sketch-workspace.edge-to-edge > .preview-pane {
+  --panel-radius: 0;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+}
+/* Keep controls inset while the canvas surfaces extend to the viewport edges. */
+.edge-to-edge .tldraw-app .top-left { left: calc(var(--previous-outer-space) + 1.5rem + 1px); }
+.edge-to-edge .zoom-pill { right: 2.0625rem; }
+.edge-to-edge .poser2-back { left: 2.0625rem; }
+.edge-to-edge .poser-tabs { left: calc(50% - .5rem); }
+.edge-to-edge .tldraw-app .bottom.drawing-bottom {
+  --dock-inset: var(--previous-control-offset);
+  left: calc(var(--previous-outer-space) + 1px);
+  right: .5625rem;
+}
+.edge-to-edge .poser2-dock-position {
+  --dock-inset: var(--previous-control-offset);
+  left: calc(var(--dock-inset) + .5625rem);
+  right: calc(var(--dock-inset) + var(--previous-outer-space) + 1px);
+}
+@media (max-width: 700px) {
+  .sketch-workspace.edge-to-edge {
+    --previous-outer-space: 1rem;
+    --previous-control-offset: .75rem;
+  }
+  .edge-to-edge .tldraw-app .top-left { left: calc(var(--previous-outer-space) + .75rem + 1px); }
+  .edge-to-edge .zoom-pill, .edge-to-edge .poser2-dock-position { right: calc(var(--previous-outer-space) + .75rem + 1px); }
+  .edge-to-edge .poser2-back { left: 1.0625rem; }
+  .edge-to-edge .poser-tabs { left: calc(50% - .25rem); }
+  .edge-to-edge .tldraw-app .bottom.drawing-bottom { right: .3125rem; }
+  .edge-to-edge .poser2-dock-position { left: calc(var(--dock-inset) + .3125rem); }
+  .edge-to-edge .poser-panel:has(.reference-back) .poser-tabs { left: auto; }
+}

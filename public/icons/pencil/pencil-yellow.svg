@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64" fill="none">
+  <title>Yellow pencil</title>
+  <defs>
+    <linearGradient id="surface" x1="13" y1="10" x2="51" y2="54" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#a76f16"/><stop offset=".15" stop-color="#e9b939"/><stop offset=".33" stop-color="#ffe28a"/><stop offset=".56" stop-color="#f4c550"/><stop offset=".85" stop-color="#d29a28"/><stop offset="1" stop-color="#9b6d1b"/></linearGradient>
+    <linearGradient id="edge" x1="11" y1="10" x2="53" y2="54" gradientUnits="userSpaceOnUse"><stop stop-color="#fff" stop-opacity=".85"/><stop offset=".55" stop-color="#fff" stop-opacity=".38"/><stop offset="1" stop-color="#fff" stop-opacity=".12"/></linearGradient>
+    <linearGradient id="thickness" x1="20" y1="20" x2="44" y2="57" gradientUnits="userSpaceOnUse"><stop stop-color="#d29a28"/><stop offset="1" stop-color="#9b6d1b"/></linearGradient>
+    <filter id="shadow" x="0" y="0" width="64" height="64" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB"><feDropShadow dx="0" dy="1.2" stdDeviation=".9" flood-color="#3b3328" flood-opacity=".16"/></filter>
+    <linearGradient id="barrel" x1="25.5" y1="0" x2="38.5" y2="0" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#a76f16"/><stop offset=".15" stop-color="#e9b939"/><stop offset=".33" stop-color="#ffe28a"/><stop offset=".56" stop-color="#f4c550"/><stop offset=".85" stop-color="#d29a28"/><stop offset="1" stop-color="#9b6d1b"/></linearGradient>
+    <linearGradient id="wood" x1="25" y1="45" x2="38" y2="49" gradientUnits="userSpaceOnUse"><stop stop-color="#ba9264"/><stop offset=".25" stop-color="#e6c89e"/><stop offset=".48" stop-color="#f5deba"/><stop offset=".8" stop-color="#d5b082"/><stop offset="1" stop-color="#ac8459"/></linearGradient>
+    <linearGradient id="metal" x1="25.5" y1="0" x2="38.5" y2="0" gradientUnits="userSpaceOnUse"><stop stop-color="#9e9f9e"/><stop offset=".23" stop-color="#e7e8e5"/><stop offset=".36" stop-color="#fff"/><stop offset=".64" stop-color="#d7d8d4"/><stop offset=".86" stop-color="#a7aaa8"/><stop offset="1" stop-color="#caccc7"/></linearGradient>
+    <linearGradient id="rubber" x1="25.5" y1="0" x2="38.5" y2="0" gradientUnits="userSpaceOnUse"><stop stop-color="#ca8b7d"/><stop offset=".3" stop-color="#f7cdbd"/><stop offset=".67" stop-color="#e8a797"/><stop offset="1" stop-color="#bf7e70"/></linearGradient>
+  </defs>
+  <g filter="url(#shadow)"><g transform="rotate(45 32 32)">
+    <path d="M25.5 14Q25.5 9 30.5 9H33.5Q38.5 9 38.5 14V44L33 57.5Q32 59 31 57.5L25.5 44Z" fill="url(#barrel)" stroke="#514a40" stroke-opacity=".24" stroke-width=".65" stroke-linejoin="round"/>
+    <path d="M25.5 14Q25.5 9 30.5 9H33.5Q38.5 9 38.5 14V17H25.5Z" fill="url(#rubber)"/>
+    <path d="M25.5 43.5Q27.1 42.5 28.5 44Q30.2 42.4 32 44Q33.8 42.4 35.5 44Q37 42.5 38.5 43.5L33 57.5Q32 59 31 57.5Z" fill="url(#wood)"/>
+    <path d="M28.5 44 31.5 56M35.5 44 32.5 56" stroke="#a57b4c" stroke-opacity=".22" stroke-width=".5" stroke-linecap="round"/>
+    <path d="M29.7 54Q32 52.9 34.3 54L33 57.5Q32 59 31 57.5Z" fill="#424449"/>
+    <path d="M31 54.1 31.8 57.2" stroke="#a0a1a3" stroke-width=".6" stroke-linecap="round"/>
+    <path d="M28.5 18V42.5M35.5 18V42.5" stroke="#000" stroke-opacity=".08" stroke-width=".5"/>
+    <path d="M27 19V42" stroke="#fff" stroke-opacity=".55" stroke-width=".65" stroke-linecap="round"/>
+    <rect x="25.3" y="14.5" width="13.4" height="5.3" rx=".8" fill="url(#metal)"/>
+    <path d="M25.8 15.4H38.2M25.8 18.9H38.2" stroke="#fff" stroke-opacity=".58" stroke-width=".5" stroke-linecap="round"/>
+    <path d="M25.8 16.3H38.2M25.8 18H38.2" stroke="#4b4e4b" stroke-opacity=".17" stroke-width=".5" stroke-linecap="round"/>
+    <path d="M26.3 13.5Q26.5 9.8 30.5 9.8H33.5" stroke="#fff" stroke-opacity=".6" stroke-width=".7" stroke-linecap="round"/>
+  </g></g>
+</svg>

@@ -1,0 +1,83 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 256 256" fill="none">
+  <title>Ivory articulated rig joint</title>
+  <defs>
+    <!-- Material gradients follow each housing, independently of the bend. -->
+    <linearGradient id="upper-ivory" x1="83" y1="35" x2="53" y2="94" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#f9f3e8"/><stop offset=".2" stop-color="#fff9ef"/><stop offset=".43" stop-color="#eee6d8"/><stop offset=".7" stop-color="#dfd4c1"/><stop offset=".9" stop-color="#ccbea8"/><stop offset="1" stop-color="#b7a88f"/>
+    </linearGradient>
+    <linearGradient id="lower-ivory" x1="160" y1="173" x2="204" y2="151" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#d3c5ae"/><stop offset=".22" stop-color="#e8decd"/><stop offset=".55" stop-color="#f6eee2"/><stop offset=".76" stop-color="#fffaf3"/><stop offset="1" stop-color="#cfc2ae"/>
+    </linearGradient>
+    <radialGradient id="housing-light" cx=".4" cy=".2" r=".8">
+      <stop stop-color="#fffef9" stop-opacity=".8"/><stop offset="1" stop-color="#fffef9" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="joint-steel" cx=".31" cy=".23" r=".82">
+      <stop stop-color="#ededea"/><stop offset=".13" stop-color="#babbb9"/><stop offset=".32" stop-color="#858581"/><stop offset=".56" stop-color="#63615b"/><stop offset=".77" stop-color="#3e3c36"/><stop offset=".93" stop-color="#26251f"/><stop offset="1" stop-color="#514c41"/>
+    </radialGradient>
+    <radialGradient id="joint-glow" cx=".5" cy=".5" r=".5">
+      <stop stop-color="#fff" stop-opacity=".9"/><stop offset=".35" stop-color="#fff" stop-opacity=".38"/><stop offset="1" stop-color="#fff" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="upper-collar" x1="139" y1="73" x2="145" y2="117" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#a49c8c"/><stop offset=".14" stop-color="#e6e0d4"/><stop offset=".32" stop-color="#fdfbf2"/><stop offset=".51" stop-color="#b4ad9e"/><stop offset=".8" stop-color="#8a8170"/><stop offset="1" stop-color="#544b3d"/>
+    </linearGradient>
+    <linearGradient id="socket-collar" x1="147" y1="113" x2="177" y2="134" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#756b59"/><stop offset=".22" stop-color="#b0a692"/><stop offset=".48" stop-color="#ece6da"/><stop offset=".62" stop-color="#c2b8a6"/><stop offset="1" stop-color="#8d816b"/>
+    </linearGradient>
+    <linearGradient id="end-collar" x1="197" y1="207" x2="216" y2="227" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#e4dfd4"/><stop offset=".27" stop-color="#fbf7ec"/><stop offset=".5" stop-color="#afa592"/><stop offset=".8" stop-color="#766b57"/><stop offset="1" stop-color="#544b3b"/>
+    </linearGradient>
+    <linearGradient id="top-collar" x1="39" y1="27" x2="42" y2="61" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#ece7dd"/><stop offset=".29" stop-color="#bdb7aa"/><stop offset=".56" stop-color="#7d7566"/><stop offset=".77" stop-color="#a89d88"/><stop offset="1" stop-color="#5f5442"/>
+    </linearGradient>
+    <filter id="porcelain" x="-5%" y="-5%" width="110%" height="110%" color-interpolation-filters="sRGB">
+      <feTurbulence type="fractalNoise" baseFrequency=".78" numOctaves="3" seed="23" result="noise"/>
+      <feColorMatrix in="noise" type="saturate" values="0"/>
+      <feComponentTransfer><feFuncA type="linear" slope=".04"/></feComponentTransfer>
+      <feComposite in2="SourceGraphic" operator="in"/><feBlend in="SourceGraphic" mode="multiply"/>
+    </filter>
+    <filter id="brushed" x="-5%" y="-5%" width="110%" height="110%" color-interpolation-filters="sRGB">
+      <feTurbulence type="fractalNoise" baseFrequency=".7 3" numOctaves="2" seed="12" result="noise"/>
+      <feColorMatrix in="noise" type="saturate" values="0"/>
+      <feComponentTransfer><feFuncA type="linear" slope=".10"/></feComponentTransfer>
+      <feComposite in2="SourceGraphic" operator="in"/><feBlend in="SourceGraphic" mode="soft-light"/>
+    </filter>
+    <filter id="blur"><feGaussianBlur stdDeviation="1.6"/></filter>
+    <filter id="shadow" x="0" y="0" width="256" height="256" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feDropShadow dx=".4" dy="2" stdDeviation="2" flood-color="#332b21" flood-opacity=".19"/>
+    </filter>
+  </defs>
+  <g transform="translate(128 128) scale(.9) translate(-128 -128)">
+    <ellipse cx="218" cy="230" rx="18" ry="4" fill="#372f23" opacity=".14" filter="url(#blur)"/>
+    <g filter="url(#shadow)">
+      <!-- Lower housing and its terminal joint sit behind the elbow. -->
+      <path d="M143 125C146 146 158 168 170 189L189 219C194 228 202 229 211 224L225 215C230 211 230 205 227 195L196 119C192 109 185 105 179 109Z" fill="url(#lower-ivory)" filter="url(#porcelain)"/>
+      <path d="M148 133C151 151 163 174 173 190L191 218C194 222 198 224 202 224" stroke="#b8a88d" stroke-opacity=".4" stroke-width="1.3" stroke-linecap="round"/>
+      <path d="M181 130C190 150 204 183 217 207C220 212 217 216 215 217C209 207 193 174 183 149C180 141 178 133 181 130Z" fill="white" opacity=".68" filter="url(#blur)"/>
+      <ellipse cx="211.3" cy="214.6" rx="17.2" ry="8.3" transform="rotate(-33 211.3 214.6)" fill="url(#end-collar)" stroke="#8b7d66" stroke-width=".6" filter="url(#brushed)"/>
+      <ellipse cx="212.2" cy="215.7" rx="14.5" ry="6.3" transform="rotate(-33 212.2 215.7)" fill="#433d31"/>
+      <path d="M200 221C199 214 208 207 216 207C225 207 231 215 230 224C229 232 220 237 212 233C206 231 202 226 200 221Z" fill="url(#joint-steel)" stroke="#756b59" stroke-width=".6" filter="url(#brushed)"/>
+      <ellipse cx="213" cy="215" rx="8.5" ry="6.2" transform="rotate(-25 213 215)" fill="url(#joint-glow)"/>
+      <path d="M196 218C200 209 212 202 221 204" stroke="#fffaf0" stroke-opacity=".7" stroke-width="1.05"/>
+      <!-- The socket has a thick, elliptical lip, rather than a flat ring. -->
+      <path d="M142 116C144 104 166 91 181 99C193 104 195 112 191 121C186 130 171 137 155 134C147 132 142 125 142 116Z" fill="url(#socket-collar)" stroke="#8b7f69" stroke-width=".6"/>
+      <path d="M146 115C147 104 165 94 178 98C190 101 192 112 186 120C176 131 151 133 146 121Z" fill="#322e25"/>
+      <path d="M143 117C147 130 174 135 189 119" stroke="#fff7e7" stroke-opacity=".68" stroke-width="1.2" stroke-linecap="round"/>
+      <path d="M140 103C138 88 150 76 162 77C178 77 187 91 185 105C185 119 169 127 156 123C146 120 141 112 140 103Z" fill="url(#joint-steel)" filter="url(#brushed)"/>
+      <ellipse cx="157" cy="93" rx="12" ry="10" transform="rotate(-24 157 93)" fill="url(#joint-glow)"/>
+      <path d="M145 116C155 126 173 126 183 114" stroke="#a79c88" stroke-opacity=".45" stroke-width=".7"/>
+      <!-- Upper ivory housing: broad, tapered, with softly rolled edges. -->
+      <path d="M53 23C60 17 71 21 82 26L149 60C158 65 161 68 160 76C158 88 147 108 137 116C131 122 124 121 115 117L49 82C38 76 32 68 33 58C34 46 44 28 53 23Z" fill="url(#upper-ivory)" filter="url(#porcelain)"/>
+      <path d="M57 24C64 22 74 26 82 30L145 62C152 66 155 69 155 73C139 66 123 57 107 50L63 30Z" fill="url(#housing-light)"/>
+      <path d="M59 28C72 32 91 43 109 52C122 59 141 66 150 73" stroke="#fffdf5" stroke-width="3.3" stroke-opacity=".67" stroke-linecap="round" filter="url(#blur)"/>
+      <path d="M36 61C36 70 43 76 51 81L116 116C124 120 130 119 134 117" stroke="#b1a086" stroke-opacity=".35" stroke-width="1.1"/>
+      <path d="M151 66C157 64 163 69 163 74C158 84 149 108 137 117C135 119 131 120 127 118C138 107 144 86 149 73Z" fill="url(#upper-collar)" stroke="#9a8d75" stroke-width=".65" filter="url(#brushed)"/>
+      <path d="M159 71C154 78 149 94 145 101C141 109 136 115 132 117" stroke="#fdf8ed" stroke-opacity=".82" stroke-width="1.15" stroke-linecap="round"/>
+      <path d="M162 75C158 82 150 106 138 117" stroke="#4b4336" stroke-opacity=".8" stroke-width="1.4"/>
+      <!-- Small shoulder ball is partially enclosed by its metal collar. -->
+      <path d="M46 24C50 22 55 25 56 31C57 39 49 57 43 60C38 62 34 58 33 53C42 48 48 33 46 24Z" fill="url(#top-collar)" stroke="#716650" stroke-width=".7" filter="url(#brushed)"/>
+      <path d="M49 25C53 33 47 50 40 57" stroke="#f6f2e9" stroke-opacity=".8" stroke-width="1.1"/>
+      <path d="M29 28C34 22 43 22 47 27C52 34 47 48 39 53C33 57 26 51 25 44C23 39 25 32 29 28Z" fill="url(#joint-steel)" stroke="#7c7362" stroke-width=".55" filter="url(#brushed)"/>
+      <ellipse cx="33.5" cy="33" rx="7.7" ry="6.5" transform="rotate(-25 33.5 33)" fill="url(#joint-glow)"/>
+    </g>
+  </g>
+</svg>

@@ -1,0 +1,92 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 256 256" fill="none">
+  <title>Sculpted ivory model bust, three-quarter view</title>
+  <defs>
+    <path id="torso" d="M96 95C100 110 99 131 94 143C87 155 65 163 45 169C36 172 33 182 32 193C40 200 47 211 55 222C75 232 120 234 155 234C178 225 207 210 226 192C224 181 216 175 205 170L171 153C159 147 153 139 152 128L150 116Z"/>
+    <path id="head" d="M96 101C85 92 80 79 81 63C82 38 104 19 130 18C159 17 179 37 181 62C182 77 179 93 175 110C173 123 168 134 161 137C152 141 130 130 117 123C110 120 109 116 106 111C102 107 100 106 96 101Z"/>
+    <clipPath id="torso-clip"><use href="#torso"/></clipPath>
+    <clipPath id="head-clip"><use href="#head"/></clipPath>
+    <radialGradient id="body-ivory" cx=".3" cy=".42" r=".8" gradientTransform="translate(0 .07) scale(1 .92)">
+      <stop stop-color="#f6eee3"/><stop offset=".35" stop-color="#eee4d7"/><stop offset=".65" stop-color="#d8cbbb"/><stop offset="1" stop-color="#b5a28a"/>
+    </radialGradient>
+    <radialGradient id="head-ivory" cx=".33" cy=".27" r=".84">
+      <stop stop-color="#f8f0e5"/><stop offset=".3" stop-color="#ede3d5"/><stop offset=".65" stop-color="#ded2c2"/><stop offset=".85" stop-color="#c2b19b"/><stop offset="1" stop-color="#9d8b75"/>
+    </radialGradient>
+    <linearGradient id="face-depth" x1="154" y1="83" x2="183" y2="80" gradientUnits="userSpaceOnUse"><stop stop-color="#9b876c" stop-opacity="0"/><stop offset=".55" stop-color="#9c886c" stop-opacity=".35"/><stop offset="1" stop-color="#7e6b51" stop-opacity=".78"/></linearGradient>
+    <linearGradient id="head-side" x1="91" y1="77" x2="138" y2="91" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#ae997a" stop-opacity=".55"/><stop offset=".45" stop-color="#c4b296" stop-opacity=".25"/><stop offset="1" stop-color="#e8d9c2" stop-opacity="0"/>
+    </linearGradient>
+    <radialGradient id="cheek-light" cx=".5" cy=".5" r=".5"><stop stop-color="#f2e5d1" stop-opacity=".7"/><stop offset="1" stop-color="#f2e5d1" stop-opacity="0"/></radialGradient>
+    <linearGradient id="neck-shadow" x1="125" y1="121" x2="145" y2="176" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#826d51" stop-opacity=".85"/><stop offset=".34" stop-color="#a28c6f" stop-opacity=".78"/><stop offset=".72" stop-color="#b5a082" stop-opacity=".4"/><stop offset="1" stop-color="#c5b297" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="neck-light" x1="101" y1="147" x2="117" y2="150" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#f9efde" stop-opacity=".8"/><stop offset=".45" stop-color="#f4e6cf" stop-opacity=".45"/><stop offset="1" stop-color="#e2ceb0" stop-opacity="0"/>
+    </linearGradient>
+    <radialGradient id="jaw-shadow"><stop stop-color="#816d54" stop-opacity=".55"/><stop offset="1" stop-color="#aa9477" stop-opacity="0"/></radialGradient>
+    <radialGradient id="collar-shadow"><stop stop-color="#a58e6b" stop-opacity=".4"/><stop offset="1" stop-color="#a58e6b" stop-opacity="0"/></radialGradient>
+    <linearGradient id="collar-light" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#fff7e9" stop-opacity=".65"/><stop offset="1" stop-color="#fff7e9" stop-opacity="0"/></linearGradient>
+    <linearGradient id="cut-face" x1="77" y1="220" x2="211" y2="210" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#c1b099"/><stop offset=".49" stop-color="#c7b69f"/><stop offset=".8" stop-color="#ad997d"/><stop offset="1" stop-color="#857157"/>
+    </linearGradient>
+    <radialGradient id="ear-surface" cx=".35" cy=".27" r=".8"><stop stop-color="#f7eddd"/><stop offset=".4" stop-color="#e1d0b7"/><stop offset=".7" stop-color="#c7b193"/><stop offset="1" stop-color="#d7c2a3"/></radialGradient>
+    <radialGradient id="ear-hollow" cx=".5" cy=".45" r=".5"><stop stop-color="#a88f6c" stop-opacity=".65"/><stop offset="1" stop-color="#bba281" stop-opacity="0"/></radialGradient>
+    <linearGradient id="nose-shadow" x1="153" y1="93" x2="169" y2="96" gradientUnits="userSpaceOnUse"><stop stop-color="#c3ad8d" stop-opacity="0"/><stop offset=".53" stop-color="#a48b66" stop-opacity=".4"/><stop offset="1" stop-color="#a18a67" stop-opacity=".16"/></linearGradient>
+    <linearGradient id="nose-light" x1="162" y1="83" x2="172" y2="99" gradientUnits="userSpaceOnUse"><stop stop-color="#f2e5d0" stop-opacity="0"/><stop offset=".48" stop-color="#f3e6d2"/><stop offset="1" stop-color="#d5c0a0"/></linearGradient>
+    <linearGradient id="nose-under" x1="165" y1="102" x2="166" y2="108" gradientUnits="userSpaceOnUse"><stop stop-color="#8e7553" stop-opacity=".7"/><stop offset="1" stop-color="#bba383" stop-opacity="0"/></linearGradient>
+    <radialGradient id="soft-light"><stop stop-color="#fffbf2" stop-opacity=".7"/><stop offset="1" stop-color="#fffbf2" stop-opacity="0"/></radialGradient>
+    <filter id="material" x="-3%" y="-3%" width="106%" height="106%" color-interpolation-filters="sRGB">
+      <feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="3" seed="16"/>
+      <feColorMatrix type="saturate" values="0"/><feComponentTransfer><feFuncA type="linear" slope=".045"/></feComponentTransfer>
+      <feComposite in2="SourceGraphic" operator="in"/><feBlend in="SourceGraphic" mode="multiply"/>
+    </filter>
+    <filter id="soft"><feGaussianBlur stdDeviation="1.3"/></filter>
+    <filter id="wide-soft"><feGaussianBlur stdDeviation="3.5"/></filter>
+    <filter id="shadow" x="0" y="0" width="256" height="256" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feDropShadow dx="0" dy="2.3" stdDeviation="2.1" flood-color="#34281b" flood-opacity=".2"/>
+    </filter>
+  </defs>
+  <g transform="translate(128 128) scale(.87) translate(-128 -128)">
+    <ellipse cx="132" cy="230" rx="81" ry="7" fill="#493b28" opacity=".16" filter="url(#wide-soft)"/>
+    <g filter="url(#shadow)">
+      <path d="M32 193L55 223C72 233 121 236 156 236C174 230 201 222 216 213L226 192L205 191L54 188Z" fill="url(#cut-face)"/>
+      <g filter="url(#material)">
+        <use href="#torso" fill="url(#body-ivory)"/>
+        <g clip-path="url(#torso-clip)">
+          <!-- Neck shadow and the two soft sternocleidomastoid ridges. -->
+          <path d="M103 104C117 122 142 125 153 128C154 143 162 153 179 161C167 165 155 167 144 170C130 176 123 183 116 187C116 174 118 158 113 142C109 126 106 114 103 104Z" fill="url(#neck-shadow)" filter="url(#soft)"/>
+          <path d="M99 116C100 130 102 143 108 157C112 170 113 180 115 185C108 180 105 168 102 161C98 150 96 141 97 131Z" fill="url(#neck-light)" filter="url(#soft)"/>
+          <path d="M148 144C142 155 130 169 122 184C126 169 133 150 137 140Z" fill="#f0e1c9" opacity=".7" filter="url(#wide-soft)"/>
+          <ellipse cx="135" cy="140" rx="24" ry="16" transform="rotate(27 135 140)" fill="url(#jaw-shadow)"/>
+          <!-- Broad collarbone planes taper into the chest, without drawn outlines. -->
+          <ellipse cx="89" cy="178" rx="24" ry="8" transform="rotate(11 89 178)" fill="url(#collar-shadow)"/>
+          <ellipse cx="151" cy="180" rx="29" ry="8" transform="rotate(-14 151 180)" fill="url(#collar-shadow)"/>
+          <path d="M61 170C76 173 94 176 108 177C110 178 111 180 113 183C99 180 86 181 72 176C67 175 64 173 61 170Z" fill="url(#collar-light)" filter="url(#soft)"/>
+          <path d="M124 183C133 178 145 176 155 175C166 174 177 169 185 166C181 172 168 178 157 179C146 179 135 180 124 183Z" fill="url(#collar-light)" filter="url(#soft)"/>
+          <ellipse cx="73" cy="197" rx="30" ry="27" fill="url(#soft-light)" opacity=".65"/>
+          <path d="M39 179C45 173 53 173 61 172C48 181 45 190 48 201C41 198 35 193 33 192Z" fill="#fff7e8" opacity=".35" filter="url(#wide-soft)"/>
+          <path d="M183 183C199 176 213 180 219 188C220 191 221 194 221 197C209 206 190 215 178 220C192 207 192 191 183 183Z" fill="#c2af93" opacity=".26" filter="url(#wide-soft)"/>
+        </g>
+        <use href="#head" fill="url(#head-ivory)"/>
+        <g clip-path="url(#head-clip)">
+          <path d="M91 76C89 87 93 95 99 100C108 106 106 115 117 121C130 129 144 135 158 137C141 128 131 116 124 105C119 94 110 84 105 79Z" fill="url(#head-side)" filter="url(#wide-soft)"/>
+          <ellipse cx="116" cy="42" rx="34" ry="20" transform="rotate(-28 116 42)" fill="url(#soft-light)"/>
+          <ellipse cx="139" cy="102" rx="28" ry="25" fill="url(#cheek-light)"/>
+          <path d="M174 59C182 86 174 110 168 125C166 131 163 134 159 137C168 138 176 124 180 107L188 66Z" fill="#998363" opacity=".3" filter="url(#wide-soft)"/>
+          <path d="M108 109C111 117 122 122 131 126C142 132 152 135 160 134" stroke="#b29b7a" stroke-width="2.3" opacity=".3" filter="url(#soft)"/>
+          <path d="M158 25C175 38 182 56 180 75C178 86 175 94 173 102C175 114 170 130 161 137L153 134C162 121 167 112 165 101C164 89 163 75 160 63C155 49 153 36 158 25Z" fill="url(#face-depth)" filter="url(#wide-soft)"/>
+          <!-- Nose stays inside the silhouette: this is a three-quarter face. -->
+          <path d="M159 76C157 84 157 91 155 99C153 104 157 109 165 108C170 107 174 103 173 100C167 96 166 82 166 76Z" fill="url(#nose-shadow)" filter="url(#soft)"/>
+          <path d="M163 76C164 85 166 94 171 100C173 102 171 104 167 104C164 104 161 105 159 104C161 101 161 98 161 94C161 87 162 81 163 76Z" fill="url(#nose-light)" filter="url(#soft)"/>
+          <path d="M159 103C163 104 167 103 171 102C171 105 166 108 163 108C160 108 159 106 159 103Z" fill="url(#nose-under)" filter="url(#soft)"/>
+          <path d="M163 92C164 96 165 99 169 100" stroke="#fff7e6" stroke-width="1.3" opacity=".3" stroke-linecap="round" filter="url(#soft)"/>
+        </g>
+        <!-- Ear has a rolled rim, a shallow hollow, and a soft attachment. -->
+        <path d="M105 82C101 75 94 75 90 81C87 87 90 98 97 102C101 105 106 102 107 97C108 92 107 86 105 82Z" fill="url(#ear-surface)"/>
+        <ellipse cx="97" cy="87" rx="6.5" ry="8" transform="rotate(-15 97 87)" fill="url(#ear-hollow)"/>
+        <path d="M91 84C92 78 98 77 102 81" stroke="#fff9ea" stroke-width="1.7" stroke-linecap="round" opacity=".7" filter="url(#soft)"/>
+        <path d="M96 88C95 92 98 94 101 94L102 99" stroke="#f2e1c6" stroke-width="2.2" opacity=".45" stroke-linecap="round" filter="url(#soft)"/>
+      </g>
+      <path d="M56 222C79 232 121 234 154 234" stroke="#f7ebd7" stroke-width=".7" opacity=".5"/>
+    </g>
+  </g>
+</svg>

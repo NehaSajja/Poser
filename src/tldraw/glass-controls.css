@@ -1,0 +1,24 @@
+/* Reversible surface experiment. Geometry, focus rings, and tab selection stay intact. */
+.sketch-workspace.glass-controls-experiment :is(.poser2-back, .poser-tabs) {
+  isolation: isolate;
+  background: transparent;
+  border-color: transparent;
+  box-shadow: none;
+}
+.sketch-workspace.glass-controls-experiment :is(.poser2-back, .poser-tabs)::before {
+  content: '';
+  position: absolute;
+  inset: -3.5rem -5rem;
+  z-index: -1;
+  background: rgb(245 248 250 / .18);
+  -webkit-mask-image: radial-gradient(ellipse 50% 50% at center, #000 0%, rgb(0 0 0 / .92) 22%, rgb(0 0 0 / .55) 48%, rgb(0 0 0 / .18) 74%, transparent 100%);
+  mask-image: radial-gradient(ellipse 50% 50% at center, #000 0%, rgb(0 0 0 / .92) 22%, rgb(0 0 0 / .55) 48%, rgb(0 0 0 / .18) 74%, transparent 100%);
+  -webkit-backdrop-filter: blur(30px) saturate(135%) brightness(1.12);
+  backdrop-filter: blur(30px) saturate(135%) brightness(1.12);
+  pointer-events: none;
+}
+.sketch-workspace.glass-controls-experiment .poser-tabs button { color: #565955; }
+.sketch-workspace.glass-controls-experiment .poser-tabs button[aria-selected="true"] { color: var(--foreground); }
+@media (hover: hover) and (pointer: fine) {
+  .sketch-workspace.glass-controls-experiment .poser2-back:hover::before { background: rgb(245 248 250 / .25); }
+}

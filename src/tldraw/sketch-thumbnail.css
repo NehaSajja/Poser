@@ -1,0 +1,171 @@
+/* Reversible selection interaction; the real editor stays mounted at its original size. */
+.sketch-editor-host { position: absolute; inset: 0; }
+.sketch-workspace.canvas-card-backdrop {
+  transition: grid-template-columns 320ms var(--canvas-ease-out);
+}
+.sketch-workspace.canvas-card-backdrop > .sketch-pane {
+  transition: height 320ms var(--canvas-ease-out), border-radius 320ms var(--canvas-ease-out);
+}
+.sketch-workspace[data-compact-sketch="true"] > .sketch-pane {
+  align-self: start;
+  height: clamp(180px, 34vh, 300px);
+  border-radius: 1.5rem;
+}
+.sketch-workspace[data-compact-sketch="true"] .sketch-editor-host {
+  visibility: hidden;
+  opacity: 0;
+  pointer-events: none;
+}
+.sketch-workspace[data-compact-sketch="true"] > .workspace-divider { visibility: hidden; pointer-events: none; }
+.sketch-thumbnail {
+  position: absolute; inset: 0; display: flex; flex-direction: column;
+  align-items: stretch; gap: .5rem; padding: 1.25rem;
+  border: 0; border-radius: inherit; background: #fff;
+  color: var(--foreground); text-align: left; cursor: pointer;
+}
+.sketch-thumbnail .medium-wordmark { font-size: 1.25rem; flex-shrink: 0; }
+.sketch-thumbnail img { flex: 1; min-height: 0; width: 100%; object-fit: contain; pointer-events: none; }
+.sketch-thumbnail:focus-visible { outline: 2px solid var(--ring); outline-offset: -4px; }
+@media (max-width: 700px) {
+  .sketch-workspace[data-compact-sketch="true"] { grid-template-columns: minmax(120px, 25fr) var(--divider-width) minmax(0, 75fr); }
+  .sketch-thumbnail { padding: .75rem; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .sketch-workspace.canvas-card-backdrop, .sketch-workspace.canvas-card-backdrop > .sketch-pane { transition: none; }
+}
+
+/* Full-page experiment. Keep the original split thumbnail rules above for rollback.
+   Only the card catches input; the rest of the page remains an orbit/pan surface. */
+.sketch-workspace[data-compact-sketch="true"][data-sketch-layout="overlay"] {
+  --thumbnail-top: calc(var(--workspace-control-offset) + var(--workspace-pill-height) + 1.25rem);
+  --thumbnail-width: clamp(160px, 18vw, 232px);
+}
+.sketch-workspace[data-compact-sketch="true"][data-sketch-layout="overlay"] > .preview-pane {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+.sketch-workspace[data-compact-sketch="true"][data-sketch-layout="overlay"] > .sketch-pane {
+  position: absolute;
+  inset: var(--thumbnail-top) auto auto var(--canvas-card-inset);
+  margin: 0;
+  width: var(--thumbnail-width);
+  height: min(var(--thumbnail-width), 32dvh);
+  z-index: 22;
+  border-radius: 1.5rem;
+}
+.compact-sketch-title {
+  position: absolute;
+  top: var(--workspace-control-offset);
+  left: calc(var(--canvas-card-inset) + 1.5rem + 1px);
+  height: var(--workspace-pill-height);
+  display: flex;
+  align-items: center;
+  z-index: 22;
+  pointer-events: none;
+}
+.sketch-workspace[data-sketch-layout="overlay"] .sketch-thumbnail .medium-wordmark { display: none; }
+.sketch-workspace[data-sketch-layout="overlay"] .sketch-thumbnail { padding: .5rem; }
+.sketch-workspace[data-compact-sketch="true"][data-sketch-layout="overlay"] .poser2-back {
+  left: calc(var(--canvas-card-inset) + 7.25rem);
+  top: var(--workspace-control-offset);
+}
+.sketch-workspace[data-compact-sketch="true"][data-sketch-layout="overlay"] .poser-tabs {
+  left: 50%; right: auto; transform: translateX(-50%);
+}
+.sketch-workspace[data-compact-sketch="true"][data-sketch-layout="overlay"] .poser2-dock-position {
+  left: var(--workspace-control-offset);
+  right: var(--workspace-control-offset);
+}
+@media (max-width: 700px) {
+  .sketch-workspace[data-compact-sketch="true"][data-sketch-layout="overlay"] {
+    --thumbnail-width: clamp(104px, 28vw, 152px);
+    --thumbnail-top: calc(var(--workspace-control-offset) + 2 * var(--workspace-pill-height) + 2rem);
+  }
+  .compact-sketch-title { left: calc(var(--canvas-card-inset) + .75rem + 1px); }
+  .sketch-workspace[data-compact-sketch="true"][data-sketch-layout="overlay"] .poser2-back {
+    left: calc(var(--canvas-card-inset) + 6.5rem);
+  }
+  .sketch-workspace[data-compact-sketch="true"][data-sketch-layout="overlay"] .poser-tabs {
+    top: calc(var(--workspace-control-offset) + var(--workspace-pill-height) + .75rem);
+    left: auto; right: var(--canvas-card-inset); transform: none;
+  }
+}
+
+/* Continuous overlay geometry, isolated from the reversible split experiment. */
+.sketch-workspace[data-sketch-layout="overlay"] {
+  --sketch-motion: 480ms cubic-bezier(.22, 1, .36, 1);
+  --thumbnail-top: calc(var(--workspace-control-offset) + var(--workspace-pill-height) + 1.25rem);
+  --thumbnail-width: clamp(160px, 18vw, 232px);
+  --expanded-edge: calc((100% - var(--divider-width)) * var(--split-ratio));
+}
+.sketch-workspace[data-sketch-layout="overlay"] > .sketch-pane {
+  position: absolute; margin: 0;
+  inset: var(--canvas-card-inset) auto auto var(--canvas-card-inset);
+  width: calc(var(--expanded-edge) - var(--canvas-card-inset));
+  height: calc(100% - 2 * var(--canvas-card-inset));
+  z-index: 22;
+  transition: top var(--sketch-motion), width var(--sketch-motion), height var(--sketch-motion), border-radius var(--sketch-motion);
+}
+.sketch-workspace[data-sketch-layout="overlay"] > .preview-pane {
+  position: absolute; inset: 0 0 0 calc(var(--expanded-edge) + var(--divider-width));
+  width: auto; height: 100%;
+  transition: left var(--sketch-motion);
+}
+.sketch-workspace[data-sketch-layout="overlay"] > .workspace-divider {
+  position: absolute; top: 0; bottom: 0; left: var(--expanded-edge); width: var(--divider-width);
+}
+.sketch-workspace[data-compact-sketch="true"][data-sketch-layout="overlay"] > .sketch-pane {
+  top: var(--thumbnail-top); width: var(--thumbnail-width); height: min(var(--thumbnail-width), 32dvh);
+}
+.sketch-workspace[data-compact-sketch="true"][data-sketch-layout="overlay"] > .preview-pane { left: 0; width: auto; }
+.sketch-workspace[data-sketch-layout="overlay"] .sketch-thumbnail {
+  padding: 0; background: transparent; opacity: 0; pointer-events: none;
+}
+.sketch-workspace[data-sketch-layout="overlay"] .sketch-thumbnail img {
+  position: absolute; left: var(--ink-x); top: var(--ink-y);
+  width: var(--ink-size); height: var(--ink-size); max-width: none;
+  transition: left var(--sketch-motion), top var(--sketch-motion), width var(--sketch-motion), height var(--sketch-motion);
+}
+.sketch-workspace[data-compact-sketch="true"][data-sketch-layout="overlay"] .sketch-thumbnail { opacity: 1; pointer-events: auto; }
+.sketch-workspace[data-compact-sketch="true"][data-sketch-layout="overlay"] .sketch-thumbnail img {
+  left: .5rem; top: .5rem; width: calc(100% - 1rem); height: calc(100% - 1rem);
+}
+.sketch-workspace[data-expanding-sketch="true"][data-sketch-layout="overlay"] .sketch-thumbnail { opacity: 1; }
+.sketch-workspace[data-expanding-sketch="true"][data-sketch-layout="overlay"] .sketch-editor-host { visibility: hidden; opacity: 0; pointer-events: none; }
+.sketch-workspace[data-compact-sketch="true"][data-sketch-layout="overlay"] .poser2-back {
+  left: calc(50% - 13rem);
+  transition: left var(--sketch-motion);
+}
+.sketch-workspace[data-sketch-layout="overlay"] .poser-tabs { transition: left var(--sketch-motion); }
+@media (max-width: 700px) {
+  .sketch-workspace[data-sketch-layout="overlay"] {
+    --thumbnail-width: clamp(104px, 28vw, 152px);
+    --thumbnail-top: calc(var(--workspace-control-offset) + 2 * var(--workspace-pill-height) + 2rem);
+  }
+  .sketch-workspace[data-compact-sketch="true"][data-sketch-layout="overlay"] .poser2-back {
+    top: calc(var(--workspace-control-offset) + var(--workspace-pill-height) + .75rem);
+    left: max(var(--canvas-card-inset), calc(100% - var(--canvas-card-inset) - 18.75rem));
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .sketch-workspace[data-sketch-layout="overlay"] { --sketch-motion: 0ms linear; }
+}
+
+.sketch-workspace[data-sketch-layout="overlay"] .poser2-back { transition: left var(--sketch-motion); }
+.sketch-workspace[data-compact-sketch="false"][data-sketch-layout="split"] .sketch-thumbnail { display: none; }
+.sketch-workspace[data-sketch-layout="overlay"][data-resizing="true"] > :is(.sketch-pane, .preview-pane) { transition: none; }
+
+/* Broad glass-like diffusion: retain artwork color and taper well beyond the title. */
+.compact-sketch-title { isolation: isolate; }
+.compact-sketch-title::before {
+  content: ''; position: absolute; inset: -3.5rem -5rem;
+  z-index: -1;
+  background: rgb(245 248 250 / .18);
+  -webkit-mask-image: radial-gradient(ellipse 50% 50% at center, #000 0%, rgb(0 0 0 / .92) 22%, rgb(0 0 0 / .55) 48%, rgb(0 0 0 / .18) 74%, transparent 100%);
+  mask-image: radial-gradient(ellipse 50% 50% at center, #000 0%, rgb(0 0 0 / .92) 22%, rgb(0 0 0 / .55) 48%, rgb(0 0 0 / .18) 74%, transparent 100%);
+  -webkit-backdrop-filter: blur(30px) saturate(135%) brightness(1.12);
+  backdrop-filter: blur(30px) saturate(135%) brightness(1.12);
+  pointer-events: none;
+}
