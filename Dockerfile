@@ -1,8 +1,16 @@
+FROM python:3.11-slim-bookworm AS assets
+# Fetch the public, immutable dataset on the builder instead of uploading 710 MB
+# from the laptop for every deployment. Update this revision when data changes.
+ARG POSER_ASSET_REVISION=462a54f5c24cb00aa7a44c73204e391a2cbff6aa
+WORKDIR /assets
+RUN python -c "import os,tarfile,urllib.request; r=os.environ['POSER_ASSET_REVISION']; u='https://codeload.github.com/NehaSajja/Poser/tar.gz/'+r; t=tarfile.open(fileobj=urllib.request.urlopen(u,timeout=180),mode='r|gz'); prefix='Poser-'+r+'/data/'; [(setattr(m,'name',m.name[len(prefix):]),t.extract(m,path='data',filter='data')) for m in t if m.name.startswith(prefix) and m.name != prefix]"
+
 FROM node:24-bookworm-slim AS web
 WORKDIR /app
 COPY package*.json ./
 RUN npm ci
 COPY . .
+COPY --from=assets /assets/data ./data
 # Only the browser-safe license is a build argument. API keys are runtime secrets.
 ARG VITE_TLDRAW_LICENSE_KEY
 RUN npm run build
@@ -21,7 +29,7 @@ COPY --from=web /app/dist ./dist
 COPY --from=web /app/.local/met-art/mobileclip-s1.safetensors /opt/poser/mobileclip-s1.safetensors
 COPY server ./server
 COPY src ./src
-COPY data ./data
+COPY --from=assets /assets/data ./data
 COPY tools/met-art ./tools/met-art
 COPY scripts ./scripts
 COPY package.json ./package.json

@@ -41,7 +41,7 @@ const server = http.createServer(async (req, res) => {
   if (path === '/healthz' && req.method === 'GET') return json(res, 200, { ok: true });
   if (production && path.startsWith('/api/')) {
     if (!isAllowedRequest(req, origins)) return json(res, 403, { error: 'Invalid origin.' });
-    if (req.method === 'POST' && !allowVisitor(clientAddress(req, process.env.TRUST_RAILWAY_PROXY === 'true'))) {
+    if (req.method === 'POST' && !allowVisitor(clientAddress(req, process.env.TRUST_PROXY === 'fly' ? 'fly' : process.env.TRUST_RAILWAY_PROXY === 'true'))) {
       res.setHeader('Retry-After', '60');
       return json(res, 429, { error: 'Please pause a moment before searching again.' });
     }

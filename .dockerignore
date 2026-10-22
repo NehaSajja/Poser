@@ -12,3 +12,4 @@ __pycache__
 output
 deployment/assets
 public/deployed
+data

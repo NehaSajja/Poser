@@ -1,51 +1,42 @@
-# Railway deployment
+# Poser class demo on Fly.io
 
-The deployment branch packages the existing app without changing its UI. Node serves the built React app and public API; the Python reference service stays on loopback inside the same container. Three.js renders on the visitor's device. Use **one replica**: jobs, request throttles, and file-based quota counters are not distributed.
+This is a class demonstration and limited classmate test, not a commercial product launch. Fly.io is the active deployment target; the [Railway setup](railway.md) remains available as a fallback. The existing local app and main branch remain unchanged while the hosted build is tested.
 
-## Current validation and release constraints
+## Architecture and configuration
 
-- Production web build and local production HTTP checks pass, including a real model, pose preview/index, and a cached historical result.
-- The complete MobileCLIP/index check passes locally: 99,117 eligible artworks. macOS peak resident memory was about 2.5 GiB. Start the hosted test with a 4 GB memory ceiling; this is a starting estimate, not a Linux benchmark or a price quote.
-- Docker is not installed on the preparation Mac. The first Linux image build and hosted end-to-end test remain required. The Docker build validates the real model/index without making paid API requests.
-- The bundled MobileCLIP license explicitly excludes product development and commercial use. See `data/met-art/LICENSE-MOBILECLIP.txt`. A public product needs an appropriate license or a replacement model/index. No license entitlement is implied by deployment support.
-- The bundled character meshes/poses originate from PoseMyArt; `data/README.md` does not grant redistribution rights. Confirm those rights for the intended public release. The GT Maru webfont and tldraw domain license also need to cover the deployed site.
+`Dockerfile` packages Node, Python, CPU-only PyTorch, the web build, and the pose/artwork indexes. The builder downloads the public dataset from a pinned GitHub commit (`POSER_ASSET_REVISION`), avoiding a 710 MB laptop upload on every deploy. Update that revision when the committed dataset changes; local `data/` edits are excluded from the container build. Node serves the app and starts the Python search process on loopback. The browser renders the 3D models. `fly.toml` configures:
 
-## Account and service setup
+- One shared-CPU machine, 2 CPUs / 4 GB RAM, in Ashburn (`iad`). The Mac index verification peaked around 2.5 GiB; measure Linux memory during the hosted test.
+- HTTPS with automatic start and stop when idle. First use after a stop can be slower. Active reference jobs are polled by the client; leaving the app may let an unfinished job stop, but no request is automatically resubmitted on restart.
+- One persistent `poser_data` volume mounted at `/data`, initially 1 GB, for cached artwork/results and daily request allowances. Read-only indexes and weights are in the image outside the volume.
+- A `/healthz` check. This checks the web process; the Docker build separately validates the real artwork index and local image/text encoder without paid API calls.
+- Explicit origin validation for `https://${FLY_APP_NAME}.fly.dev`. Set `PUBLIC_ORIGIN` for an additional custom domain. `TRUST_PROXY=fly` uses the Fly edge's `Fly-Client-IP` header for per-visitor limits; do not expose this server directly with that setting.
 
-1. Create/sign into Railway. Connect `NehaSajja/Poser` and select branch `deploy/railway` for the preview. Review the GitHub permission scope; grant access only to this repository where possible.
-2. Railway detects `Dockerfile` and `railway.json`. Do not add an npm-only start command: the Docker command starts Node with Python installed alongside it.
-3. Attach a persistent volume at **`/data`**, initially 1 GB. Keep one replica. The volume holds result/image caches and daily API attempt counters. Model weights and read-only indexes are baked into the image, outside this mount. Monitor disk use and expand or prune image caches as needed; preserve `/data/usage`.
-4. Set the following variables in Railway. Keep all API keys out of Git and Docker build arguments.
+Use **one machine/replica**. Jobs, request throttling, and quota counters are not distributed. Pass `--ha=false` to `fly deploy` to prevent creation of a standby machine.
 
-| Variable | Value / purpose |
-| --- | --- |
-| `GEMINI_API_KEY` | Private runtime key for pose search and reference comparison |
-| `VITE_TLDRAW_LICENSE_KEY` | Browser-safe license supplied at **build time**; rebuilding is required after changing it |
-| `TRUST_RAILWAY_PROXY` | `true`, only when the public entry point is Railway's HTTP edge |
-| `DAILY_NODE_API_CALLS` | Start at `250` actual attempts/day across Gemini sketch calls and optional Wireframe calls |
-| `DAILY_REFERENCE_API_CALLS` | Start at `100` actual Gemini comparison attempts/day, including retries |
-| `REQUESTS_PER_MINUTE` | `12` POST submissions/minute/client IP |
-| `OPENAI_API_KEY` | Optional; only for Wireframe, unnecessary for Poser |
-| `DECISIONS_PROVIDER`, `DECISIONS_MODEL` | Only needed for Wireframe; preserve approved working values |
+## Account setup and first deployment
 
-The image supplies `NODE_ENV=production`, `HOST=0.0.0.0`, `POSER_DATA_DIR=/data`, `MET_MODEL_PATH`, `MET_PYTHON`, and conservative worker counts. Let Railway supply `PORT`. Do **not** add `FAL_KEY`: legacy generation endpoints are disabled in production.
+Install the official Fly CLI, then use `fly auth login` and approve the generated link in your own browser. The class demo can initially be tested on Fly's trial, subject to the account's eligibility and actual limits shown in the dashboard. The documented trial has 2 total VM hours / 7 days, up to 4 GB RAM, and automatically stops machines after 5 minutes. The trial stop also applies to the remote builder: an interrupted first build can be retried to reuse completed cached layers. This is for testing, not a promise of a permanently free URL.
 
-5. Generate a Railway HTTPS domain. The API accepts the host from Railway's `RAILWAY_PUBLIC_DOMAIN` automatically. For a custom domain also set `PUBLIC_ORIGIN=https://your-domain.example` with no path. No wildcard origins. If Railway assigns the domain after the first build, redeploy so the runtime receives it.
-6. Set a host spending limit and alert in Railway before sharing. Request allowances are not dollar estimates and do not control charges elsewhere. Configure provider-side quotas/budgets separately. Reaching a host spending limit can take the site offline. No recurring hosting subscription was purchased during preparation.
-7. Keep the preview unshared until the license/asset questions and hosted checks are resolved. After validation, merge the deployment branch to `main` and switch Railway to that branch for subsequent deploys.
+1. Reserve an available app name in the signed-in user's organization and put that name in `fly.toml`. App creation does not itself start a machine.
+2. Create one volume: `fly volumes create poser_data --region iad --size 1 --app APP_NAME`.
+3. Store `GEMINI_API_KEY` as a **Fly runtime secret** using `fly secrets import --stage`. Supply secrets through stdin, not command-line arguments or committed files. No `FAL_KEY` is needed; old generation endpoints are disabled in production. `OPENAI_API_KEY` is optional and only needed for Wireframe.
+4. Pass the browser-safe `VITE_TLDRAW_LICENSE_KEY` as a build argument. This license appears in the browser bundle; API keys must never be build arguments.
+5. Deploy using `fly deploy --remote-only --depot=false --ha=false`. The Fly remote builder avoids requiring Docker on the user's Mac and opts out of Depot. Keep local credentials and caches excluded by `.dockerignore`.
+6. Test drawing → matching poses → selection/orbit/rig/light → historical references. Check two visitors, startup after idle, and persistence after a restart. Inspect actual memory and provider usage before raising limits.
 
-Railway references: [Docker](https://docs.railway.com/builds/dockerfiles), [volumes](https://docs.railway.com/volumes), [public networking](https://docs.railway.com/networking/public-networking), [cost control](https://docs.railway.com/pricing/cost-control).
+Do not purchase a paid plan, add payment details, or add extra machines without an agreed budget. If the trial ends, the app stops until billing is configured. Automatic stopping reduces runtime costs after billing is enabled; stored volumes and stopped-machine storage can still accrue charges. No infrastructure setting controls separate Gemini charges.
 
-## What the limits do
+## Demo usage limits
 
-- Counters reserve an attempt **before** calling a paid provider. Failures and retries count. UTC midnight resets the allowance; restarting/redeploying does not reset it when `/data` persists. A corrupt ledger fails closed.
-- Node's allowance covers both sketch captioning/embedding and optional Wireframe recognition. A normal uncached sketch uses two calls; an unreadable sketch may use one.
-- The Python allowance counts each visual-comparison HTTP attempt. One artwork search can make multiple calls. Cached results need none and remain usable after the allowance is exhausted.
-- At most one reference search runs at a time and at most four are active/queued. Visitor throttling covers POST submissions; model downloads and result polling remain available.
-- IP throttling is a coarse demo protection, not authentication. Shared networks can share a limit. The persisted global allowances are the final limit even if clients change IPs.
-- Lower allowances to zero to stop new paid calls. These are request counts, **not** a financial meter or guaranteed dollar spending cap. No IP addresses are stored on disk by the limiter.
+- `DAILY_NODE_API_CALLS=250`: combined actual provider attempts for sketch captioning/embedding and optional Wireframe recognition. A normal uncached sketch uses two calls.
+- `DAILY_REFERENCE_API_CALLS=100`: actual Gemini artwork-comparison attempts, including retries. One reference search can use several calls.
+- `REQUESTS_PER_MINUTE=12`: submitted POST requests per visitor IP.
+- One running reference search, at most four active/queued jobs, conservative image/comparison worker counts.
 
-## Checks
+Counters reserve before calls and persist under `/data/usage`. They reset at UTC midnight, not on restart. Failed calls count. Invalid/corrupt ledgers fail closed. Cached historical results require no provider calls and remain available after the daily allowance is reached. These limits count requests, not dollars; they are **not a financial meter or guaranteed spending cap**. Zero stops new paid calls. Preserve the usage directory when managing caches. IP limits are coarse; shared networks share a limit. No IPs are persisted by the limiter.
+
+## Validation
 
 ```sh
 npm ci
@@ -53,21 +44,17 @@ npm run build
 npm test
 python3 tools/met-art/test_usage.py
 node scripts/smoke-production.mjs
+fly config validate --strict --app APP_NAME
 ```
 
-The smoke script starts a separate production server on ports 4347/4348, checks public-domain origin enforcement and real pose/model routes, blocks all paid calls, and cleans up. Set `SMOKE_PORT` if those ports are occupied. To also exercise the Python cache path, supply `MET_PYTHON`, `MET_MODEL_PATH`, and `MET_SMOKE_CACHE` pointing at a valid existing cached reference JSON. It never reads the normal app's API keys.
+The smoke script uses ports 4347/4348, serves the production build and real pose assets, tests origin checks, and disables paid requests. `MET_PYTHON`, `MET_MODEL_PATH`, and `MET_SMOKE_CACHE` can optionally point at an installed local interpreter/model and a cached result to also test the Python cache path.
 
-With Docker installed:
+The prepared local build, full JavaScript suite, Python quota tests, actual 99,117-artwork encoding check, and production smoke checks passed before cloud setup. The first hosted Linux build and live-provider end-to-end checks still need confirmation. No Linux CI success is claimed: GitHub rejected the optional workflow upload because the existing OAuth login lacks workflow scope. Fly's remote builder can validate the image without changing GitHub permissions.
 
-```sh
-docker build --build-arg VITE_TLDRAW_LICENSE_KEY -t poser .
-docker run --rm -p 8080:8080 --mount type=volume,src=poser-data,dst=/data \
-  -e PUBLIC_ORIGIN=http://localhost:8080 -e GEMINI_API_KEY \
-  -e DAILY_NODE_API_CALLS=250 -e DAILY_REFERENCE_API_CALLS=100 poser
-```
+## Data and credentials
 
-Export the license/key in your own shell first; do not paste secrets into tracked files. API secrets are only supplied to the running container. `VITE_` variables are included in the public browser bundle.
+Drawings remain in each visitor's browser, with sketches sent to the configured provider during search. There is no account or cloud document sync. The Docker build excludes local environment files, drawings, result caches, and generated model history.
 
-After deployment, check `/healthz`, drawing-to-pose search, model selection/orbit/rig, historical results, two concurrent visitors, and a restart. The health endpoint checks the Node process; the Docker build validates the packaged index. It does not certify that an API key or provider billing works. Inspect actual Railway RAM/CPU and provider dashboards after the test before setting an ongoing budget.
+Retain bundled attributions and license notices. MobileCLIP has research-only restrictions, including exclusions for product development/commercial use; PoseMyArt asset redistribution is not granted by this repository. The owner specified class-demo use; that scope statement is not a legal conclusion or additional license grant. tldraw's license must cover the hosted domain, and the supplied webfonts must be licensed for the intended use.
 
-Drawings stay in each visitor's browser. Sketches are sent to the configured model provider for search; the app has no account or cloud document sync. No existing private drawings, API keys, or local generated-model history are included in the Docker build.
+Official references: [configuration](https://docs.fly.io/reference/configuration), [trial](https://docs.fly.io/about/free-trial), [pricing](https://docs.fly.io/about/pricing), [proxy headers](https://docs.fly.io/networking/request-headers).

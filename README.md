@@ -11,7 +11,7 @@ Each medium keeps its own drawing page and camera. The expanded workspace uses a
 
 ## Deploy
 
-See [the Railway deployment guide](deployment/README.md) for the Docker configuration, persistent storage, request allowances, verification steps, and unresolved asset-license requirements. Deployment work is isolated on `deploy/railway` until the hosted build has been checked.
+See [the class-demo deployment guide](deployment/README.md) for the Docker configuration, persistent storage, request allowances, verification steps, and unresolved asset-license requirements. Deployment work is isolated on `deploy/fly` until the hosted build has been checked. Fly.io is the active target; the earlier Railway configuration is retained as a fallback.
 
 ## Run locally
 

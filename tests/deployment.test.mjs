@@ -47,3 +47,14 @@ test('exhausted allowance blocks the provider before any network call', async ()
     fetcher:()=>assert.fail('Provider must not be called'),
   }),{status:429});
 });
+
+
+test('Fly domain and proxy address are trusted only when explicitly configured', () => {
+  const origins = allowedOrigins(8080, { NODE_ENV:'production', FLY_APP_NAME:'poser-class-demo' });
+  assert.deepEqual(origins, ['https://poser-class-demo.fly.dev']);
+  assert.ok(isAllowedRequest({headers:{host:'poser-class-demo.fly.dev',origin:'https://poser-class-demo.fly.dev'}}, origins));
+  const req={headers:{'fly-client-ip':'192.0.2.2','x-real-ip':'192.0.2.3'},socket:{remoteAddress:'127.0.0.1'}};
+  assert.equal(clientAddress(req,'fly'),'192.0.2.2');
+  assert.equal(clientAddress(req),'127.0.0.1');
+  req.headers['fly-client-ip']='invalid';assert.equal(clientAddress(req,'fly'),'127.0.0.1');
+});

@@ -30,9 +30,10 @@ export function createDailyQuota({ file, limit, now = () => new Date() }) {
   };
 }
 
-export function clientAddress(req, trustRailway = false) {
-  const address = req.headers['x-real-ip'];
-  return trustRailway && typeof address === 'string' && isIP(address) ? address : req.socket.remoteAddress || 'unknown';
+export function clientAddress(req, proxy = false) {
+  const header = proxy === 'fly' ? 'fly-client-ip' : 'x-real-ip';
+  const address = req.headers[header];
+  return proxy && typeof address === 'string' && isIP(address) ? address : req.socket.remoteAddress || 'unknown';
 }
 export function createVisitorLimiter({ limit = 12, windowMs = 60_000, now = Date.now, maxVisitors = 10_000 } = {}) {
   const visitors = new Map();
