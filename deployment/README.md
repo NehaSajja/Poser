@@ -6,7 +6,7 @@ This is a class demonstration and limited classmate test, not a commercial produ
 
 `Dockerfile` packages Node, Python, CPU-only PyTorch, the web build, and the pose/artwork indexes. The builder downloads the public dataset from a pinned GitHub commit (`POSER_ASSET_REVISION`), avoiding a 710 MB laptop upload on every deploy. Update that revision when the committed dataset changes; local `data/` edits are excluded from the container build. Node serves the app and starts the Python search process on loopback. The browser renders the 3D models. `fly.toml` configures:
 
-- One shared-CPU machine, 2 CPUs / 4 GB RAM, in Ashburn (`iad`). The Mac index verification peaked around 2.5 GiB; measure Linux memory during the hosted test.
+- One shared-CPU machine, 2 CPUs / 4 GB RAM, in Ashburn (`iad`). The hosted Linux machine had roughly 2.1 GB available after warming the search model.
 - HTTPS with automatic start and stop when idle. First use after a stop can be slower. Active reference jobs are polled by the client; leaving the app may let an unfinished job stop, but no request is automatically resubmitted on restart.
 - One persistent `poser_data` volume mounted at `/data`, initially 1 GB, for cached artwork/results and daily request allowances. Read-only indexes and weights are in the image outside the volume.
 - A `/healthz` check. This checks the web process; the Docker build separately validates the real artwork index and local image/text encoder without paid API calls.
@@ -30,7 +30,7 @@ Do not purchase a paid plan, add payment details, or add extra machines without 
 ## Demo usage limits
 
 - `DAILY_NODE_API_CALLS=100`: combined actual provider attempts for sketch captioning/embedding and optional Wireframe recognition. A normal uncached sketch uses two calls.
-- `DAILY_REFERENCE_API_CALLS=100`: actual Gemini artwork-comparison attempts, including retries. One reference search can use several calls.
+- `DAILY_REFERENCE_API_CALLS=300`: actual Gemini artwork-comparison attempts, including retries. One reference search can use several calls.
 - `TOTAL_NODE_API_CALLS=200` and `TOTAL_REFERENCE_API_CALLS=300`: overall allowances across days and restarts; only an intentional configuration change extends them.
 - `REQUESTS_PER_MINUTE=12`: submitted POST requests per visitor IP.
 - Historical searches start only when the visitor opens References for a pose. Automatic four-pose background searches are disabled. An uncached search may use up to 30 six-artwork comparisons plus 45 individual audits (and bounded retries); existing cached results reuse that work.
@@ -42,7 +42,7 @@ Counters reserve before calls and persist under `/data/usage`. Daily counters re
 
 The one 2-CPU / 4-GB app in iad costs approximately $0.0353 per running hour ($25.39 per 30 days continuously running), plus $0.15/month for the 1-GB volume, stopped-machine rootfs storage, bandwidth, and separate Gemini charges. This is an estimate, not a budget cap. There is no metrics autoscaler or spare application machine. Shared IPv4 avoids a dedicated-IP charge. Auto-stop lowers idle compute costs but does not stop storage charges.
 
-Remove the temporary remote builder and its 50-GB cache after the deployment is verified; otherwise that cache alone costs roughly $7.50/month. Never delete the application volume when cleaning the builder. To stop all further service use, disable automatic starts and stop the app, or destroy the app and its storage when no longer needed. Stopping it alone leaves storage charges.
+The temporary remote builder and its 50-GB cache were removed after verification. Remove any builder created by a future deployment after verifying it; otherwise that cache alone costs roughly $7.50/month. Never delete the application volume when cleaning the builder. To stop all further service use, disable automatic starts and stop the app, or destroy the app and its storage when no longer needed. Stopping it alone leaves storage charges.
 
 ## Validation
 
@@ -57,9 +57,13 @@ fly config validate --strict --app APP_NAME
 
 The smoke script uses ports 4347/4348, serves the production build and real pose assets, tests origin checks, and disables paid requests. `MET_PYTHON`, `MET_MODEL_PATH`, and `MET_SMOKE_CACHE` can optionally point at an installed local interpreter/model and a cached result to also test the Python cache path.
 
-Verified on 2026-10-21/22: 177 JavaScript tests, two Python quota tests, local production smoke checks, and the complete Fly Linux container build passed. The Linux build loaded 99,117 eligible artworks from 259,874 metadata records and verified real MobileCLIP image/text encoding. The final image was built as `sha256:a17a4c1d5a4b234be8d2015d2e5962b13b1c4810bcd8df0e8862524b1df42ec8`.
+Live at **https://poser-neha-class-demo.fly.dev/**. Verified on 2026-10-21/22: the JavaScript suite, three Python quota tests, local production smoke checks, and the complete Fly Linux container build passed. The Linux build loaded 99,117 eligible artworks from 259,874 metadata records and verified real MobileCLIP image/text encoding.
 
-Deployment is not live yet: the trial repeatedly stopped builder `fly-builder-humming-pine-1206` after five minutes during the image upload. Completed build layers are cached, but the full registry upload did not finish. App `poser-neha-class-demo`, its 1 GB encrypted `poser_data` volume, and the explicitly approved Gemini runtime secret are prepared. No app Machine was launched. Resume the deploy after resolving the trial constraint, then perform live-provider/browser checks. Do not represent the reserved URL as working until those pass.
+Live browser checks covered drawing, pose retrieval, selecting a rendered 3D model, and historical artwork results. Historical comparisons start on opening References, not on receiving pose choices. Cached artwork results survived deployment/restart. The first uncached reference search took about 96 seconds; this is not an instant search. Health, configured pose inventory (1,361 scenes), rejection of foreign origins, and disabled legacy generation routes were checked.
+
+The reference service now retains its known live child process instead of spawning a duplicate when a health probe times out during model loading. A regression test covers slow requests without a duplicate process. The incremental repair image is `registry.fly.io/poser-neha-class-demo:deployment-01M5GSTJZ55KQHZ64GJYVBH2KC`; normal future builds use the root Dockerfile and include the fix from source.
+
+After explicit owner approval, the daily reference allowance was raised from 100 to 300; the overall reference allowance remains 300. Existing counters were preserved. The latest deployment uses one 4-GB machine and one encrypted 1-GB volume, with auto-start, auto-stop, and no spare machine. Only the approved Gemini runtime secret is configured; optional OpenAI Wireframe recognition is not enabled.
 
 No Linux CI success is claimed: GitHub rejected the optional workflow upload because the existing OAuth login lacks workflow scope. The successful Linux verification ran on Fly's remote builder instead.
 

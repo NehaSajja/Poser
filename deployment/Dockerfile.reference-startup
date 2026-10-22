@@ -1,0 +1,4 @@
+# Small, reproducible patch to the verified class-demo image. Normal subsequent
+# builds use the root Dockerfile, which includes this same source fix.
+FROM registry.fly.io/poser-neha-class-demo@sha256:fecad5a8f825e0d9d754234dbe60460b8995d3e653ad0c97196b9eda038d51e4
+COPY server/art-references/routes.mjs /app/server/art-references/routes.mjs

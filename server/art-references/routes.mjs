@@ -6,30 +6,36 @@ import { setTimeout as delay } from 'node:timers/promises';
 
 // Reuse the playground's warm index and caches. Start it on demand when the
 // application is launched on its own, without loading Python into Vite.
-export function createReferenceService(root) {
+export function createReferenceService(root, { fetcher = fetch, spawnProcess = spawn, wait = delay } = {}) {
   const base = `http://127.0.0.1:${process.env.MET_PORT || 4318}`;
-  let starting, child;
+  let starting, child, ownedReady = false;
   process.once('exit', () => child?.kill());
   async function ready() {
-    try { if ((await fetch(`${base}/api/status`, { signal: AbortSignal.timeout(1000) })).ok) return; } catch {}
+    // Loading the index can briefly delay Python's HTTP responses. A live owned
+    // process must never be replaced just because a health probe times out.
+    if (ownedReady && child && child.exitCode === null && !child.killed) return;
+    if (starting) return starting;
+    try { if ((await fetcher(`${base}/api/status`, { signal: AbortSignal.timeout(5000) })).ok) return; } catch {}
     if (!starting) starting = (async () => {
       const installed = resolve(root, '.venv', process.platform === 'win32' ? 'Scripts/python.exe' : 'bin/python');
       const python = process.env.MET_PYTHON || installed;
       if (!existsSync(python) && !process.env.MET_PYTHON) throw new Error('Run npm run setup to install reference search.');
-      child = spawn(python, ['-u', 'tools/met-art/server.py'], { cwd: root, stdio: ['ignore', 'ignore', 'inherit'] });
+      ownedReady = false;
+      const launched = child = spawnProcess(python, ['-u', 'tools/met-art/server.py'], { cwd: root, stdio: ['ignore', 'ignore', 'inherit'] });
       let failure;
-      child.once('error', error => { failure = error; });
+      launched.once('error', error => { failure = error; });
+      launched.once('exit', () => { if (child === launched) ownedReady = false; });
       for (let attempt = 0; attempt < 40; attempt++) {
-        await delay(250);
-        if (failure || child.exitCode !== null) throw new Error('Reference service could not start.');
-        try { if ((await fetch(`${base}/api/status`, { signal: AbortSignal.timeout(1000) })).ok) return; } catch {}
+        await wait(250);
+        if (failure || launched.exitCode !== null) throw new Error('Reference service could not start.');
+        try { if ((await fetcher(`${base}/api/status`, { signal: AbortSignal.timeout(5000) })).ok) { ownedReady = true; return; } } catch {}
       }
-      child.kill();
+      launched.kill();
       throw new Error('Reference service could not start.');
     })().finally(() => { starting = null; });
     return starting;
   }
-  const request = async (path, options) => { await ready(); return fetch(base + path, { ...options, signal: AbortSignal.timeout(15000) }); };
+  const request = async (path, options) => { await ready(); return fetcher(base + path, { ...options, signal: AbortSignal.timeout(30000) }); };
   request.close = () => child?.kill();
   return request;
 }
