@@ -1,0 +1,22 @@
+{
+  "pose": "Left foot ballet pose",
+  "fullSeconds": 85.54,
+  "fastSeconds": 62.79,
+  "fullComparisonPipelineSeconds": 38.51,
+  "fastComparisonPipelineSeconds": 15.34,
+  "fullResults": 30,
+  "fastResults": 9,
+  "retainedFullTop10": 4,
+  "overlapWithFullResults": 8,
+  "fullTopScore": 78.0,
+  "fastTopScore": 73,
+  "fullUsefulModelScores": 1,
+  "fastUsefulModelScores": 1,
+  "poseId": "602",
+  "view": "authored",
+  "sampleCount": 1,
+  "fastProviderAttempts": 20,
+  "referenceUsageAfter": 320,
+  "referenceTotalLimit": 340,
+  "note": "Saved full run versus one fresh fast run on the same 2-CPU/4-GB Fly machine. Both include about 47 seconds of cold retrieval/model loading. Scores and top-ten overlap are not independent accuracy metrics."
+}

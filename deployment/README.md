@@ -30,8 +30,8 @@ Do not purchase a paid plan, add payment details, or add extra machines without 
 ## Demo usage limits
 
 - `DAILY_NODE_API_CALLS=100`: combined actual provider attempts for sketch captioning/embedding and optional Wireframe recognition. A normal uncached sketch uses two calls.
-- `DAILY_REFERENCE_API_CALLS=300`: actual Gemini artwork-comparison attempts, including retries. One reference search can use several calls.
-- `TOTAL_NODE_API_CALLS=200` and `TOTAL_REFERENCE_API_CALLS=300`: overall allowances across days and restarts; only an intentional configuration change extends them.
+- `DAILY_REFERENCE_API_CALLS=340`: actual Gemini artwork-comparison attempts, including retries. One reference search can use several calls.
+- `TOTAL_NODE_API_CALLS=200` and `TOTAL_REFERENCE_API_CALLS=340`: overall allowances across days and restarts; only an intentional configuration change extends them.
 - `REQUESTS_PER_MINUTE=12`: submitted POST requests per visitor IP.
 - Historical searches start only when the visitor opens References for a pose. Automatic four-pose background searches are disabled. The active fast profile uses up to 10 six-artwork comparisons plus 10 individual audits (and bounded retries); existing cached results reuse that work. The saved full profile uses 30 batches plus 45 audits.
 - One running reference search, at most four active/queued jobs, conservative image/comparison worker counts.
@@ -77,11 +77,13 @@ The old app namespace is retained as the source of the existing private registry
 
 ## Reversible fast-reference experiment
 
-`MET_REFERENCE_PROFILE=fast` selects 60 CLIP candidates and at most 10 individual Gemini audits. It returns at most 10 verified references. `MET_REFERENCE_PROFILE=full` restores 180 candidates, 45 audits, and at most 30 results. The scoring prompt, index, ranking preferences, model, concurrency, and overall call allowance are unchanged.
+`MET_REFERENCE_PROFILE=fast` selects 60 CLIP candidates and at most 10 individual Gemini audits. It returns at most 10 verified references. `MET_REFERENCE_PROFILE=full` restores 180 candidates, 45 audits, and at most 30 results. The scoring prompt, index, ranking preferences, model, and concurrency are unchanged. The owner explicitly approved 40 additional reference calls for this experiment after the previous 300-call allowance was exhausted; the live daily and overall reference limits are now 340. Usage counters are preserved.
 
 Fast results use a separate `met-mobileclip-v6-compact-parallel-fast-60-10` cache namespace; they never reuse full-profile cache entries. Full-profile results remain on the volume and become available again on rollback. This isolates actual new tests from cached results. Reload an open browser tab after changing profiles to clear its in-memory result store.
 
 The incremental fast runtime is `registry.fly.io/poser-demo:deployment-01M5GV41S8SF87QED45HNK389Z`. Local validation passed 16 search tests, 3 quota tests, and 14 Node reference/deployment tests.
+
+Live comparison of pose 602 (left-foot ballet), authored view: saved full run **85.54 s / 30 references** versus fresh fast run **62.79 s / 9 references**. Both spent about 47 s loading/retrieving locally. Image-fetch/comparison/audit time fell from **38.513 s to 15.340 s** (about 2.5× faster for that stage; total search about 27% shorter). The first two references were retained, including the top-ranked Nude Male Runner. Four of the old top ten and eight of the old thirty appeared in the nine fast results. The smaller pool loses variety and promotes some weaker partial matches. This is one pose, not a general accuracy benchmark. The successful test used 20 provider attempts (ledger 300 → 320), leaving 20 of the approved 340 at that check. [Benchmark summary](evaluations/reference-fast.json).
 
 Rollback checkpoint: Git tag `checkpoint/references-180-45-2026-10-21` at `e7481eb`. A pre-experiment cache/counter backup is retained locally at `.local/backups/poser-before-fast-60-10.tgz`. To revert search quality, change only `MET_REFERENCE_PROFILE` to `full` in `fly.toml` and redeploy the current image. **Do not restore an older usage ledger**: experiment calls still count. The previous complete runtime image is `registry.fly.io/poser-neha-class-demo:deployment-01M5GSTJZ55KQHZ64GJYVBH2KC` if a code rollback is required.
 
