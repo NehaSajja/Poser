@@ -49,7 +49,11 @@ fly config validate --strict --app APP_NAME
 
 The smoke script uses ports 4347/4348, serves the production build and real pose assets, tests origin checks, and disables paid requests. `MET_PYTHON`, `MET_MODEL_PATH`, and `MET_SMOKE_CACHE` can optionally point at an installed local interpreter/model and a cached result to also test the Python cache path.
 
-The prepared local build, full JavaScript suite, Python quota tests, actual 99,117-artwork encoding check, and production smoke checks passed before cloud setup. The first hosted Linux build and live-provider end-to-end checks still need confirmation. No Linux CI success is claimed: GitHub rejected the optional workflow upload because the existing OAuth login lacks workflow scope. Fly's remote builder can validate the image without changing GitHub permissions.
+Verified on 2026-10-21/22: 177 JavaScript tests, two Python quota tests, local production smoke checks, and the complete Fly Linux container build passed. The Linux build loaded 99,117 eligible artworks from 259,874 metadata records and verified real MobileCLIP image/text encoding. The final image was built as `sha256:a17a4c1d5a4b234be8d2015d2e5962b13b1c4810bcd8df0e8862524b1df42ec8`.
+
+Deployment is not live yet: the trial repeatedly stopped builder `fly-builder-humming-pine-1206` after five minutes during the image upload. Completed build layers are cached, but the full registry upload did not finish. App `poser-neha-class-demo`, its 1 GB encrypted `poser_data` volume, and the explicitly approved Gemini runtime secret are prepared. No app Machine was launched. Resume the deploy after resolving the trial constraint, then perform live-provider/browser checks. Do not represent the reserved URL as working until those pass.
+
+No Linux CI success is claimed: GitHub rejected the optional workflow upload because the existing OAuth login lacks workflow scope. The successful Linux verification ran on Fly's remote builder instead.
 
 ## Data and credentials
 
