@@ -10,7 +10,7 @@ test('Poser is the default and only Wireframe remains as an alternative', () => 
   assert.equal(resolveMedium(null), 'poser2');
   assert.equal(resolveMedium('poser'), 'poser2');
   assert.equal(resolveMedium('ui'), 'ui');
-  assert.equal(MEDIUM_NAMES.poser2, 'Poser');
+  assert.equal(MEDIUM_NAMES.poser2, 'poser');
 });
 
 test('saved carousel pages retain their identity and drawings without colliding with old Poser 2', () => {

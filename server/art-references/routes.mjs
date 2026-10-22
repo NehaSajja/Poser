@@ -1,3 +1,4 @@
+import { allowedOrigins, isAllowedRequest } from '../access.mjs';
 import { spawn } from 'node:child_process';
 import { existsSync } from 'node:fs';
 import { resolve } from 'node:path';
@@ -6,7 +7,7 @@ import { setTimeout as delay } from 'node:timers/promises';
 // Reuse the playground's warm index and caches. Start it on demand when the
 // application is launched on its own, without loading Python into Vite.
 export function createReferenceService(root) {
-  const base = 'http://127.0.0.1:4318';
+  const base = `http://127.0.0.1:${process.env.MET_PORT || 4318}`;
   let starting, child;
   process.once('exit', () => child?.kill());
   async function ready() {
@@ -15,7 +16,7 @@ export function createReferenceService(root) {
       const installed = resolve(root, '.venv', process.platform === 'win32' ? 'Scripts/python.exe' : 'bin/python');
       const python = process.env.MET_PYTHON || installed;
       if (!existsSync(python) && !process.env.MET_PYTHON) throw new Error('Run npm run setup to install reference search.');
-      child = spawn(python, ['-u', 'tools/met-art/server.py'], { cwd: root, stdio: 'ignore' });
+      child = spawn(python, ['-u', 'tools/met-art/server.py'], { cwd: root, stdio: ['ignore', 'ignore', 'inherit'] });
       let failure;
       child.once('error', error => { failure = error; });
       for (let attempt = 0; attempt < 40; attempt++) {
@@ -28,15 +29,15 @@ export function createReferenceService(root) {
     })().finally(() => { starting = null; });
     return starting;
   }
-  return async (path, options) => { await ready(); return fetch(base + path, { ...options, signal: AbortSignal.timeout(15000) }); };
+  const request = async (path, options) => { await ready(); return fetch(base + path, { ...options, signal: AbortSignal.timeout(15000) }); };
+  request.close = () => child?.kill();
+  return request;
 }
 
-export function artReferenceRoutes({ port, json, request }) {
+export function artReferenceRoutes({ port, json, request, origins = allowedOrigins(port) }) {
   return async (req, res, path) => {
     if (!path.startsWith('/api/art-references/')) return false;
-    const origins = [`http://127.0.0.1:${port}`, `http://localhost:${port}`];
-    if (!origins.some(origin => new URL(origin).host === req.headers.host)
-      || req.headers['sec-fetch-site'] === 'cross-site' || (req.headers.origin && !origins.includes(req.headers.origin))) {
+    if (!isAllowedRequest(req, origins)) {
       json(res, 403, { error: 'Invalid origin.' }); return true;
     }
     try {
@@ -63,7 +64,7 @@ export function artReferenceRoutes({ port, json, request }) {
         const billingBlocked = /\b402\b|Payment Required/i.test(body.result.warning);
         json(res, 200, { status: 'error', error: billingBlocked
           ? 'Gemini returned Payment Required (402). Check the Gemini project billing or credits to enable historical comparisons.'
-          : 'References could not load. Try again.' });
+          : /demo allowance/.test(body.result.warning) ? 'Today’s reference-search allowance has been reached. Please try again tomorrow.' : 'References could not load. Try again.' });
       }
         else json(res, 200, { status: 'done', images: body.result.results.filter(row => row.poseScore >= 40).slice(0, 30)
           .map(row => ({ id: row.objectID, title: row.title, src: row.primaryImageSmall || row.primaryImage,

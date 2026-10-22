@@ -1,16 +1,16 @@
+import { allowedOrigins, isAllowedRequest } from '../access.mjs';
 import { readFile } from 'node:fs/promises';
 import { createHash } from 'node:crypto';
 import { validateSketch } from '../poser/pipeline.mjs';
 import { DATA_ROOT, loadRetrievalIndex, retrievePoses } from './search.mjs';
 import { loadRetrievalPreview } from './preview.mjs';
 
-export function poseRetrievalRoutes({ port, json, key, search = retrievePoses, loadIndex = loadRetrievalIndex, loadPreview = loadRetrievalPreview }) {
+export function poseRetrievalRoutes({ port, json, key, origins = allowedOrigins(port), beforeProviderCall = () => {}, search = retrievePoses, loadIndex = loadRetrievalIndex, loadPreview = loadRetrievalPreview }) {
   const cache = new Map(); let inFlight = 0;
   const previews = new Map();
   return async (req, res, path) => {
     if (!path.startsWith('/api/pose-retrieval/')) return false;
-    const origins = [`http://127.0.0.1:${port}`, `http://localhost:${port}`];
-    if (!origins.some(o => new URL(o).host === req.headers.host) || req.headers['sec-fetch-site'] === 'cross-site' || (req.headers.origin && !origins.includes(req.headers.origin))) {
+    if (!isAllowedRequest(req, origins)) {
       json(res, 403, { error: 'Invalid origin.' }); return true;
     }
     const controller = new AbortController(); let counted = false;
@@ -48,7 +48,7 @@ export function poseRetrievalRoutes({ port, json, key, search = retrievePoses, l
       if (cache.has(hash)) { json(res, 200, { ...cache.get(hash), cached: true }); return true; }
       if (inFlight >= 4) { json(res, 429, { error: 'Search is busy. Try again shortly.' }); return true; }
       inFlight++; counted = true;
-      const result = await search(input, { key, signal: controller.signal });
+      const result = await search(input, { key, signal: controller.signal, beforeProviderCall });
       if (!controller.signal.aborted) {
         cache.set(hash, result); while (cache.size > 32) cache.delete(cache.keys().next().value);
         json(res, 200, { ...result, cached: false });

@@ -1,12 +1,12 @@
+import { allowedOrigins, isAllowedRequest } from '../access.mjs';
 import { readFile } from 'node:fs/promises';
 import { isJobId } from './jobs.mjs';
 import { validateSketch } from './pipeline.mjs';
 
-export function poserRoutes(jobs, port, json) {
+export function poserRoutes(jobs, port, json, origins = allowedOrigins(port)) {
   return async (req, res, path) => {
     if (!path.startsWith('/api/poser/')) return false;
-    const origins = [`http://127.0.0.1:${port}`, `http://localhost:${port}`];
-    if (!origins.some(origin => new URL(origin).host === req.headers.host) || req.headers['sec-fetch-site'] === 'cross-site' || (req.headers.origin && !origins.includes(req.headers.origin))) {
+    if (!isAllowedRequest(req, origins)) {
       json(res, 403, { error: 'Invalid origin.' }); return true;
     }
     try {

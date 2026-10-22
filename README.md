@@ -9,6 +9,10 @@ The **Mediums** menu has two options:
 
 Each medium keeps its own drawing page and camera. The expanded workspace uses a fixed 50/50 split. In Poser, choosing a model smoothly collapses the drawing into a thumbnail over the full-page model or references view. Click the thumbnail to return to the split view. Drawings persist locally in the browser; there is no account or cloud document sync.
 
+## Deploy
+
+See [the Railway deployment guide](deployment/README.md) for the Docker configuration, persistent storage, request allowances, verification steps, and unresolved asset-license requirements. Deployment work is isolated on `deploy/railway` until the hosted build has been checked.
+
 ## Run locally
 
 Use Node.js 24, npm, and Python 3.11–3.13.

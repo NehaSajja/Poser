@@ -1,0 +1,14 @@
+.git
+node_modules
+dist
+.env
+.env.*
+.local
+.venv
+__pycache__
+**/__pycache__
+*.pyc
+.DS_Store
+output
+deployment/assets
+public/deployed

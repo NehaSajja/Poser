@@ -8,14 +8,18 @@ from PIL import Image, ImageOps
 
 APP=Path(__file__).resolve().parents[2]
 DATA=APP/'data/met-art/index'
-CACHE=APP/'.local/met-art/results';CACHE.mkdir(parents=True,exist_ok=True)
+RUNTIME=Path(os.environ.get('POSER_DATA_DIR',str(APP/'.local')))
+WEIGHTS=Path(os.environ.get('MET_MODEL_PATH',str(APP/'.local/met-art/mobileclip-s1.safetensors')))
+from usage import DailyQuota
+QUOTA=DailyQuota(RUNTIME/'usage/references.json',int(os.environ.get('DAILY_REFERENCE_API_CALLS','100'))) if os.environ.get('NODE_ENV')=='production' else None
+CACHE=RUNTIME/'met-art/results';CACHE.mkdir(parents=True,exist_ok=True)
 POSES=APP/'data/cloud-retrieval'
 CATALOG={str(p['id']):p for p in json.loads((POSES/'catalog.json').read_text())}
 VERSION='met-mobileclip-v6-compact-parallel'
 LEGACY_VERSION='met-mobileclip-v5-wide-highlights'
-COMPARE_POOL=ThreadPoolExecutor(max_workers=24)
-IMAGE_POOL=ThreadPoolExecutor(max_workers=32)
-IMAGE_CACHE=APP/'.local/met-art/images';IMAGE_CACHE.mkdir(parents=True,exist_ok=True)
+COMPARE_POOL=ThreadPoolExecutor(max_workers=int(os.environ.get('MET_COMPARE_WORKERS','6')))
+IMAGE_POOL=ThreadPoolExecutor(max_workers=int(os.environ.get('MET_IMAGE_WORKERS','8')))
+IMAGE_CACHE=RUNTIME/'met-art/images';IMAGE_CACHE.mkdir(parents=True,exist_ok=True)
 IMAGE_LOCKS=[threading.Lock() for _ in range(256)]
 CANDIDATE_LIMIT=180
 REFERENCE_LIMIT=30
@@ -48,6 +52,7 @@ def inline(data):return {'inlineData':{'mimeType':'image/jpeg','data':base64.b64
 
 def comparison_request(*args,**kwargs):
     for attempt in range(3):
+        if QUOTA:QUOTA.reserve()
         response=requests.post(*args,**kwargs)
         if response.status_code not in (429,502,503,504) or attempt==2:
             return response
@@ -65,8 +70,8 @@ def load():
     if len(list(DATA.glob('meta-*.json')))!=52 or len(list(DATA.glob('*.npz')))!=52:
         raise RuntimeError('Met data is still being prepared. Try again shortly.')
     import torch, open_clip
-    torch.set_num_threads(4)
-    model,_,preprocess=open_clip.create_model_and_transforms('MobileCLIP-S1',pretrained=str(APP/'.local/met-art/mobileclip-s1.safetensors'),image_mean=(0,0,0),image_std=(1,1,1),image_interpolation='bilinear')
+    torch.set_num_threads(int(os.environ.get('MET_TORCH_THREADS','2')))
+    model,_,preprocess=open_clip.create_model_and_transforms('MobileCLIP-S1',pretrained=str(WEIGHTS),image_mean=(0,0,0),image_std=(1,1,1),image_interpolation='bilinear')
     model.eval();tokenizer=open_clip.get_tokenizer('MobileCLIP-S1')
     metadata={}
     for p in sorted(DATA.glob('meta-*.json')):

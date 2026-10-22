@@ -1,3 +1,5 @@
+import { allowedOrigins, isAllowedRequest } from './access.mjs';
+import { createDailyQuota, createVisitorLimiter, clientAddress, limitValue } from './usage.mjs';
 import http from 'node:http';
 import { readFile } from 'node:fs/promises';
 import { resolve, extname, dirname } from 'node:path';
@@ -17,16 +19,34 @@ const provider = process.env.DECISIONS_PROVIDER || 'openai';
 if (!['openai','openrouter'].includes(provider)) throw new Error('DECISIONS_PROVIDER must be openai or openrouter.');
 const key = provider === 'openai' ? process.env.OPENAI_API_KEY : process.env.OPENROUTER_API_KEY;
 const port = Number(process.env.PORT || 4317);
+const production = process.env.NODE_ENV === 'production';
+const origins = allowedOrigins(port);
+const runtime = resolve(process.env.POSER_DATA_DIR || resolve(root, '.local'));
+const reserve = production ? createDailyQuota({ file: resolve(runtime, 'usage/node.json'), limit: limitValue(process.env.DAILY_NODE_API_CALLS, 250) }) : () => {};
+const allowVisitor = createVisitorLimiter({ limit: limitValue(process.env.REQUESTS_PER_MINUTE, 12) });
+const legacyGeneration = !production;
 const vite = process.env.NODE_ENV !== 'production' ? await (await import('vite')).createServer({ root, server: { middlewareMode: true }, appType: 'spa' }) : null;
 const json = (res, status, data) => { if(res.destroyed||res.writableEnded)return; res.writeHead(status, { 'Content-Type':'application/json', 'Cache-Control':'no-store' }); res.end(JSON.stringify(data)); };
-const poseJobs = await createPoseJobs({ directory: resolve(root, '.local/poser'), reference: await readFile(resolve(root, 'server/poser/body-reference.png')), geminiKey: process.env.GEMINI_API_KEY, falKey: process.env.FAL_KEY });
-const handlePoser = poserRoutes(poseJobs, port, json);
-const handlePoseAssets = poseAssetRoutes({ port, json });
-const handlePoseRetrieval = poseRetrievalRoutes({port,json,key:process.env.GEMINI_API_KEY});
-const handleArtReferences = artReferenceRoutes({ port, json, request: createReferenceService(root) });
+const poseJobs = await createPoseJobs({ directory: resolve(runtime, 'poser'), reference: await readFile(resolve(root, 'server/poser/body-reference.png')), geminiKey: process.env.GEMINI_API_KEY, falKey: process.env.FAL_KEY });
+const handlePoser = poserRoutes(poseJobs, port, json, origins);
+const handlePoseAssets = poseAssetRoutes({ port, json, origins });
+const handlePoseRetrieval = poseRetrievalRoutes({port,json,key:process.env.GEMINI_API_KEY,origins,beforeProviderCall:reserve});
+const references = createReferenceService(root);
+const handleArtReferences = artReferenceRoutes({ port, json, request: references, origins });
 let inFlight = 0;
 const server = http.createServer(async (req, res) => {
   const path = new URL(req.url, 'http://localhost').pathname;
+  res.setHeader('X-Content-Type-Options', 'nosniff');
+  res.setHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
+  if (path === '/healthz' && req.method === 'GET') return json(res, 200, { ok: true });
+  if (production && path.startsWith('/api/')) {
+    if (!isAllowedRequest(req, origins)) return json(res, 403, { error: 'Invalid origin.' });
+    if (req.method === 'POST' && !allowVisitor(clientAddress(req, process.env.TRUST_RAILWAY_PROXY === 'true'))) {
+      res.setHeader('Retry-After', '60');
+      return json(res, 429, { error: 'Please pause a moment before searching again.' });
+    }
+  }
+  if (!legacyGeneration && path.startsWith('/api/poser/')) return json(res, 404, { error: 'Not found.' });
   if (req.method === 'GET' && /^\/pose-compare\/?$/.test(path)) {
     res.writeHead(307, { Location: '/?medium=poser2' }); res.end(); return;
   }
@@ -37,7 +57,7 @@ const server = http.createServer(async (req, res) => {
   if (path === '/api/status') return json(res, 200, { configured: Boolean(key), provider, model: process.env.DECISIONS_MODEL || (provider === 'openai' ? 'gpt-6-luna' : 'typesafe/jev-1.14') });
   if (path === '/api/recognize') {
     if (req.method !== 'POST') return json(res, 405, { error: 'Use POST.' });
-    if (req.headers.origin && ![`http://localhost:${port}`, `http://127.0.0.1:${port}`].includes(req.headers.origin)) return json(res, 403, { error: 'Invalid origin.' });
+    if (!isAllowedRequest(req, origins)) return json(res, 403, { error: 'Invalid origin.' });
     if (!key) return json(res, 503, { error: 'Add your API key to .env.local, then restart the server.' });
     if (inFlight >= 3) return json(res, 429, { error: 'Recognition is busy. Try again.' });
     inFlight++;
@@ -52,6 +72,7 @@ const server = http.createServer(async (req, res) => {
       try { input = JSON.parse(body); } catch { return json(res, 400, { error: 'Invalid JSON.' }); }
       if (!validatePayload(input)) return json(res, 400, { error: 'Invalid sketch image.' });
       const result=await recognize(input,{provider,model:process.env.DECISIONS_MODEL,evaluate:async request=>{
+        reserve();
         const upstream=await fetch(provider==='openai'?'https://api.openai.com/v1/decisions':'https://openrouter.ai/api/alpha/decisions',{
           method:'POST',headers:{Authorization:`Bearer ${key}`,'Content-Type':'application/json'},
           body:JSON.stringify(request),signal:AbortSignal.any([controller.signal, AbortSignal.timeout(15000)]),
@@ -62,7 +83,7 @@ const server = http.createServer(async (req, res) => {
       json(res, 200, result);
     } catch (error) {
       const messages={401:'API key was rejected. Check .env.local.',403:'This key cannot access the Decisions API.',429:'API limit reached. Try again shortly.'};
-      json(res, 502, { error: messages[error.status] || (error.name === 'TimeoutError' ? 'Recognition timed out. Your sketch is preserved.' : 'Recognition failed. Your sketch is preserved.') }); }
+      json(res, error.status === 429 ? 429 : 502, { error: error.status === 429 && /demo allowance/.test(error.message) ? error.message : messages[error.status] || (error.name === 'TimeoutError' ? 'Recognition timed out. Your sketch is preserved.' : 'Recognition failed. Your sketch is preserved.') }); }
     finally { inFlight--; res.off('close', disconnect); req.off('aborted', disconnect); }
     return;
   }
@@ -73,7 +94,13 @@ const server = http.createServer(async (req, res) => {
     const full = resolve(root, 'dist', file);
     if (!full.startsWith(resolve(root, 'dist') + '/')) return json(res, 403, {error:'Forbidden.'});
     const bytes = await readFile(full);
-    res.writeHead(200, { 'Content-Type': { '.html':'text/html', '.js':'text/javascript', '.css':'text/css', '.svg':'image/svg+xml', '.woff2':'font/woff2' }[extname(full)] || 'application/octet-stream' }); res.end(bytes);
+    res.writeHead(200, { 'Content-Type': { '.html':'text/html', '.js':'text/javascript', '.css':'text/css', '.svg':'image/svg+xml', '.woff2':'font/woff2', '.ttf':'font/ttf', '.png':'image/png', '.jpg':'image/jpeg', '.webp':'image/webp', '.ico':'image/x-icon' }[extname(full)] || 'application/octet-stream' }); res.end(bytes);
   } catch { res.writeHead(404); res.end(); }
 });
-server.listen(port, '127.0.0.1', () => console.log(`Sketch: http://127.0.0.1:${port} · ${key ? provider : 'local shape recognition'}`));
+server.listen(port, process.env.HOST || (production ? '0.0.0.0' : '127.0.0.1'), () => console.log(`Sketch: http://127.0.0.1:${port} · ${key ? provider : 'local shape recognition'}`));
+
+for (const signal of ['SIGTERM', 'SIGINT']) process.once(signal, () => {
+  references.close();
+  server.close(() => process.exit(0));
+  setTimeout(() => process.exit(0), 10_000).unref();
+});

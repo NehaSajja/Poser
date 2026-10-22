@@ -13,7 +13,7 @@ try {
   for (const file of manifest.files) {
     if (statSync(join(bundle, file.path)).size !== file.bytes) throw new Error(`Incomplete Git asset: ${file.path}`);
   }
-  if (statSync(join(root, '.local/met-art/mobileclip-s1.safetensors')).size !== manifest.model.bytes) throw new Error('Model needs assembly.');
+  if (statSync(process.env.MET_MODEL_PATH || join(root, '.local/met-art/mobileclip-s1.safetensors')).size !== manifest.model.bytes) throw new Error('Model needs assembly.');
   if (!process.env.MET_PYTHON && !existsSync(join(root, '.venv', process.platform === 'win32' ? 'Scripts/python.exe' : 'bin/python'))) {
     throw new Error('Python environment is missing.');
   }

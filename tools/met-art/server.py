@@ -1,12 +1,12 @@
 """Loopback-only reference service and playground, shared with the Poser application."""
 from http.server import ThreadingHTTPServer,BaseHTTPRequestHandler
 from urllib.parse import urlparse,parse_qs
-import json,threading,uuid,traceback
+import json,threading,uuid,traceback,os
 from pathlib import Path
 import search
 from concurrent.futures import ThreadPoolExecutor
 JOBS={};JOBS_LOCK=threading.Lock()
-WORKERS=ThreadPoolExecutor(max_workers=4)
+WORKERS=ThreadPoolExecutor(max_workers=int(os.environ.get('MET_SEARCH_WORKERS','1')))
 FEATURED=['1010','1176','1321','1351','201','1343','2273','2599','2933']
 class Handler(BaseHTTPRequestHandler):
     def send(self,data,status=200,mime='application/json'):
@@ -20,7 +20,7 @@ class Handler(BaseHTTPRequestHandler):
                 weight='Regular' if url.path.endswith('regular') else 'Bold'
                 return self.send((search.APP/'public/fonts/gt-maru'/f'GTMaru{weight}.ttf').read_bytes(),mime='font/ttf')
             if url.path=='/api/poses':return self.send({'featured':FEATURED,'poses':[{'id':p['id'],'name':p['name'],'description':p.get('description','')} for p in search.CATALOG.values()]})
-            if url.path=='/api/status':return self.send({'vectors':len(list(search.DATA.glob('*.npz'))),'metadata':len(list(search.DATA.glob('meta-*.json'))),'model':(search.APP/'.local/met-art/mobileclip-s1.safetensors').exists()})
+            if url.path=='/api/status':return self.send({'vectors':len(list(search.DATA.glob('*.npz'))),'metadata':len(list(search.DATA.glob('meta-*.json'))),'model':search.WEIGHTS.exists()})
             if url.path.startswith('/pose/'):
                 key=url.path.split('/')[-1];pose,view=key.rsplit('-',1)
                 if pose not in search.CATALOG or view not in ['authored','front']:raise ValueError('Unknown pose')
@@ -44,7 +44,7 @@ class Handler(BaseHTTPRequestHandler):
                 # Cached poses stay available even while another pose is being compared.
                 cached=search.cached_result(pose,view,mode)
                 active=sum(value['status'] in ('queued','running') for value in JOBS.values())
-                if active>=12 and cached is None:return self.send({'error':'Reference queue is full. Try shortly.'},409)
+                if active>=int(os.environ.get('MET_QUEUE_LIMIT','4')) and cached is None:return self.send({'error':'Reference queue is full. Try shortly.'},409)
                 for old in list(JOBS):
                     if len(JOBS)<32:break
                     if JOBS[old]['status'] not in ('queued','running'):JOBS.pop(old)
@@ -63,4 +63,4 @@ class Handler(BaseHTTPRequestHandler):
         except Exception as e:return self.send({'error':str(e)},400)
 if __name__=='__main__':
     print('Met pose playground: http://127.0.0.1:4318',flush=True)
-    ThreadingHTTPServer(('127.0.0.1',4318),Handler).serve_forever()
+    ThreadingHTTPServer(('127.0.0.1',int(os.environ.get('MET_PORT','4318'))),Handler).serve_forever()

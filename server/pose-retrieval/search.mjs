@@ -40,10 +40,11 @@ export function rankLibraryPoses(index, values, limit = 6) {
   return [...best.values()].sort((a, b) => b.score - a.score).slice(0, limit);
 }
 
-export async function retrievePoses({ sketch }, { key, signal, fetcher = fetch, loadIndex = loadRetrievalIndex }) {
+export async function retrievePoses({ sketch }, { key, signal, fetcher = fetch, loadIndex = loadRetrievalIndex, beforeProviderCall = () => {} }) {
   const start = performance.now(), index = await loadIndex();
   signal?.throwIfAborted();
   async function call(model, operation, body) {
+    beforeProviderCall();
     const response = await fetcher(`https://generativelanguage.googleapis.com/v1beta/models/${model}:${operation}`, {
       method: 'POST', redirect: 'error', headers: { 'Content-Type': 'application/json', 'x-goog-api-key': key },
       body: JSON.stringify(body), signal: AbortSignal.any([signal || new AbortController().signal, AbortSignal.timeout(25000)]),
