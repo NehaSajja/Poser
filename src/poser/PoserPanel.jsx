@@ -1,6 +1,7 @@
 import { lazy, Suspense, useRef, useState } from 'react';
 import { Poser2Thumbnails } from '../poser2/PoseThumbnails';
 import { topReferencePose } from './references/client';
+import { referenceStore } from './references/store';
 import './references/references.css';
 import PoseTabs from './PoseTabs';
 import { BackIcon } from '../tldraw/drawesome/ToolbarIcons';
@@ -22,7 +23,12 @@ export default function PoserPanel({ pose, onPoseSelect }) {
     }}><BackIcon/></button>}
     <div className="poser-panel-view" id="poser-view-model" role="tabpanel" aria-labelledby="poser-tab-model"
       data-hidden={tab !== 'model'} aria-hidden={tab !== 'model'} inert={tab !== 'model'}>
-      <Poser2Thumbnails ref={models} pose={pose} onReadyChange={setModelsReady} onSelect={item => { setChoice(item ? { data: pose.data, item } : null); onPoseSelect?.(item); }}/>
+      <Poser2Thumbnails ref={models} pose={pose} onReadyChange={setModelsReady} onSelect={item => {
+        setChoice(item ? { data: pose.data, item } : null);
+        // Start only the chosen pose; References subscribes to this same job.
+        if (item) referenceStore.ensure(topReferencePose({ results: [item] }));
+        onPoseSelect?.(item);
+      }}/>
     </div>
     <div className="poser-panel-view" id="poser-view-references" role="tabpanel" aria-labelledby="poser-tab-references"
       data-hidden={tab !== 'references'} aria-hidden={tab !== 'references'} inert={tab !== 'references'}>

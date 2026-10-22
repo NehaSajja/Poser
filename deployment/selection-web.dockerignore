@@ -1,0 +1,11 @@
+**
+!Dockerfile
+!dist/
+!dist/**
+!src/
+!src/poser/
+!src/poser/PoserPanel.jsx
+!src/poser/references/
+!src/poser/references/store.js
+!deployment/
+!deployment/Dockerfile.selection-preload

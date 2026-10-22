@@ -1,0 +1,7 @@
+# Deploy the locally verified, licensed web build without rebuilding ML assets.
+# Stage dist, these two source files, and this Dockerfile in a web-only context.
+# Use selection-web.dockerignore as that context's .dockerignore.
+FROM registry.fly.io/poser-demo@sha256:d4b3aed19bfebfa934bb4c35b6efeb19505b0e34101ac3189dbc4836cdcf91a9
+COPY dist /app/dist
+COPY src/poser/PoserPanel.jsx /app/src/poser/PoserPanel.jsx
+COPY src/poser/references/store.js /app/src/poser/references/store.js

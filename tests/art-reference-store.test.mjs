@@ -2,6 +2,26 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { createReferenceStore } from '../src/poser/references/store.js';
 import { createReferenceLayout, visibleReferenceTiles } from '../src/poser/references/layout.js';
+import { topReferencePose } from '../src/poser/references/client.js';
+
+test('selection starts only the chosen pose and opening References reuses its job and result', async () => {
+  const calls = [];
+  let finish;
+  const store = createReferenceStore(query => {
+    calls.push(query.key);
+    return new Promise(resolve => { finish = resolve; });
+  });
+  const query = topReferencePose({ results: [{ key: '602-authored' }] });
+  const selected = store.ensure(query);
+  assert.deepEqual(calls, ['602-authored']);
+  assert.equal(selected.listeners.size, 0); // References has not opened yet.
+  assert.equal(store.ensure(query), selected);
+  finish([{ id: 'artwork' }]); await selected.promise;
+  assert.equal(store.ensure(query), selected);
+  assert.deepEqual(store.get(query.key).state.images, [{ id: 'artwork' }]);
+  assert.equal(store.ensure(null), null);
+  assert.equal(calls.length, 1);
+});
 
 test('prefetch requests four distinct poses at once and selection shares the in-flight work', async () => {
   const calls = [], resolvers = [];

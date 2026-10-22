@@ -1,6 +1,6 @@
 import { requestReferences, topReferencePose } from './client.js';
 
-// One request per pose/camera, shared by the foreground and four-pose prefetch.
+// One request per pose/camera, shared by selection preloading and References.
 // Unsubscribing a view does not discard useful work already running for that set.
 export function createReferenceStore(request = requestReferences) {
   const entries = new Map();
