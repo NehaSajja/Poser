@@ -64,7 +64,7 @@ export function artReferenceRoutes({ port, json, request, origins = allowedOrigi
         const billingBlocked = /\b402\b|Payment Required/i.test(body.result.warning);
         json(res, 200, { status: 'error', error: billingBlocked
           ? 'Gemini returned Payment Required (402). Check the Gemini project billing or credits to enable historical comparisons.'
-          : /demo allowance/.test(body.result.warning) ? 'Today’s reference-search allowance has been reached. Please try again tomorrow.' : 'References could not load. Try again.' });
+          : /overall demo allowance/.test(body.result.warning) ? 'The demo’s reference-search allowance has been reached. Ask the owner to extend it.' : /demo allowance/.test(body.result.warning) ? 'Today’s reference-search allowance has been reached. Please try again tomorrow.' : 'References could not load. Try again.' });
       }
         else json(res, 200, { status: 'done', images: body.result.results.filter(row => row.poseScore >= 40).slice(0, 30)
           .map(row => ({ id: row.objectID, title: row.title, src: row.primaryImageSmall || row.primaryImage,

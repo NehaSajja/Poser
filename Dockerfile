@@ -36,7 +36,8 @@ COPY package.json ./package.json
 ENV NODE_ENV=production HOST=0.0.0.0 PORT=8080 \
     POSER_DATA_DIR=/data MET_MODEL_PATH=/opt/poser/mobileclip-s1.safetensors \
     MET_PYTHON=/usr/local/bin/python PYTHONUNBUFFERED=1 \
-    DAILY_NODE_API_CALLS=250 DAILY_REFERENCE_API_CALLS=100 REQUESTS_PER_MINUTE=12 \
+    DAILY_NODE_API_CALLS=100 DAILY_REFERENCE_API_CALLS=100 REQUESTS_PER_MINUTE=12 \
+    TOTAL_NODE_API_CALLS=200 TOTAL_REFERENCE_API_CALLS=300 \
     MET_SEARCH_WORKERS=1 MET_QUEUE_LIMIT=4 MET_TORCH_THREADS=2
 RUN mkdir -p /data && node scripts/check-setup.mjs \
     && python tools/met-art/verify_setup.py

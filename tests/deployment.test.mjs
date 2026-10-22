@@ -40,6 +40,17 @@ test('visitor limits reset after window; proxy headers only trusted explicitly',
   const req={headers:{'x-real-ip':'192.0.2.1'},socket:{remoteAddress:'127.0.0.1'}};
   assert.equal(clientAddress(req),'127.0.0.1');assert.equal(clientAddress(req,true),'192.0.2.1');
 });
+test('overall quota survives day rollover and restart and blocks before network access', () => {
+  const dir=mkdtempSync(join(tmpdir(),'poser-total-'));const file=join(dir,'usage.json');
+  let day='2026-10-21';const now=()=>new Date(`${day}T12:00:00Z`);
+  try {
+    const reserve=createDailyQuota({file,limit:10,totalLimit:2,now});reserve();
+    day='2026-10-22';createDailyQuota({file,limit:10,totalLimit:2,now})();
+    day='2026-10-23';assert.throws(createDailyQuota({file,limit:10,totalLimit:2,now}),/overall demo allowance/);
+    writeFileSync(file,JSON.stringify({day,used:1,total:-1}));
+    assert.throws(()=>createDailyQuota({file,limit:10,totalLimit:2,now}));
+  } finally {rmSync(dir,{recursive:true,force:true});}
+});
 test('exhausted allowance blocks the provider before any network call', async () => {
   await assert.rejects(retrievePoses({sketch:'data:image/png;base64,abc'}, {
     key:'test',loadIndex:async()=>({captionModel:'test'}),

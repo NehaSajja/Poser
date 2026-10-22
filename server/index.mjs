@@ -22,7 +22,7 @@ const port = Number(process.env.PORT || 4317);
 const production = process.env.NODE_ENV === 'production';
 const origins = allowedOrigins(port);
 const runtime = resolve(process.env.POSER_DATA_DIR || resolve(root, '.local'));
-const reserve = production ? createDailyQuota({ file: resolve(runtime, 'usage/node.json'), limit: limitValue(process.env.DAILY_NODE_API_CALLS, 250) }) : () => {};
+const reserve = production ? createDailyQuota({ file: resolve(runtime, 'usage/node.json'), limit: limitValue(process.env.DAILY_NODE_API_CALLS, 100), totalLimit: limitValue(process.env.TOTAL_NODE_API_CALLS, 200) }) : () => {};
 const allowVisitor = createVisitorLimiter({ limit: limitValue(process.env.REQUESTS_PER_MINUTE, 12) });
 const legacyGeneration = !production;
 const vite = process.env.NODE_ENV !== 'production' ? await (await import('vite')).createServer({ root, server: { middlewareMode: true }, appType: 'spa' }) : null;

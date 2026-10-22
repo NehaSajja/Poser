@@ -63,10 +63,11 @@ function ImageCanvas({ images, width }) {
   </div>;
 }
 
-export default function ReferenceCanvas({ query, width }) {
+export default function ReferenceCanvas({ query, width, active = true }) {
   const [state, setState] = useState({ status: 'loading' });
   const [attempt, setAttempt] = useState(0);
   useEffect(() => {
+    if (!active) return;
     if (!query) { setState({ status: 'loading' }); return; }
     const entry = referenceStore.ensure(query, attempt > 0);
     function update() {
@@ -75,7 +76,7 @@ export default function ReferenceCanvas({ query, width }) {
     }
     entry.listeners.add(update); update();
     return () => entry.listeners.delete(update);
-  }, [query?.key, attempt]);
+  }, [query?.key, attempt, active]);
   if (!query) return null;
   // A prefetched pose is displayed synchronously on selection, without a loading frame.
   const cached = referenceStore.get(query.key)?.state;

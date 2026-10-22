@@ -29,12 +29,20 @@ Do not purchase a paid plan, add payment details, or add extra machines without 
 
 ## Demo usage limits
 
-- `DAILY_NODE_API_CALLS=250`: combined actual provider attempts for sketch captioning/embedding and optional Wireframe recognition. A normal uncached sketch uses two calls.
+- `DAILY_NODE_API_CALLS=100`: combined actual provider attempts for sketch captioning/embedding and optional Wireframe recognition. A normal uncached sketch uses two calls.
 - `DAILY_REFERENCE_API_CALLS=100`: actual Gemini artwork-comparison attempts, including retries. One reference search can use several calls.
+- `TOTAL_NODE_API_CALLS=200` and `TOTAL_REFERENCE_API_CALLS=300`: overall allowances across days and restarts; only an intentional configuration change extends them.
 - `REQUESTS_PER_MINUTE=12`: submitted POST requests per visitor IP.
+- Historical searches start only when the visitor opens References for a pose. Automatic four-pose background searches are disabled. An uncached search may use up to 30 six-artwork comparisons plus 45 individual audits (and bounded retries); existing cached results reuse that work.
 - One running reference search, at most four active/queued jobs, conservative image/comparison worker counts.
 
-Counters reserve before calls and persist under `/data/usage`. They reset at UTC midnight, not on restart. Failed calls count. Invalid/corrupt ledgers fail closed. Cached historical results require no provider calls and remain available after the daily allowance is reached. These limits count requests, not dollars; they are **not a financial meter or guaranteed spending cap**. Zero stops new paid calls. Preserve the usage directory when managing caches. IP limits are coarse; shared networks share a limit. No IPs are persisted by the limiter.
+Counters reserve before calls and persist under `/data/usage`. Daily counters reset at UTC midnight, not on restart. Overall counters never reset automatically. Failed calls count. Invalid/corrupt ledgers fail closed. Cached historical results require no provider calls and remain available after the daily allowance is reached. These limits count requests, not dollars; they are **not a financial meter or guaranteed spending cap**. Zero stops new paid calls. Preserve the usage directory when managing caches. IP limits are coarse; shared networks share a limit. No IPs are persisted by the limiter.
+
+## Cost controls
+
+The one 2-CPU / 4-GB app in iad costs approximately $0.0353 per running hour ($25.39 per 30 days continuously running), plus $0.15/month for the 1-GB volume, stopped-machine rootfs storage, bandwidth, and separate Gemini charges. This is an estimate, not a budget cap. There is no metrics autoscaler or spare application machine. Shared IPv4 avoids a dedicated-IP charge. Auto-stop lowers idle compute costs but does not stop storage charges.
+
+Remove the temporary remote builder and its 50-GB cache after the deployment is verified; otherwise that cache alone costs roughly $7.50/month. Never delete the application volume when cleaning the builder. To stop all further service use, disable automatic starts and stop the app, or destroy the app and its storage when no longer needed. Stopping it alone leaves storage charges.
 
 ## Validation
 
