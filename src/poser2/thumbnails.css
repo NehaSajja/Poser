@@ -203,3 +203,39 @@
 
 .pose-model-menu { min-width: 12.5rem; }
 .pose-model-error { padding: .5rem .75rem; font-size: .75rem; color: var(--muted-foreground); }
+
+/* Back matches the dock height and moves independently into the left corner. */
+.pose-back-button {
+  --back-size: var(--dock-height, 4rem);
+  position: absolute; bottom: 0;
+  left: max(0px, calc(50% - min(100cqw, var(--pose-tray-width, 20rem)) / 2 - .75rem - var(--back-size)));
+  display: grid; place-items: center;
+  width: var(--back-size); height: var(--back-size); padding: 0;
+  border: 1px solid rgb(0 0 0 / .08); border-radius: 50%;
+  background: var(--workspace-background); color: var(--foreground);
+  box-shadow: 0 1px 2px rgb(0 0 0 / .02), 0 .375rem 1rem rgb(0 0 0 / .025);
+  cursor: pointer; pointer-events: auto;
+  transition: left 540ms cubic-bezier(.22, .9, .16, 1), width 540ms cubic-bezier(.22, .9, .16, 1), height 540ms cubic-bezier(.22, .9, .16, 1), background-color 120ms ease;
+}
+.pose-back-button:focus-visible { outline: 2px solid var(--ring); outline-offset: 3px; }
+@media (hover: hover) { .pose-back-button:hover { background: #f5f5f5; } }
+.poser2-dock-position .drawing-dock[data-collapsed="true"] .pose-back-button {
+  --back-size: var(--pose-back-collapsed-size); left: 0;
+}
+.sketch-workspace[data-compact-sketch="true"] .poser2-dock-position .pose-back-button { left: 0; }
+.reference-back-bottom {
+  z-index: 21; left: var(--workspace-control-offset); bottom: var(--workspace-control-offset);
+}
+/* Keep the separate Back target clear of the tools in narrow split panels. */
+@container (max-width: 25rem) {
+  .poser2-dock-position .drawing-dock:not([data-collapsed="true"]) .pose-back-button {
+    left: 0; bottom: calc(var(--dock-height) + .75rem);
+  }
+}
+@media (prefers-reduced-motion: reduce) { .pose-back-button { transition: none; } }
+
+/* Both tabs share the model dock's collapsed Back diameter. */
+.poser-panel { --pose-back-collapsed-size: 3.5rem; }
+.poser-panel:has(.poser2-dock-position[data-viewing="true"] .drawing-dock[data-collapsed="true"]) .reference-back-bottom {
+  --back-size: var(--pose-back-collapsed-size);
+}

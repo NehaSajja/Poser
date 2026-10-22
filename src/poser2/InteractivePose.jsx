@@ -1,5 +1,4 @@
 import { useImperativeHandle, useLayoutEffect, useRef, useState } from 'react';
-import { BackIcon } from '../tldraw/drawesome/ToolbarIcons';
 
 export default function InteractivePose({ ref, preview, origin, animate, onClose, onClosing, onControlsChange, onModelStateChange }) {
   const host = useRef(null);
@@ -48,9 +47,6 @@ export default function InteractivePose({ ref, preview, origin, animate, onClose
     if (event.key === 'Escape') { event.stopPropagation(); close(false); }
   }}>
     <div className="poser2-interactive-canvas" ref={host}/>
-    <button className="poser2-back" onClick={event => close(event.detail !== 0)}>
-      <BackIcon/> Back
-    </button>
     {error && <div className="poser2-view-status" role="status">
       Could not open this pose. Go back and try again.
     </div>}

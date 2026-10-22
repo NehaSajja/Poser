@@ -19,9 +19,9 @@ export default function PoserPanel({ pose, onPoseSelect }) {
   useEffect(() => { referenceStore.prefetch(pose.data); }, [pose.data]);
   return <div className="poser-panel" ref={panel}>
     {(modelsReady || tab === 'references') && <PoseTabs value={tab} onChange={setTab}/>}
-    {tab === 'references' && <button className="poser2-back reference-back" onClick={() => {
+    {tab === 'references' && <button type="button" className="pose-back-button reference-back-bottom" aria-label="Back to pose options" title="Back" onClick={() => {
       models.current?.back(); setChoice(null); setTab('model');
-    }}><BackIcon/> Back</button>}
+    }}><BackIcon/></button>}
     <div className="poser-panel-view" id="poser-view-model" role="tabpanel" aria-labelledby="poser-tab-model"
       data-hidden={tab !== 'model'} aria-hidden={tab !== 'model'} inert={tab !== 'model'}>
       <Poser2Thumbnails ref={models} pose={pose} onReadyChange={setModelsReady} onSelect={item => { setChoice(item ? { data: pose.data, item } : null); onPoseSelect?.(item); }}/>

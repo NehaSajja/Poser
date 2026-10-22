@@ -31,6 +31,8 @@ export default function PoseToolbar({ viewing, canNavigate, canConfirm, onPrevio
     if (event.key === 'Escape') { event.stopPropagation(); onBack(false); }
   }}>
     <div {...dockMotion} className="drawing-dock" data-collapsed={collapsed}>
+      {viewing && <button type="button" className="pose-back-button" aria-label="Back to pose options"
+        onClick={event => onBack(event.detail !== 0)} {...tip.bindControl('Back')}><BackIcon/></button>}
       <div className="dock-anchor"><div className="drawing-tray">
         <div className="dock-content pose-selection-tools" role="toolbar" aria-label="Pose selection"
           inert={viewing} aria-hidden={viewing || undefined}>

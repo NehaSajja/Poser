@@ -57,11 +57,13 @@ export function mountPoseView({ renderer, scene, camera, light, container, view,
     if (entered && !adjusted && !closing) camera.zoom = fit().focusedScale / baseScale;
     camera.updateProjectionMatrix();
     renderer.setSize(width, height);
-    invalidate();
+    // setSize clears the WebGL drawing buffer. ResizeObserver runs after RAF,
+    // so deferring this paint exposes an empty canvas during the panel animation.
+    // Repaint synchronously, including while the camera transition owns the RAF.
+    paint();
   };
-  resize();
   // Paint the exact thumbnail camera before exposing the canvas. No blank frame.
-  paint();
+  resize();
   container.appendChild(renderer.domElement);
   focus();
   const observer = new ResizeObserver(resize);
