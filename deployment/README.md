@@ -30,8 +30,8 @@ Do not purchase a paid plan, add payment details, or add extra machines without 
 ## Demo usage limits
 
 - `DAILY_NODE_API_CALLS=100`: combined actual provider attempts for sketch captioning/embedding and optional Wireframe recognition. A normal uncached sketch uses two calls.
-- `DAILY_REFERENCE_API_CALLS=340`: actual Gemini artwork-comparison attempts, including retries. One reference search can use several calls.
-- `TOTAL_NODE_API_CALLS=200` and `TOTAL_REFERENCE_API_CALLS=340`: overall allowances across days and restarts; only an intentional configuration change extends them.
+- `DAILY_REFERENCE_API_CALLS=unlimited` and `TOTAL_REFERENCE_API_CALLS=unlimited`: reference-call caps are disabled at the owner's request; Gemini's prepaid balance with automatic reload disabled is the chosen spending control. Actual attempts, including retries, are still recorded. Numeric values restore either cap; `0` blocks new calls.
+- `TOTAL_NODE_API_CALLS=200`: the separate sketch-recognition allowance across days and restarts is unchanged.
 - `REQUESTS_PER_MINUTE=12`: submitted POST requests per visitor IP.
 - Historical searches start as soon as the visitor selects a pose. Opening References reuses the same in-flight job or cached result. Merely showing the pose options does not start background searches for all four choices; opening References without selecting a model still searches the top pose. The active fast profile uses up to 10 six-artwork comparisons plus 10 individual audits (and bounded retries); existing cached results reuse that work. The saved full profile uses 30 batches plus 45 audits.
 - One running reference search, at most four active/queued jobs, conservative image/comparison worker counts.

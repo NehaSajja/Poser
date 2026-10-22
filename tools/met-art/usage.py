@@ -3,9 +3,16 @@ import json, threading
 from datetime import datetime, timezone
 from pathlib import Path
 
+def quota_limit(value):
+    """Only an explicit 'unlimited' disables a configured call allowance."""
+    if value == 'unlimited':return None
+    if not isinstance(value,str) or not value.isascii() or not value.isdecimal():
+        raise ValueError('Usage limits must be nonnegative integers or unlimited')
+    return int(value)
+
 class DailyQuota:
     def __init__(self, path, limit, today=lambda: datetime.now(timezone.utc).date().isoformat(), total_limit=None):
-        if not isinstance(limit, int) or limit < 0:
+        if limit is not None and (type(limit) is not int or limit < 0):
             raise ValueError('Usage limits must be nonnegative integers')
         if total_limit is not None and (type(total_limit) is not int or total_limit<0):raise ValueError('Invalid total limit')
         self.path=Path(path);self.limit=limit;self.total_limit=total_limit;self.today=today;self.lock=threading.Lock()
@@ -22,7 +29,7 @@ class DailyQuota:
         with self.lock:
             day=self.today();used=self.state['used'] if self.state['day']==day else 0
             if self.total_limit is not None and self.state['total']>=self.total_limit:raise RuntimeError('The overall demo allowance has been reached. Ask the owner to extend it.')
-            if used>=self.limit:raise RuntimeError('Today’s demo allowance has been reached. Try again tomorrow.')
+            if self.limit is not None and used>=self.limit:raise RuntimeError('Today’s demo allowance has been reached. Try again tomorrow.')
             state={'day':day,'used':used+1,'total':self.state['total']+1}
             temporary=self.path.with_suffix('.tmp');temporary.write_text(json.dumps(state));temporary.replace(self.path)
             self.state=state

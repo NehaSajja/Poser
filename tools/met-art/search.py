@@ -10,8 +10,8 @@ APP=Path(__file__).resolve().parents[2]
 DATA=APP/'data/met-art/index'
 RUNTIME=Path(os.environ.get('POSER_DATA_DIR',str(APP/'.local')))
 WEIGHTS=Path(os.environ.get('MET_MODEL_PATH',str(APP/'.local/met-art/mobileclip-s1.safetensors')))
-from usage import DailyQuota
-QUOTA=DailyQuota(RUNTIME/'usage/references.json',int(os.environ.get('DAILY_REFERENCE_API_CALLS','100')),total_limit=int(os.environ.get('TOTAL_REFERENCE_API_CALLS','300'))) if os.environ.get('NODE_ENV')=='production' else None
+from usage import DailyQuota, quota_limit
+QUOTA=DailyQuota(RUNTIME/'usage/references.json',quota_limit(os.environ.get('DAILY_REFERENCE_API_CALLS','100')),total_limit=quota_limit(os.environ.get('TOTAL_REFERENCE_API_CALLS','300'))) if os.environ.get('NODE_ENV')=='production' else None
 CACHE=RUNTIME/'met-art/results';CACHE.mkdir(parents=True,exist_ok=True)
 POSES=APP/'data/cloud-retrieval'
 CATALOG={str(p['id']):p for p in json.loads((POSES/'catalog.json').read_text())}

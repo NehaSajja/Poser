@@ -1,0 +1,5 @@
+# Stage this file as Dockerfile with tools/met-art/{search,usage}.py and fly.toml.
+# Preserve the verified interface and ML assets; only update reference accounting.
+FROM registry.fly.io/poser-demo@sha256:44225df2bbc8092082db6db75ccb4634de7202420f8467d00ab842b68dbefa7f
+COPY tools/met-art/search.py /app/tools/met-art/search.py
+COPY tools/met-art/usage.py /app/tools/met-art/usage.py
