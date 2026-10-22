@@ -1,5 +1,38 @@
 /* Reversible selection interaction; the real editor stays mounted at its original size. */
 .sketch-editor-host { position: absolute; inset: 0; }
+.sketch-controls-layer { position: absolute; inset: 0; z-index: 500; pointer-events: none; container: sketch-canvas / inline-size; }
+.sketch-controls-layer :is(button, .design-panel) { pointer-events: auto; }
+.sketch-controls-layer[aria-hidden="true"] { visibility: hidden; }
+.sketch-animation-controls {
+  position: absolute;
+  top: calc(var(--workspace-control-offset) + var(--workspace-pill-height) + .5rem);
+  right: var(--canvas-zoom-inline-inset);
+  z-index: 500;
+  display: flex;
+  gap: .375rem;
+}
+.sketch-minimize-overlay {
+  display: inline-flex;
+  align-items: center;
+  gap: .375rem;
+  min-height: var(--workspace-pill-height);
+  padding: .5rem .75rem;
+  border: 1px solid rgb(0 0 0 / .08);
+  border-radius: 999rem;
+  background: rgb(255 255 255 / .92);
+  color: var(--foreground);
+  font: 500 .75rem/1 var(--app-font);
+  cursor: pointer;
+  transition: background-color 160ms ease-out;
+}
+.sketch-minimize-overlay svg { width: 1.125rem; height: 1.125rem; }
+@media (hover: hover) {
+  .sketch-minimize-overlay:hover { background: var(--scene-background); }
+}
+.sketch-minimize-overlay:focus-visible { outline: 2px solid var(--ring); outline-offset: 3px; }
+@media (prefers-reduced-motion: reduce) {
+  .sketch-minimize-overlay { transition: none; }
+}
 .sketch-workspace.canvas-card-backdrop {
   transition: grid-template-columns 320ms var(--canvas-ease-out);
 }
@@ -101,7 +134,7 @@
   --thumbnail-width: clamp(160px, 18vw, 232px);
   --expanded-edge: calc((100% - var(--divider-width)) * var(--split-ratio));
 }
-.sketch-workspace[data-sketch-layout="overlay"] > .sketch-pane {
+.sketch-workspace[data-sketch-layout="overlay"] > :is(.sketch-pane, .sketch-surface-shadow) {
   position: absolute; margin: 0;
   inset: var(--canvas-card-inset) auto auto var(--canvas-card-inset);
   width: calc(var(--expanded-edge) - var(--canvas-card-inset));
@@ -117,7 +150,7 @@
 .sketch-workspace[data-sketch-layout="overlay"] > .workspace-divider {
   position: absolute; top: 0; bottom: 0; left: var(--expanded-edge); width: var(--divider-width);
 }
-.sketch-workspace[data-compact-sketch="true"][data-sketch-layout="overlay"] > .sketch-pane {
+.sketch-workspace[data-compact-sketch="true"][data-sketch-layout="overlay"] > :is(.sketch-pane, .sketch-surface-shadow) {
   top: var(--thumbnail-top); left: var(--compact-sketch-left); width: var(--thumbnail-width); height: min(var(--thumbnail-width), 32dvh);
 }
 .sketch-workspace[data-compact-sketch="true"][data-sketch-layout="overlay"] > .preview-pane { left: 0; width: auto; }
@@ -158,6 +191,54 @@
 .sketch-workspace[data-sketch-layout="overlay"] .poser2-back { transition: left var(--sketch-motion); }
 .sketch-workspace[data-compact-sketch="false"][data-sketch-layout="split"] .sketch-thumbnail { display: none; }
 .sketch-workspace[data-sketch-layout="overlay"][data-resizing="true"] > :is(.sketch-pane, .preview-pane) { transition: none; }
+
+/* Optional comparison: the surface and controls settle on overlapping timelines.
+   Keep the original geometry and toolbar's own internal motion untouched. */
+.sketch-workspace[data-sketch-layout="overlay"][data-sketch-animation="new"] {
+  --sketch-motion: 700ms cubic-bezier(.22, .9, .16, 1);
+}
+.sketch-workspace[data-sketch-animation="new"] > :is(.sketch-pane, .sketch-surface-shadow) {
+  border-radius: 2.5rem;
+  box-shadow: none;
+  transition: left var(--sketch-motion), top var(--sketch-motion), width var(--sketch-motion), height var(--sketch-motion), border-radius var(--sketch-motion);
+}
+.sketch-workspace[data-sketch-animation="new"][data-compact-sketch="true"] > :is(.sketch-pane, .sketch-surface-shadow) {
+  border-radius: 1.25rem;
+}
+.sketch-workspace[data-sketch-animation="new"] > .sketch-surface-shadow {
+  z-index: 21;
+  pointer-events: none;
+}
+.sketch-surface-shadow::before, .sketch-surface-shadow::after {
+  content: ''; position: absolute; inset: 0; border-radius: inherit;
+  transition: opacity var(--sketch-motion);
+}
+.sketch-surface-shadow::before { opacity: 1; box-shadow: 0 2px 8px rgb(0 0 0 / .035); }
+.sketch-surface-shadow::after { opacity: 0; box-shadow: 0 2px 6px rgb(0 0 0 / .045), 0 8px 24px rgb(0 0 0 / .065); }
+.sketch-workspace[data-compact-sketch="true"] > .sketch-surface-shadow::before { opacity: 0; }
+.sketch-workspace[data-compact-sketch="true"] > .sketch-surface-shadow::after { opacity: 1; }
+.sketch-workspace[data-sketch-animation="new"] .sketch-controls-layer .top-left { display: none; }
+.sketch-workspace[data-sketch-animation="new"] .compact-sketch-title::before { content: none; }
+.sketch-workspace[data-sketch-animation="new"] .sketch-controls-layer[aria-hidden="true"] { visibility: visible; }
+.sketch-workspace[data-sketch-animation="new"] .sketch-controls-layer :is(.zoom-pill, .drawing-bottom) {
+  opacity: 1;
+  translate: 0 0;
+  transition: opacity 220ms cubic-bezier(.19, 1, .22, 1) 240ms, filter 260ms cubic-bezier(.19, 1, .22, 1) 240ms, translate 300ms cubic-bezier(.22, .9, .16, 1) 240ms;
+}
+.sketch-workspace[data-sketch-animation="new"][data-compact-sketch="true"] .sketch-controls-layer :is(.zoom-pill, .drawing-bottom) {
+  opacity: 0;
+  translate: 0 3px;
+  transition: opacity 140ms ease-out, filter 180ms ease-out, translate 180ms ease-out;
+}
+.sketch-workspace[data-sketch-animation="new"] .sketch-controls-layer :is(.zoom-pill, .drawing-bottom) { filter: blur(0); }
+.sketch-workspace[data-sketch-animation="new"][data-compact-sketch="true"] .sketch-controls-layer :is(.zoom-pill, .drawing-bottom) { filter: blur(3px); }
+.sketch-workspace[data-sketch-animation="new"] .sketch-controls-layer[aria-hidden="true"] * { pointer-events: none; }
+@media (prefers-reduced-motion: reduce) {
+  .sketch-workspace[data-sketch-layout="overlay"][data-sketch-animation="new"] { --sketch-motion: 0ms linear; }
+  .sketch-workspace[data-sketch-animation="new"] .sketch-controls-layer :is(.top-left, .zoom-pill, .drawing-bottom) {
+    transition: none; filter: none; translate: none;
+  }
+}
 
 /* Broad glass-like diffusion: retain artwork color and taper well beyond the title. */
 .compact-sketch-title { isolation: isolate; }

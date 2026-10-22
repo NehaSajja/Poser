@@ -9,7 +9,7 @@ const ENABLE_MANUAL_CANVAS_RESIZE = false;
 const COLLAPSE_THRESHOLD = 25;
 const clampSplit = (value, minimum = 33) => Math.min(67, Math.max(minimum, value));
 
-export function SplitWorkspace({ sketch, preview, compactSketch = false, expandingSketch = false, onCollapseSketch }) {
+export function SplitWorkspace({ sketch, preview, compactSketch = false, expandingSketch = false, onCollapseSketch, sketchAnimation = 'original' }) {
   const [split, setSplit] = useState(50);
   const drag = useRef(null);
   const collapsePending = useRef(false);
@@ -86,7 +86,8 @@ export function SplitWorkspace({ sketch, preview, compactSketch = false, expandi
     if (onCollapseSketch && next < COLLAPSE_THRESHOLD) collapseAfterResize();
   }
 
-  return <main className="sketch-workspace canvas-card-backdrop" data-compact-sketch={compactSketch} data-sketch-layout={SKETCH_THUMBNAIL_LAYOUT} data-expanding-sketch={expandingSketch} data-resizing={resizing} style={{ '--split-ratio': split / 100, '--sketch-width': `${compactSketch ? 20 : split}fr`, '--preview-width': `${compactSketch ? 80 : 100 - split}fr` }}>
+  return <main className="sketch-workspace canvas-card-backdrop" data-sketch-animation={sketchAnimation} data-compact-sketch={compactSketch} data-sketch-layout={SKETCH_THUMBNAIL_LAYOUT} data-expanding-sketch={expandingSketch} data-resizing={resizing} style={{ '--split-ratio': split / 100, '--sketch-width': `${compactSketch ? 20 : split}fr`, '--preview-width': `${compactSketch ? 80 : 100 - split}fr` }}>
+    {sketchAnimation === 'new' && SKETCH_THUMBNAIL_LAYOUT === 'overlay' && <div className="sketch-surface-shadow" aria-hidden="true"/>}
     {sketch}
     {ENABLE_MANUAL_CANVAS_RESIZE ? <div className="workspace-divider" role="separator" aria-hidden={compactSketch} tabIndex={compactSketch ? -1 : 0} aria-label="Resize panels"
       aria-orientation="vertical" aria-controls="sketch-pane preview-pane"
@@ -97,7 +98,7 @@ export function SplitWorkspace({ sketch, preview, compactSketch = false, expandi
       onKeyDown={resizeWithKeyboard} onDoubleClick={() => setSplit(50)}/> :
       <div className="workspace-gutter" aria-hidden="true"/>}
     {preview}
-    {(compactSketch || expandingSketch) && SKETCH_THUMBNAIL_LAYOUT === 'overlay' &&
+    {(sketchAnimation === 'new' || compactSketch || expandingSketch) && SKETCH_THUMBNAIL_LAYOUT === 'overlay' &&
       <div className="compact-sketch-title"><span className="medium-wordmark">poser</span></div>}
   </main>;
 }

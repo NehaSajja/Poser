@@ -1,4 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
+import { createPortal } from 'react-dom';
+import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem } from '../components/ui/dropdown-menu';
 import { DefaultColorStyle, DefaultDashStyle, DefaultSizeStyle, Tldraw, useEditor, useValue } from 'tldraw';
 import { Card } from '../components/ui/card';
 import { Tool, Icon } from '../icons';
@@ -102,6 +104,7 @@ function CanvasControls({ medium, poseRetrieval, compact }) {
 
 export default function TldrawApp({ persistenceKey = 'sketch-ui-tldraw-v1' }) {
   const [previewRoot, setPreviewRoot] = useState(null);
+  const [controlsRoot, setControlsRoot] = useState(null);
   const [medium] = useState(() => {
     const requested = new URLSearchParams(window.location.search).get('medium');
     return resolveMedium(requested);
@@ -115,8 +118,8 @@ export default function TldrawApp({ persistenceKey = 'sketch-ui-tldraw-v1' }) {
     else url.searchParams.set('medium', medium);
     window.history.replaceState(null, '', url);
   }, [medium]);
-  return <SplitWorkspace onCollapseSketch={thumbnail.canCollapse ? thumbnail.collapse : undefined} compactSketch={thumbnail.compact} expandingSketch={thumbnail.expanding} sketch={
-    <section id="sketch-pane" className="tldraw-app sketch-pane" aria-label="Sketch canvas">
+  return <SplitWorkspace sketchAnimation={thumbnail.animation} onCollapseSketch={thumbnail.canCollapse ? thumbnail.collapse : undefined} compactSketch={thumbnail.compact} expandingSketch={thumbnail.expanding} sketch={
+    <section id="sketch-pane" className="tldraw-app sketch-pane" aria-label="Sketch canvas" onTransitionEnd={thumbnail.onTransitionEnd}>
     <div className="sketch-editor-host" inert={thumbnail.editorHidden} aria-hidden={thumbnail.editorHidden}
       style={thumbnail.editorHidden ? { width: thumbnail.width, height: thumbnail.height } : undefined}>
     <Tldraw hideUi persistenceKey={persistenceKey} shapeUtils={shapeUtils} components={components} options={options}
@@ -135,10 +138,31 @@ export default function TldrawApp({ persistenceKey = 'sketch-ui-tldraw-v1' }) {
         if (editor.getCurrentPageShapeIds().size) editor.zoomToFit({ animation: { duration: 0 } });
         return attachPoserInk(editor);
       }}>
-      <CanvasControls compact={thumbnail.editorHidden} medium={medium} poseRetrieval={poseRetrieval}/>
+      {controlsRoot && createPortal(<CanvasControls compact={thumbnail.editorHidden} medium={medium} poseRetrieval={poseRetrieval}/>, controlsRoot)}
       {medium === 'ui' && previewRoot ? <LivePreview target={previewRoot}/> : null}
     </Tldraw>
     </div>
+    <div ref={setControlsRoot} className="sketch-controls-layer" inert={thumbnail.editorHidden} aria-hidden={thumbnail.editorHidden}
+      style={thumbnail.editorHidden ? { width: thumbnail.width, height: thumbnail.height } : undefined}/>
+    {thumbnail.canCollapse && !thumbnail.editorHidden && <div className="sketch-animation-controls">
+    <button type="button" className="sketch-minimize-overlay"
+      aria-label="Minimize sketch canvas" onClick={() => thumbnail.collapse()}>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+        <rect x="3" y="3" width="18" height="18" rx="4"/>
+        <path d="M16 8l-5 5m0-4v4h4"/>
+      </svg>
+      <span>Mini canvas</span>
+    </button>
+    <DropdownMenu>
+    <DropdownMenuTrigger asChild><button type="button" className="sketch-minimize-overlay" aria-label={`Animation: ${thumbnail.animation === 'new' ? 'New' : 'Original'}`}>
+      <span>{thumbnail.animation === 'new' ? 'New' : 'Original'}</span>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="m8 10 4 4 4-4"/></svg>
+    </button></DropdownMenuTrigger>
+    <DropdownMenuContent className="toolbar-menu" align="end">
+      <DropdownMenuItem onSelect={() => thumbnail.selectAnimation('original')}>Original</DropdownMenuItem>
+      <DropdownMenuItem onSelect={() => thumbnail.selectAnimation('new')}>New</DropdownMenuItem>
+    </DropdownMenuContent>
+    </DropdownMenu></div>}
     {thumbnail.image && <SketchThumbnail {...thumbnail} onExpand={thumbnail.expand}/>}
     </section>
   } preview={

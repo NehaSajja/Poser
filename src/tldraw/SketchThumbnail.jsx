@@ -10,6 +10,7 @@ export function useSketchThumbnail(editor, medium, results) {
   const [snapshot, setSnapshot] = useState(null);
   const [compact, setCompact] = useState(false);
   const [expanding, setExpanding] = useState(false);
+  const [animation, setAnimation] = useState('original');
   const request = useRef(0);
   function expand() {
     request.current++;
@@ -23,12 +24,13 @@ export function useSketchThumbnail(editor, medium, results) {
   useEffect(() => () => { request.current++; }, []);
   useEffect(() => {
     if (!expanding) return;
-    const delay = window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 0 : SKETCH_TRANSITION_MS;
+    const delay = window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 0 : animation === 'new' ? 750 : SKETCH_TRANSITION_MS;
     const timer = setTimeout(() => setExpanding(false), delay);
     return () => clearTimeout(timer);
-  }, [expanding]);
-  async function collapse() {
+  }, [expanding, animation]);
+  async function collapse(selectedAnimation = animation) {
     if (!ENABLE_SKETCH_THUMBNAIL || !editor || medium !== 'poser2') return;
+    setAnimation(typeof selectedAnimation === 'string' ? selectedAnimation : animation);
     const version = ++request.current;
     const host = editor.getContainer();
     try {
@@ -51,7 +53,10 @@ export function useSketchThumbnail(editor, medium, results) {
     }
   }
   function onPoseSelect(item) { return item ? collapse() : expand(); }
-  return { ...snapshot, compact, expanding, editorHidden: compact || expanding, expand, collapse, onPoseSelect,
+  function onTransitionEnd(event) {
+    if (animation === 'new' && expanding && event.target === event.currentTarget && event.propertyName === 'width') setExpanding(false);
+  }
+  return { ...snapshot, compact, expanding, animation, selectAnimation: setAnimation, onTransitionEnd, editorHidden: compact || expanding, expand, collapse, onPoseSelect,
     canCollapse: ENABLE_SKETCH_THUMBNAIL && Boolean(editor) && medium === 'poser2' };
 }
 
