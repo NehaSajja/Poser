@@ -2,14 +2,14 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { MEDIUM_NAMES, migratePoserPages, resolveMedium } from '../src/poser/mediums.js';
 
-test('Poser is the default and only Wireframe remains as an alternative', () => {
+test('Poser is the only accessible workflow, including old Wireframe links', () => {
   assert.deepEqual(Object.keys(MEDIUM_NAMES), ['poser2', 'ui']);
   assert.equal(resolveMedium('poser4'), 'poser2');
   assert.equal(resolveMedium('poser2'), 'poser2');
   assert.equal(resolveMedium('poser3'), 'poser2');
   assert.equal(resolveMedium(null), 'poser2');
   assert.equal(resolveMedium('poser'), 'poser2');
-  assert.equal(resolveMedium('ui'), 'ui');
+  assert.equal(resolveMedium('ui'), 'poser2');
   assert.equal(MEDIUM_NAMES.poser2, 'poser');
 });
 

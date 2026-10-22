@@ -16,7 +16,7 @@ import { PoserDrawShapeUtil, attachPoserInk } from './PoserDrawShape';
 import { useSmartpen } from '../smartpen/useSmartpen';
 import { TOOL_SNAP_DISTANCE } from './snapping';
 import { ScreenFrameShapeUtil } from './ScreenFrameShape';
-import { MediumMenu } from '../poser/MediumMenu';
+import { PoserTitle } from '../poser/MediumMenu';
 import { switchMediumPage } from '../poser/canvas';
 import { migratePoserPages, resolveMedium } from '../poser/mediums';
 import { usePoseRetrieval } from '../poser/usePoseRetrieval';
@@ -38,7 +38,7 @@ const options = {
   ],
 };
 
-function CanvasControls({ medium, onMediumChange, poseRetrieval, compact }) {
+function CanvasControls({ medium, poseRetrieval, compact }) {
   const editor = useEditor();
   const pen = useSmartpen(editor);
   const [pending, setPending] = useState(false);
@@ -72,17 +72,6 @@ function CanvasControls({ medium, onMediumChange, poseRetrieval, compact }) {
     return () => { controller.dispose(); recognition.current = null; };
   }, [editor, medium]);
 
-  function changeMedium(value) {
-    if (value === medium) return;
-    pen.finish();
-    poseRetrieval.cancel();
-    recognition.current?.dispose();
-    recognition.current = null;
-    setPending(false); setError(''); setPanel(false);
-    switchMediumPage(editor, value);
-    onMediumChange(value);
-    editor.focus();
-  }
   function undo() { pen.finish(); recognition.current?.cancel(); editor.undo(); }
   function redo() { pen.finish(); recognition.current?.cancel(); editor.redo(); }
   function clear() {
@@ -96,7 +85,7 @@ function CanvasControls({ medium, onMediumChange, poseRetrieval, compact }) {
   const visibleError = medium === 'ui' ? error : poseRetrieval.error;
   return <>
     <div className="top-left">
-      <MediumMenu medium={medium} onChange={changeMedium}/>
+      <PoserTitle/>
       {medium === 'ui' ? <Tool data-components-toggle name="grid" label="Components" text="Components" active={panel} onClick={() => setPanel(!panel)}/> : null}
     </div>
     <ZoomPill/>
@@ -113,7 +102,7 @@ function CanvasControls({ medium, onMediumChange, poseRetrieval, compact }) {
 
 export default function TldrawApp({ persistenceKey = 'sketch-ui-tldraw-v1' }) {
   const [previewRoot, setPreviewRoot] = useState(null);
-  const [medium, setMedium] = useState(() => {
+  const [medium] = useState(() => {
     const requested = new URLSearchParams(window.location.search).get('medium');
     return resolveMedium(requested);
   });
@@ -146,7 +135,7 @@ export default function TldrawApp({ persistenceKey = 'sketch-ui-tldraw-v1' }) {
         if (editor.getCurrentPageShapeIds().size) editor.zoomToFit({ animation: { duration: 0 } });
         return attachPoserInk(editor);
       }}>
-      <CanvasControls compact={thumbnail.editorHidden} medium={medium} onMediumChange={setMedium} poseRetrieval={poseRetrieval}/>
+      <CanvasControls compact={thumbnail.editorHidden} medium={medium} poseRetrieval={poseRetrieval}/>
       {medium === 'ui' && previewRoot ? <LivePreview target={previewRoot}/> : null}
     </Tldraw>
     </div>

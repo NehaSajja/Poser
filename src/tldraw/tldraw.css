@@ -54,6 +54,7 @@
 .medium-picker { display: flex; align-items: center; gap: .5rem; flex-shrink: 0; }
 .medium-menu { box-sizing: border-box; height: var(--workspace-pill-height); width: auto; justify-content: flex-start; gap: .5rem; padding: 0; border: 0; border-radius: .375rem; background: transparent; font-size: 1.25rem; font-weight: 700; }
 .medium-picker .medium-menu { font-size: 1.375rem; font-weight: 800; gap: .5rem; padding: 0; color: #000; border: 0; border-radius: 0; background: transparent; box-shadow: none; }
+.poser-title { display: flex; align-items: center; cursor: default; }
 .medium-mark, .poser-mark { flex-shrink: 0; }
 .medium-wordmark { display: block; font-family: 'Poppins', sans-serif; font-size: 1.5rem; font-weight: 800; line-height: 1; font-kerning: normal; letter-spacing: -.025em; }
 .zoom-pill { box-sizing: border-box; position: absolute; top: var(--workspace-control-offset); right: 1.5rem; z-index: 500; display: flex; align-items: center; height: var(--workspace-pill-height); padding: 0; border: 0; border-radius: 0; background: transparent; box-shadow: none; color: var(--foreground); font-family: var(--app-font); font-size: .8125rem; font-weight: 500; pointer-events: none; }

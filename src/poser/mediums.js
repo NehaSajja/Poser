@@ -1,8 +1,8 @@
 export const MEDIUM_NAMES = { poser2: 'poser', ui: 'Wireframe' };
 
-export function resolveMedium(requested) {
-  if (requested === 'poser' || requested === 'poser4') return 'poser2';
-  return Object.hasOwn(MEDIUM_NAMES, requested) ? requested : 'poser2';
+export function resolveMedium() {
+  // Old workflow links also open Poser; saved pages remain intact.
+  return 'poser2';
 }
 
 // Preserve drawings while freeing the old Poser 2 identity for the carousel.

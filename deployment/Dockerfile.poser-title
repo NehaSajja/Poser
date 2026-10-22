@@ -1,0 +1,7 @@
+# Stage the licensed dist build and the four changed source files with this file.
+FROM registry.fly.io/poser-demo@sha256:d7b8daa0bcd0372f5b0680e69dae2e102d976b2bb69639307003f4f316bd9472
+COPY dist /app/dist
+COPY src/poser/MediumMenu.jsx /app/src/poser/MediumMenu.jsx
+COPY src/poser/mediums.js /app/src/poser/mediums.js
+COPY src/tldraw/TldrawApp.jsx /app/src/tldraw/TldrawApp.jsx
+COPY src/tldraw/tldraw.css /app/src/tldraw/tldraw.css
