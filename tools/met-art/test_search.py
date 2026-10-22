@@ -84,4 +84,29 @@ class SearchTests(unittest.TestCase):
             self.assertIsNone(search.cached_result('1321','front','hybrid'))
     def test_remote_images_are_restricted_to_the_museum(self):
         with self.assertRaises(ValueError):search.image_bytes('http://127.0.0.1/private')
+    def test_fast_rerank_uses_ten_batches_and_ten_audits(self):
+        import re
+        rows=[{'objectID':i,'primaryImage':'https://images.metmuseum.org/a.jpg','retrievalScore':1/i} for i in range(1,61)]
+        def judge(parts):
+            ids=[int(id) for part in parts for id in re.findall(r'Artwork ID (\d+)',part.get('text',''))]
+            return {'results':[{'id':id,'poseScore':70,'visibleBody':True,'naturalism':90} for id in ids]}
+        with patch.object(search,'AUDIT_LIMIT',10),patch.object(search,'image_bytes',return_value=b'image'),patch.object(search,'gemini',side_effect=judge) as model:
+            result=search.rerank(b'query',rows,lambda _:None)
+        self.assertEqual(len(result),10)
+        sizes=[sum('Artwork ID' in part.get('text','') for part in call.args[0]) for call in model.call_args_list]
+        self.assertEqual(sizes.count(6),10)
+        self.assertEqual(sizes.count(1),10)
+    def test_fast_profile_configuration_and_cache_isolation(self):
+        import os,subprocess,sys
+        with tempfile.TemporaryDirectory() as tmp:
+            cache=Path(tmp)/'met-art/results';cache.mkdir(parents=True)
+            for version in ('met-mobileclip-v6-compact-parallel',search.LEGACY_VERSION):
+                (cache/f'{version}-1321-authored-hybrid.json').write_text('{"marker":"full"}')
+            env={**os.environ,'MET_REFERENCE_PROFILE':'fast','POSER_DATA_DIR':tmp,'NODE_ENV':'test'}
+            code='import search,json;print(json.dumps([search.CANDIDATE_LIMIT,search.AUDIT_LIMIT,search.cached_result("1321","authored","hybrid"),search.VERSION]))'
+            run=subprocess.run([sys.executable,'-c',code],cwd=Path(__file__).parent,env=env,capture_output=True,text=True,check=True)
+            self.assertEqual(json.loads(run.stdout),[60,10,None,'met-mobileclip-v6-compact-parallel-fast-60-10'])
+            env['MET_REFERENCE_PROFILE']='invalid'
+            run=subprocess.run([sys.executable,'-c','import search'],cwd=Path(__file__).parent,env=env,capture_output=True,text=True)
+            self.assertNotEqual(run.returncode,0)
 if __name__=='__main__':unittest.main()

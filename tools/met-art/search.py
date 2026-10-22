@@ -15,15 +15,17 @@ QUOTA=DailyQuota(RUNTIME/'usage/references.json',int(os.environ.get('DAILY_REFER
 CACHE=RUNTIME/'met-art/results';CACHE.mkdir(parents=True,exist_ok=True)
 POSES=APP/'data/cloud-retrieval'
 CATALOG={str(p['id']):p for p in json.loads((POSES/'catalog.json').read_text())}
-VERSION='met-mobileclip-v6-compact-parallel'
+PROFILE=os.environ.get('MET_REFERENCE_PROFILE','full')
+if PROFILE not in ('full','fast'):raise ValueError('MET_REFERENCE_PROFILE must be full or fast')
+VERSION='met-mobileclip-v6-compact-parallel'+('-fast-60-10' if PROFILE=='fast' else '')
 LEGACY_VERSION='met-mobileclip-v5-wide-highlights'
 COMPARE_POOL=ThreadPoolExecutor(max_workers=int(os.environ.get('MET_COMPARE_WORKERS','6')))
 IMAGE_POOL=ThreadPoolExecutor(max_workers=int(os.environ.get('MET_IMAGE_WORKERS','8')))
 IMAGE_CACHE=RUNTIME/'met-art/images';IMAGE_CACHE.mkdir(parents=True,exist_ok=True)
 IMAGE_LOCKS=[threading.Lock() for _ in range(256)]
-CANDIDATE_LIMIT=180
+CANDIDATE_LIMIT=60 if PROFILE=='fast' else 180
 REFERENCE_LIMIT=30
-AUDIT_LIMIT=45
+AUDIT_LIMIT=10 if PROFILE=='fast' else 45
 MODEL=None;LOCK=threading.Lock()
 KEY=os.environ.get('GEMINI_API_KEY','')
 for name in ['.env.local','.env']:
@@ -174,7 +176,9 @@ def rerank(query,candidates,progress,timings=None):
     return sorted([row for row in checked if row['poseScore']>=40],key=reference_order)[:REFERENCE_LIMIT]
 
 def cached_result(pose_id,view,mode):
-    for version in (VERSION,LEGACY_VERSION):
+    # Keep the experiment isolated: a full-search cache must not masquerade as
+    # a fast result, and switching back must preserve the original results.
+    for version in ((VERSION,) if PROFILE=='fast' else (VERSION,LEGACY_VERSION)):
         path=CACHE/f'{version}-{pose_id}-{view}-{mode}.json'
         if path.exists():return {**json.loads(path.read_text()),'cached':True}
     return None
@@ -230,6 +234,6 @@ def search(pose_id,view='authored',mode='hybrid',progress=lambda _:None,refresh=
         results=rerank(out.getvalue(),candidates,progress,timings)
     except Exception as e:
         results=[];warning='Visual comparison unavailable: '+str(e).split('https:')[0][:200]
-    result={'pose':pose,'view':view,'mode':mode,'results':results,'candidates':candidates,'warning':warning,'indexedArtworks':len(ids),'seconds':round(time.time()-started,2),'cached':False,'version':VERSION,'description':description,'candidateCount':len(candidates),'referenceLimit':REFERENCE_LIMIT,'prominenceSource':'Met collection highlights','timings':timings}
+    result={'pose':pose,'view':view,'mode':mode,'results':results,'candidates':candidates,'warning':warning,'indexedArtworks':len(ids),'seconds':round(time.time()-started,2),'cached':False,'version':VERSION,'profile':PROFILE,'description':description,'candidateCount':len(candidates),'auditLimit':AUDIT_LIMIT,'referenceLimit':min(REFERENCE_LIMIT,AUDIT_LIMIT),'prominenceSource':'Met collection highlights','timings':timings}
     if not warning:cache.write_text(json.dumps(result))
     return result

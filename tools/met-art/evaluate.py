@@ -7,8 +7,8 @@ IDS=['1010','1321','201','1343','2273','2933']
 def evaluate(id):
     r=search.search(id,progress=lambda m:print(id,m,flush=True))
     assert r['indexedArtworks']>10000
-    assert len(r['candidates'])==180
-    assert len(r['results'])<=30 and all(a['poseScore']>=40 for a in r['results'])
+    assert len(r['candidates'])==search.CANDIDATE_LIMIT
+    assert len(r['results'])<=min(search.REFERENCE_LIMIT,search.AUDIT_LIMIT) and all(a['poseScore']>=40 for a in r['results'])
     candidate_ids={a['objectID'] for a in r['candidates']}
     assert len(candidate_ids)==len(r['candidates'])
     assert all(a['objectID'] in candidate_ids and 0<=a['poseScore']<=100 for a in r['results'])

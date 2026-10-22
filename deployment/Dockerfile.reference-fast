@@ -1,0 +1,3 @@
+# Reuse the verified runtime/assets; normal builds include these sources too.
+FROM registry.fly.io/poser-neha-class-demo@sha256:d74b6a29d815c6d38d5c23f043d3ab6ec5edddb55f93bb177ec1ad06092586da
+COPY tools/met-art/search.py tools/met-art/evaluate.py tools/met-art/test_search.py /app/tools/met-art/

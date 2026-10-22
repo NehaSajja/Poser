@@ -17,6 +17,7 @@ kill_timeout = '15s'
   TOTAL_NODE_API_CALLS = '200'
   TOTAL_REFERENCE_API_CALLS = '300'
   REQUESTS_PER_MINUTE = '12'
+  MET_REFERENCE_PROFILE = 'fast'
 
 [[mounts]]
   source = 'poser_data'
