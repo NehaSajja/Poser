@@ -1,4 +1,4 @@
-app = 'poser-neha-class-demo'
+app = 'poser-demo'
 primary_region = 'iad'
 kill_signal = 'SIGTERM'
 kill_timeout = '15s'

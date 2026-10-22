@@ -57,7 +57,7 @@ fly config validate --strict --app APP_NAME
 
 The smoke script uses ports 4347/4348, serves the production build and real pose assets, tests origin checks, and disables paid requests. `MET_PYTHON`, `MET_MODEL_PATH`, and `MET_SMOKE_CACHE` can optionally point at an installed local interpreter/model and a cached result to also test the Python cache path.
 
-Live at **https://poser-neha-class-demo.fly.dev/**. Verified on 2026-10-21/22: the JavaScript suite, three Python quota tests, local production smoke checks, and the complete Fly Linux container build passed. The Linux build loaded 99,117 eligible artworks from 259,874 metadata records and verified real MobileCLIP image/text encoding.
+Live URL: **https://poser-demo.fly.dev/** (renamed deployment). Verified on 2026-10-21/22: the JavaScript suite, three Python quota tests, local production smoke checks, and the complete Fly Linux container build passed. The Linux build loaded 99,117 eligible artworks from 259,874 metadata records and verified real MobileCLIP image/text encoding.
 
 Live browser checks covered drawing, pose retrieval, selecting a rendered 3D model, and historical artwork results. Historical comparisons start on opening References, not on receiving pose choices. Cached artwork results survived deployment/restart. The first uncached reference search took about 96 seconds; this is not an instant search. Health, configured pose inventory (1,361 scenes), rejection of foreign origins, and disabled legacy generation routes were checked.
 
@@ -66,6 +66,14 @@ The reference service now retains its known live child process instead of spawni
 After explicit owner approval, the daily reference allowance was raised from 100 to 300; the overall reference allowance remains 300. Existing counters were preserved. The latest deployment uses one 4-GB machine and one encrypted 1-GB volume, with auto-start, auto-stop, and no spare machine. Only the approved Gemini runtime secret is configured; optional OpenAI Wireframe recognition is not enabled.
 
 No Linux CI success is claimed: GitHub rejected the optional workflow upload because the existing OAuth login lacks workflow scope. The successful Linux verification ran on Fly's remote builder instead.
+
+## URL migration
+
+Fly app names cannot be changed in place. `poser-demo` replaces `poser-neha-class-demo` using the same verified container image, machine size, and request allowances. The existing `/data` cache and quota ledgers are copied before enabling requests; migration must never reset the overall allowance. All 319 files were verified by SHA-256 after transfer. The old machine and duplicate volume were then removed; only the replacement machine and its 1-GB volume remain. A local rollback archive is stored outside version control at `.local/backups/poser-before-url-change.tgz`.
+
+The existing Gemini key was copied into encrypted secrets for the new app with explicit owner approval. The new origin passes health/configuration checks and serves migrated cached references without paid comparisons. Search behavior is unchanged.
+
+The old app namespace is retained as the source of the existing private registry image. Future source builds use `fly.toml` targeting `poser-demo`; no builder or second running server is required for the URL change.
 
 ## Data and credentials
 
