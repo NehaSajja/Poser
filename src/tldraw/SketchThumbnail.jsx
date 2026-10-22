@@ -4,13 +4,12 @@ import { exportPoseSketch, poseSketchBounds, poseShapes } from '../poser/canvas'
 // False restores the permanent split; 'split' restores the 20/80 experiment.
 export const ENABLE_SKETCH_THUMBNAIL = true;
 export const SKETCH_THUMBNAIL_LAYOUT = 'overlay';
-export const SKETCH_TRANSITION_MS = 800;
+export const SKETCH_TRANSITION_MS = 700;
 
 export function useSketchThumbnail(editor, medium, results) {
   const [snapshot, setSnapshot] = useState(null);
   const [compact, setCompact] = useState(false);
   const [expanding, setExpanding] = useState(false);
-  const [animation, setAnimation] = useState('original');
   const request = useRef(0);
   function expand() {
     request.current++;
@@ -24,13 +23,13 @@ export function useSketchThumbnail(editor, medium, results) {
   useEffect(() => () => { request.current++; }, []);
   useEffect(() => {
     if (!expanding) return;
-    const delay = window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 0 : animation === 'new' ? 750 : SKETCH_TRANSITION_MS;
+    // Transition completion restores the editor; this covers interrupted or missing events.
+    const delay = window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 0 : SKETCH_TRANSITION_MS + 50;
     const timer = setTimeout(() => setExpanding(false), delay);
     return () => clearTimeout(timer);
-  }, [expanding, animation]);
-  async function collapse(selectedAnimation = animation) {
+  }, [expanding]);
+  async function collapse() {
     if (!ENABLE_SKETCH_THUMBNAIL || !editor || medium !== 'poser2') return;
-    setAnimation(typeof selectedAnimation === 'string' ? selectedAnimation : animation);
     const version = ++request.current;
     const host = editor.getContainer();
     try {
@@ -54,9 +53,9 @@ export function useSketchThumbnail(editor, medium, results) {
   }
   function onPoseSelect(item) { return item ? collapse() : expand(); }
   function onTransitionEnd(event) {
-    if (animation === 'new' && expanding && event.target === event.currentTarget && event.propertyName === 'width') setExpanding(false);
+    if (expanding && event.target === event.currentTarget && event.propertyName === 'width') setExpanding(false);
   }
-  return { ...snapshot, compact, expanding, animation, selectAnimation: setAnimation, onTransitionEnd, editorHidden: compact || expanding, expand, collapse, onPoseSelect,
+  return { ...snapshot, compact, expanding, onTransitionEnd, editorHidden: compact || expanding, expand, collapse, onPoseSelect,
     canCollapse: ENABLE_SKETCH_THUMBNAIL && Boolean(editor) && medium === 'poser2' };
 }
 

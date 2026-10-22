@@ -3,36 +3,6 @@
 .sketch-controls-layer { position: absolute; inset: 0; z-index: 500; pointer-events: none; container: sketch-canvas / inline-size; }
 .sketch-controls-layer :is(button, .design-panel) { pointer-events: auto; }
 .sketch-controls-layer[aria-hidden="true"] { visibility: hidden; }
-.sketch-animation-controls {
-  position: absolute;
-  top: calc(var(--workspace-control-offset) + var(--workspace-pill-height) + .5rem);
-  right: var(--canvas-zoom-inline-inset);
-  z-index: 500;
-  display: flex;
-  gap: .375rem;
-}
-.sketch-minimize-overlay {
-  display: inline-flex;
-  align-items: center;
-  gap: .375rem;
-  min-height: var(--workspace-pill-height);
-  padding: .5rem .75rem;
-  border: 1px solid rgb(0 0 0 / .08);
-  border-radius: 999rem;
-  background: rgb(255 255 255 / .92);
-  color: var(--foreground);
-  font: 500 .75rem/1 var(--app-font);
-  cursor: pointer;
-  transition: background-color 160ms ease-out;
-}
-.sketch-minimize-overlay svg { width: 1.125rem; height: 1.125rem; }
-@media (hover: hover) {
-  .sketch-minimize-overlay:hover { background: var(--scene-background); }
-}
-.sketch-minimize-overlay:focus-visible { outline: 2px solid var(--ring); outline-offset: 3px; }
-@media (prefers-reduced-motion: reduce) {
-  .sketch-minimize-overlay { transition: none; }
-}
 .sketch-workspace.canvas-card-backdrop {
   transition: grid-template-columns 320ms var(--canvas-ease-out);
 }
@@ -127,7 +97,7 @@
 
 /* Continuous overlay geometry, isolated from the reversible split experiment. */
 .sketch-workspace[data-sketch-layout="overlay"] {
-  /* Keep duration aligned with SKETCH_TRANSITION_MS so the editor returns after the card settles. */
+  /* Legacy timing retained for the original layout fallback. */
   --sketch-motion: 800ms cubic-bezier(.4, 0, .2, 1);
   --compact-sketch-left: calc(var(--canvas-card-inset) + var(--canvas-title-inline-inset) + 1px);
   --thumbnail-top: calc(var(--workspace-control-offset) + var(--workspace-pill-height) + 1.25rem);
@@ -192,8 +162,7 @@
 .sketch-workspace[data-compact-sketch="false"][data-sketch-layout="split"] .sketch-thumbnail { display: none; }
 .sketch-workspace[data-sketch-layout="overlay"][data-resizing="true"] > :is(.sketch-pane, .preview-pane) { transition: none; }
 
-/* Optional comparison: the surface and controls settle on overlapping timelines.
-   Keep the original geometry and toolbar's own internal motion untouched. */
+/* Canvas and controls settle on overlapping timelines; toolbar internals retain their own motion. */
 .sketch-workspace[data-sketch-layout="overlay"][data-sketch-animation="new"] {
   --sketch-motion: 700ms cubic-bezier(.22, .9, .16, 1);
 }

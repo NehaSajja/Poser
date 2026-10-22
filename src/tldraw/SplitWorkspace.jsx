@@ -9,7 +9,7 @@ const ENABLE_MANUAL_CANVAS_RESIZE = false;
 const COLLAPSE_THRESHOLD = 25;
 const clampSplit = (value, minimum = 33) => Math.min(67, Math.max(minimum, value));
 
-export function SplitWorkspace({ sketch, preview, compactSketch = false, expandingSketch = false, onCollapseSketch, sketchAnimation = 'original' }) {
+export function SplitWorkspace({ sketch, preview, compactSketch = false, expandingSketch = false, onCollapseSketch, sketchAnimation = 'new' }) {
   const [split, setSplit] = useState(50);
   const drag = useRef(null);
   const collapsePending = useRef(false);
