@@ -13,13 +13,13 @@ import { createPoseHistory, readPoseEdit, writePoseEdit } from '../src/poser2/po
 
 globalThis.ProgressEvent ??= class { constructor(type, data) { Object.assign(this, data); } };
 async function load(id) {
-  const bytes = await fs.readFile(getAssetPath(id));
+  const bytes = await fs.readFile(id === 'mpfb' ? new URL('../public/models/mpfb-neutral.fbx', import.meta.url) : getAssetPath(id));
   return prepareModelRig(captureRig(new FBXLoader().parse(bytes.buffer.slice(bytes.byteOffset, bytes.byteOffset + bytes.byteLength), '')), id);
 }
 const world = bone => bone.getWorldPosition(new Vector3());
 const close = (a, b) => assert.ok(a.distanceTo(b) < 1e-5);
 
-for (const id of ['female', 'male', 'human']) test(`${id}: nod and turn keep the body fixed without changing bone lengths`, async () => {
+for (const id of ['female', 'male', 'human', 'mpfb']) test(`${id}: nod and turn keep the body fixed without changing bone lengths`, async () => {
   const rig = await load(id), control = headControl(rig);
   assert.ok(control);
   const ref = captureHead(control);

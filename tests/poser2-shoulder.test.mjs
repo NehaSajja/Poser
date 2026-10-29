@@ -14,7 +14,7 @@ import { createPoseHistory } from '../src/poser2/poseHistory.js';
 
 globalThis.ProgressEvent ??= class { constructor(type, data) { Object.assign(this, data); } };
 async function load(id) {
-  const bytes = await fs.readFile(getAssetPath(id));
+  const bytes = await fs.readFile(id === 'mpfb' ? new URL('../public/models/mpfb-neutral.fbx', import.meta.url) : getAssetPath(id));
   return prepareModelRig(captureRig(new FBXLoader().parse(bytes.buffer.slice(bytes.byteOffset, bytes.byteOffset + bytes.byteLength), '')), id);
 }
 const world = bone => bone.getWorldPosition(new Vector3());
@@ -60,7 +60,7 @@ function checkShoulders(rig) {
   }
 }
 
-for (const id of ['female', 'male', 'human']) test(`${id}: shoulders move independently, carry their arms and retain bounded motion`, async () => {
+for (const id of ['female', 'male', 'human', 'mpfb']) test(`${id}: shoulders move independently, carry their arms and retain bounded motion`, async () => {
   const rig = await load(id);
   rig.root.rotation.set(.4, -.8, .2); rig.root.scale.set(1.1, .9, 1.4);
   updateRigMatrices(rig); checkShoulders(rig);

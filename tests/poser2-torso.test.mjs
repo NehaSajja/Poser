@@ -11,7 +11,7 @@ import { torsoChain, captureTorso, aimTorso, editablePoseBones, TORSO_MAX_SWING 
 import { createPoseHistory } from '../src/poser2/poseHistory.js';
 globalThis.ProgressEvent ??= class { constructor(type,data) {Object.assign(this,data);} };
 const position = b => b.getWorldPosition(new Vector3());
-const load = async id => { const bytes=await fs.readFile(getAssetPath(id)); return prepareModelRig(captureRig(new FBXLoader().parse(bytes.buffer.slice(bytes.byteOffset,bytes.byteOffset+bytes.byteLength),'')),id); };
+const load = async id => { const bytes=await fs.readFile(id === 'mpfb' ? new URL('../public/models/mpfb-neutral.fbx', import.meta.url) : getAssetPath(id)); return prepareModelRig(captureRig(new FBXLoader().parse(bytes.buffer.slice(bytes.byteOffset,bytes.byteOffset+bytes.byteLength),'')),id); };
 const close = (a,b) => assert.ok(a.distanceTo(b)<1e-5,`${a.toArray()} != ${b.toArray()}`);
 function goal(ref,angle=.3) {
   const axis=new Vector3(1,.2,.3).cross(ref.direction).normalize();
@@ -44,7 +44,7 @@ function check(rig) {
     assert.ok(chain.root.quaternion.angleTo(ref.localRotation)<=TORSO_MAX_SWING+1e-6);
   }
 }
-for(const id of ['female','male','human'])test(`${id}: torso carries arms/head, fixes pelvis/feet, preserves lengths and is path-independent`,async()=>{
+for(const id of ['female','male','human','mpfb'])test(`${id}: torso carries arms/head, fixes pelvis/feet, preserves lengths and is path-independent`,async()=>{
   const rig=await load(id);rig.root.rotation.set(.4,-.8,.2);rig.root.scale.multiplyScalar(1.7);rig.joints.get('Spine').rotateX(-.6);check(rig);
 });
 test('authored standing, folded, seated, crouched, lying and raised-arm poses remain stable',async()=>{

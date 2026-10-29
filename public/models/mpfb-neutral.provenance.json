@@ -1,0 +1,32 @@
+{
+  "name": "MakeHuman neutral comparison body",
+  "source": "https://github.com/makehumancommunity/mpfb2",
+  "sourceCommit": "6ff1eb358f6c1959ced77e79e6dd2406d9a71f49",
+  "mpfbVersion": "2.0.18",
+  "blenderVersion": "4.5.15 LTS",
+  "license": "CC0-1.0 (mesh, macro targets, rig and weights; MPFB application code is GPL and is not bundled)",
+  "sourceAssets": [
+    "src/mpfb/data/3dobjs/base.obj",
+    "src/mpfb/data/targets",
+    "src/mpfb/data/rigs/standard/rig.mixamo.json",
+    "src/mpfb/data/rigs/standard/weights.mixamo.json"
+  ],
+  "recipe": "scripts/assets/export-mpfb.py",
+  "macros": "MPFB default macro values; fixed shape, no UI sliders",
+  "export": {
+    "vertices": 13380,
+    "bones": 52,
+    "maxWeightsPerVertex": 4,
+    "helpersRemoved": true,
+    "leafBones": false,
+    "animation": false,
+    "forward": "-Z",
+    "up": "Y"
+  },
+  "sha256": "ff5ca121e358b7fc61cf8f3cc9021ded54577d2bd15d89013de48a3efb59c5fc",
+  "editableSource": ".local/mpfb-neutral-source.blend (local build output, contains unbaked targets)",
+  "limitations": [
+    "Body proportions are retained during retargeting; source hand/foot contacts are fitted approximately.",
+    "Extreme folds can still produce skin pinching or self-intersections; no corrective morphs or body sliders are included."
+  ]
+}

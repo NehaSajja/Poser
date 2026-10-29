@@ -32,8 +32,9 @@ export function createPoseRenderer() {
   const material = new THREE.MeshStandardMaterial({ color: '#d3d3d3', roughness: .78, metalness: 0 });
   const humanMaterial = new THREE.MeshStandardMaterial({ color: '#b8b8b8', roughness: .85, metalness: 0 });
   const setBodyLighting = id => {
-    ambient.intensity = id === 'human' ? 1 : 2.5;
-    light.intensity = id === 'human' ? 3 : 2;
+    const anatomical = MODEL_OPTIONS.find(option => option.id === id)?.anatomical;
+    ambient.intensity = anatomical ? 1 : 2.5;
+    light.intensity = anatomical ? 3 : 2;
   };
   const rigs = new Map(), previews = new Map(), views = new Map(), sessions = new Map();
   let storage;
@@ -83,7 +84,7 @@ export function createPoseRenderer() {
           for (const original of Array.isArray(object.material) ? object.material : [object.material]) {
             if (original) originalMaterials.add(original);
           }
-          object.material = model.id === 'human' ? humanMaterial : material;
+          object.material = model.anatomical ? humanMaterial : material;
           object.frustumCulled = false;
           object.castShadow = true;
           object.receiveShadow = true;
