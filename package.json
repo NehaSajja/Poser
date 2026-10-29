@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "node server/index.mjs",
-    "dev:upper-body": "PORT=4352 VITE_HMR_PORT=4353 node server/index.mjs",
+    "dev:upper-body": "PORT=4352 VITE_HMR_PORT=4353 VITE_MHR_ENABLED=true node server/index.mjs",
     "build": "vite build",
     "start": "NODE_ENV=production node server/index.mjs",
     "test": "node --test tests/*.test.mjs",
@@ -14,7 +14,8 @@
     "prestart": "node scripts/check-setup.mjs",
     "setup:mhr": "python3 scripts/experiments/setup-mhr.py",
     "dev:mhr": ".local/mhr-env/bin/python server/experiments/mhr_server.py",
-    "test:mhr": ".local/mhr-env/bin/python tests/mhr-native.test.py"
+    "test:mhr": ".local/mhr-env/bin/python tests/mhr-native.test.py",
+    "test:mhr-flow": "node scripts/experiments/export-pose-targets.mjs && .local/mhr-env/bin/python tests/mhr-flow.test.py && node --test tests/poser2-mhr-flow.test.mjs"
   },
   "dependencies": {
     "@phosphor-icons/react": "^2.1.10",

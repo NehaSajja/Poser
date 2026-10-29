@@ -239,3 +239,5 @@
 .poser-panel:has(.poser2-dock-position[data-viewing="true"] .drawing-dock[data-collapsed="true"]) .reference-back-bottom {
   --back-size: var(--pose-back-collapsed-size);
 }
+
+.poser2-mhr-status{position:absolute;bottom:86px;left:50%;transform:translateX(-50%);max-width:min(90%,480px);z-index:12;font-size:12px;line-height:1.4;color:#e8e8e8;background:#303338e8;border-radius:8px;padding:8px 12px;text-align:center;pointer-events:none}.poser2-mhr-status:empty{display:none}

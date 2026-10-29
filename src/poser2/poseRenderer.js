@@ -1,5 +1,6 @@
 import * as THREE from 'three';
-import { MODEL_OPTIONS } from './models';
+import { MODEL_OPTIONS, MHR_FLOW_ENABLED } from './models';
+import { createMhrRig, createMhrHistory } from './mhrRig';
 import { prepareModelRig, snapshotModelRig, copyModelPose } from './modelRig';
 import { retargetPoseAsync } from './contactRetarget';
 import { FBXLoader } from 'three/addons/loaders/FBXLoader.js';
@@ -36,6 +37,7 @@ export function createPoseRenderer() {
     ambient.intensity = anatomical ? 1 : 2.5;
     light.intensity = anatomical ? 3 : 2;
   };
+  const nativePreviews = new Map(), nativeRigs = new Set();
   const rigs = new Map(), previews = new Map(), views = new Map(), sessions = new Map();
   let storage;
   try { storage = window.localStorage; } catch { /* Local editing works without storage. */ }
@@ -117,11 +119,38 @@ export function createPoseRenderer() {
 
   async function render(item, canvas, size, signal) {
     if (interactive) throw new Error('Interactive view owns the renderer.');
-    const { preview, rig } = await prepare(item, signal);
+    let { preview, rig } = await prepare(item, signal);
     if (interactive) throw new Error('Interactive view owns the renderer.');
     camera.zoom = 1;
     applyLibraryPose(rig, preview.model);
     restoreEdits(item, rig, preview);
+    let modelWarning = '';
+    if (MHR_FLOW_ENABLED) {
+      // Capture before the await: other carousel items share the source FBX rig.
+      const source = snapshotModelRig(rig);
+      const cacheKey = item.key + JSON.stringify(getSession(item, rig, preview).history.current);
+      try {
+        if (!nativePreviews.has(cacheKey)) nativePreviews.set(cacheKey, (async () => {
+          const native = await createMhrRig(humanMaterial); nativeRigs.add(native);
+          native.mhr.cacheKey = cacheKey;
+          try { await native.mhr.fit(source, lifetime.signal); }
+          catch (error) { native.mhr.dispose(); nativeRigs.delete(native); throw error; }
+          native.mhr.baseline = { packet: native.mhr.capture(), position: native.root.position.clone(), quaternion: native.root.quaternion.clone(), scale: native.root.scale.clone() };
+          return native;
+        })().catch(error => { nativePreviews.delete(cacheKey); throw error; }));
+        rig = await nativePreviews.get(cacheKey);
+        signal.throwIfAborted();
+        if (interactive || disposed) throw new Error('Interactive view owns the renderer.');
+        resetNative(rig);
+      } catch (error) {
+        signal.throwIfAborted();
+        if (interactive || disposed) throw error;
+        modelWarning = 'MHR is unavailable. Showing the original body; restart the experimental server to use MHR.';
+        // The shared FBX may have changed while MHR was loading.
+        applyLibraryPose(rig, preview.model); restoreEdits(item, rig, preview);
+      }
+    }
+    setBodyLighting(rig.modelId);
     scene.add(rig.root);
     const bounds = new THREE.Box3().setFromObject(rig.root, true);
     const center = bounds.getCenter(new THREE.Vector3());
@@ -171,7 +200,13 @@ export function createPoseRenderer() {
       .addScaledVector(up, (projected.min.y + projected.max.y) / 2);
     views.set(item.key, { preview, rig, bounds, side, center, visualCenter, footprint: frame.body,
       cameraPosition: camera.position.clone(), lightPosition });
-    while (views.size > 24) views.delete(views.keys().next().value);
+    while (views.size > 24) {
+      const key = views.keys().next().value, expired = views.get(key); views.delete(key);
+      if (expired.rig.mhr) {
+        nativePreviews.delete(expired.rig.mhr.cacheKey);
+        nativeRigs.delete(expired.rig); expired.rig.mhr.dispose();
+      }
+    }
     renderer.setSize(frame.width, frame.height, false);
     canvas.width = frame.width; canvas.height = frame.height;
     const shadowCanvas = document.createElement('canvas');
@@ -193,8 +228,13 @@ export function createPoseRenderer() {
       rig.root.visible = true;
       scene.remove(rig.root);
     }
-    return { shadowCanvas, style: frame.style, body: frame.body, side,
+    return { shadowCanvas, modelWarning, style: frame.style, body: frame.body, side,
       aspectRatio: (projected.max.x - projected.min.x) / (projected.max.y - projected.min.y) };
+  }
+
+  function resetNative(rig) {
+    const base = rig.mhr.baseline;
+    rig.mhr.apply(base.packet); rig.root.position.copy(base.position); rig.root.quaternion.copy(base.quaternion); rig.root.scale.copy(base.scale); updateRigMatrices(rig);
   }
 
   function mount(item, container, origin, onControlsChange, { animate } = {}) {
@@ -202,8 +242,9 @@ export function createPoseRenderer() {
     if (!view || disposed || interactive) throw new Error('Pose preview is unavailable.');
     interactive = true;
     try {
-      applyLibraryPose(view.rig, view.preview.model);
-      const session = restoreEdits(item, view.rig, view.preview);
+      if (view.rig.mhr) resetNative(view.rig);
+      else applyLibraryPose(view.rig, view.preview.model);
+      const session = view.rig.mhr ? { source: 'mhr-native-v1', history: createMhrHistory(view.rig.mhr.params) } : restoreEdits(item, view.rig, view.preview);
       let activeRig = view.rig, activeHistory = session.history;
       let authored = snapshotModelRig(view.rig), revision = 0;
       const solvedAt = new Map([[view.rig, revision]]);
@@ -233,7 +274,7 @@ export function createPoseRenderer() {
         // History from another body belongs to a different torso/root solve.
         // Keep this body's undo stack; rebuilt bodies get a matching baseline.
         histories.clear(); histories.set(activeRig, activeHistory);
-        if (!discarded && activeRig === view.rig) writePoseEdit(storage, item.key, session.source, activeHistory.current);
+        if (!discarded && activeRig === view.rig && !activeRig.mhr) writePoseEdit(storage, item.key, session.source, activeHistory.current);
       };
       const onClose = () => {
         discarded = true; ended = true; switchVersion++;
@@ -243,7 +284,8 @@ export function createPoseRenderer() {
         }
         sessions.delete(item.key);
         clearPoseEdit(storage, item.key);
-        applyLibraryPose(view.rig, view.preview.model);
+        if (view.rig.mhr) resetNative(view.rig);
+        else applyLibraryPose(view.rig, view.preview.model);
         light.position.copy(view.lightPosition);
         onPoseEdit();
       };
@@ -263,24 +305,30 @@ export function createPoseRenderer() {
           const option = MODEL_OPTIONS.find(model => model.id === id);
           if (!option) throw new Error('Unknown model.');
           const version = ++switchVersion;
-          const next = await loadRig(option.url);
+          const next = option.native ? (view.rig.mhr ? view.rig : await createMhrRig(humanMaterial)) : await loadRig(option.url);
+          if (next.mhr) nativeRigs.add(next);
           if (ended || disposed || version !== switchVersion) return false;
           if (next === activeRig) return true;
           // Finish an in-progress joint gesture before taking its current pose.
-          mounted.finishPoseEdit();
+          await mounted.finishPoseEdit();
+          if (ended || disposed || version !== switchVersion) return false;
           const poseRevision = revision;
           if (solvedAt.get(next) !== revision) {
-            if (next.modelId === authored.modelId) copyModelPose(authored, next);
+            if (next.mhr) {
+              await next.mhr.fit(authored, lifetime.signal);
+              if (ended || disposed || version !== switchVersion || revision !== poseRevision) return false;
+            }
+            else if (next.modelId === authored.modelId) copyModelPose(authored, next);
             else {
               const report = await retargetPoseAsync(authored, next, () => !ended && !disposed && version === switchVersion && revision === poseRevision);
               if (!report) return false;
             }
             solvedAt.set(next, revision);
           }
-          const pose = editedBones(next).map(bone => bone.quaternion.toArray());
+          const pose = next.mhr ? next.mhr.params : editedBones(next).map(bone => bone.quaternion.toArray());
           activeHistory = histories.get(next);
           if (activeHistory) activeHistory.commit(pose);
-          else { activeHistory = createPoseHistory(pose); histories.set(next, activeHistory); }
+          else { activeHistory = next.mhr ? createMhrHistory(pose) : createPoseHistory(pose); histories.set(next, activeHistory); }
           scene.remove(activeRig.root); activeRig = next; scene.add(activeRig.root);
           setBodyLighting(id);
           onPoseEdit();
@@ -314,6 +362,7 @@ export function createPoseRenderer() {
       geometries.forEach(geometry => geometry.dispose());
       skeletons.forEach(skeleton => skeleton.dispose());
     }).catch(() => {});
+    nativeRigs.forEach(rig => rig.mhr.dispose()); nativeRigs.clear(); nativePreviews.clear();
     rigs.clear(); previews.clear(); views.clear(); sessions.clear(); scene.clear(); material.dispose(); humanMaterial.dispose();
     contact.dispose(); light.dispose();
     renderer.dispose(); renderer.forceContextLoss();

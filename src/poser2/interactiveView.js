@@ -1,7 +1,9 @@
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { poseTransitionDuration, poseViewFit } from './viewTransition';
-import { createJointControls } from './jointControls';
+import { createJointControls as createStandardJointControls } from './jointControls';
+import { createMhrJointControls } from './mhrJointControls';
+const createJointControls = options => options.rig.mhr ? createMhrJointControls(options) : createStandardJointControls(options);
 import { createLightControls } from './lightControls';
 
 export function mountPoseView({ renderer, scene, camera, light, container, view, origin, onPoseEdit, onPoseCommit, onClose, updateShadow, history, onControlsChange, animate = true }) {
@@ -134,6 +136,7 @@ export function mountPoseView({ renderer, scene, camera, light, container, view,
       joints.setEnabled(false);
       lightControls.setEnabled(false);
       closing = true;
+      joints.cancelPending?.();
       // Finish any active gesture before discarding its edits and returning to the carousel.
       onClose();
       const sizing = fit(), target = originTarget(sizing);

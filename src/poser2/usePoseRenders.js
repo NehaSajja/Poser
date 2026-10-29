@@ -40,9 +40,9 @@ export function usePoseRenders(data, paused = false) {
         const size = Math.min(1024, Math.ceil(window.innerHeight * .5 * Math.min(window.devicePixelRatio, 1.5)));
         const results = await Promise.allSettled(data.results.map(async item => {
           const canvas = document.createElement('canvas');
-          const { shadowCanvas, style, aspectRatio, body: footprint } = await renderer.current.render(item, canvas, size, controller.signal);
+          const { shadowCanvas, modelWarning, style, aspectRatio, body: footprint } = await renderer.current.render(item, canvas, size, controller.signal);
           const [body, shadow] = await Promise.all([imageUrl(canvas), imageUrl(shadowCanvas)]);
-          return [item.key, { body, shadow, style, aspectRatio, footprint,
+          return [item.key, { body, shadow, style, aspectRatio, footprint, modelWarning,
             mount: (container, origin, onControlsChange, options) => {
               const mounted = renderer.current.mount(item, container, origin, onControlsChange, options);
               let released = false, disposed = false, frozen;

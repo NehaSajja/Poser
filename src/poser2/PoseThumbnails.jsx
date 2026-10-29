@@ -354,6 +354,7 @@ export function Poser2Thumbnails({ pose, onSelect, onReadyChange, ref }) {
 
   return <>
     <SelectionGrid hidden={!hasFloor}/>
+    {[...images.values()].some(image => image.modelWarning) && <div className="poser2-mhr-status" role="status">{[...images.values()].find(image => image.modelWarning).modelWarning}</div>}
     <div ref={carousel} className="poser2-carousel" data-orientation="horizontal" data-dragging={dragging}
     data-motion={selected && !selection.motion ? 'instant' : undefined}
     data-viewing={Boolean(selected)} data-closing={Boolean(selected && selection.closing)} inert={selected ? true : undefined}

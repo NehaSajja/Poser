@@ -20,6 +20,8 @@ if (!['openai','openrouter'].includes(provider)) throw new Error('DECISIONS_PROV
 const key = provider === 'openai' ? process.env.OPENAI_API_KEY : process.env.OPENROUTER_API_KEY;
 const port = Number(process.env.PORT || 4317);
 const production = process.env.NODE_ENV === 'production';
+const stopMhr = !production && process.env.VITE_MHR_ENABLED === 'true'
+  ? await (await import('./experiments/start-mhr.mjs')).startMhrExperiment(root) : () => {};
 const origins = allowedOrigins(port);
 const runtime = resolve(process.env.POSER_DATA_DIR || resolve(root, '.local'));
 const reserve = production ? createDailyQuota({ file: resolve(runtime, 'usage/node.json'), limit: limitValue(process.env.DAILY_NODE_API_CALLS, 100), totalLimit: limitValue(process.env.TOTAL_NODE_API_CALLS, 200) }) : () => {};
@@ -100,6 +102,7 @@ const server = http.createServer(async (req, res) => {
 server.listen(port, process.env.HOST || (production ? '0.0.0.0' : '127.0.0.1'), () => console.log(`Sketch: http://127.0.0.1:${port} · ${key ? provider : 'local shape recognition'}`));
 
 for (const signal of ['SIGTERM', 'SIGINT']) process.once(signal, () => {
+  stopMhr();
   references.close();
   server.close(() => process.exit(0));
   setTimeout(() => process.exit(0), 10_000).unref();
