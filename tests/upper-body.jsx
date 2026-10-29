@@ -23,6 +23,7 @@ function Experiment() {
       <label>Upper body <select value={id} onChange={event => setId(event.target.value)}>
         {poses.map(([value, label]) => <option value={value} key={value}>{label}</option>)}
       </select></label>
+      <a href="/tests/skinning.html" className="comparison-link">Skinning comparison</a>
       <p>Enable Rig. Chest tilts; head nods and turns. Drag either shoulder dot up or down; its arm follows.</p>
     </header>
     <section className="preview-pane" id="preview-pane" data-medium="poser2">

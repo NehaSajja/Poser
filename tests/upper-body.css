@@ -6,3 +6,5 @@
 .experiment-header select { border: 1px solid #ccd0d5; background: #fff; border-radius: 8px; padding: 8px; font: inherit; }
 .experiment-header p { margin: 0 0 0 auto; max-width: 320px; font-size: 12px; line-height: 1.5; color: #555; }
 @media (max-width: 650px) { .experiment-header { flex-wrap: wrap; gap: 12px; } .experiment-header p { width: 100%; margin: 0; } }
+
+.comparison-link { pointer-events: auto; color: inherit; font-size: 12px; text-underline-offset: 3px; }
