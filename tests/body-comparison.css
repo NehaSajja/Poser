@@ -1,0 +1,2 @@
+.comparison{grid-template-columns:repeat(3,minmax(0,1fr))}@media(max-width:750px){.comparison{overflow-x:auto;grid-template-columns:repeat(3,minmax(240px,1fr))}.panel-title p{font-size:10px}}
+.fit-error{margin-top:7px!important;font-size:10px!important}header>a:not(.brand){font-size:12px;color:inherit}

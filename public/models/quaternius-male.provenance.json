@@ -1,0 +1,25 @@
+{
+  "name": "Quaternius Superhero Male comparison body",
+  "author": "Quaternius",
+  "source": "https://quaternius.itch.io/universal-base-characters",
+  "creatorPage": "https://quaternius.com/packs/universalbasecharacters.html",
+  "license": "CC0-1.0",
+  "downloadDate": "2026-10-28",
+  "sourceArchive": "Universal Base Characters[Standard].zip",
+  "sourceArchiveSha256": "fdbf1804c90dfc1ea03e992bff7da2dfd1a79318e13270a660180f9308455f40",
+  "sourceAsset": "Base Characters/Godot - UE/Superhero_Male_FullBody.gltf",
+  "recipe": "scripts/assets/export-quaternius.py",
+  "blenderVersion": "4.5.15 LTS",
+  "modifications": [
+    "Semantic bone renaming to mixamorig roles; original joint positions and rest rotations retained.",
+    "Joined eyes, eyebrows and body into one skinned mesh for FBXLoader compatibility.",
+    "Kept strongest four authored influences per vertex and normalized them for browser skinning.",
+    "Removed textures and materials for shared gray material comparison; no weight repainting or corrective shapes added."
+  ],
+  "sha256": "b35d9db0b025b60875fc9065b0a909c1f9602827a6ef1143f705096858aad994",
+  "limitations": [
+    "Stylized superhero proportions, not a neutral anatomical figure.",
+    "No body-shape sliders.",
+    "Deep bends can still pinch; source hand/body contacts only approximately fitted (seated-fold residual 6.47% stature in fixture)."
+  ]
+}

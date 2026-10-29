@@ -209,3 +209,22 @@ A deployed canvas also needs a valid [tldraw license](https://tldraw.dev/communi
 - The vendored [Neo Web SDK](https://github.com/NeoSmartpen/WEB-SDK2.0), commit `31e649a58311df0380f4bb68290b9196711426ba`, retains its GPL-3.0 license and upstream notice.
 - Historical artwork uses the Met's published Open Access metadata and image-embedding index with Apple MobileCLIP. Dataset and model sources are documented in [the Met service README](tools/met-art/README.md).
 - Pose scenes and character models come from the PoseMyArt library. The runtime subset is included under `data/`; its provenance and original collection notes are retained there.
+
+
+## Experimental body comparison (local branch only)
+
+The `experiment/upper-body` branch keeps all existing bodies and adds two independent tests.
+Open [the experiment index](http://127.0.0.1:4352/tests/experiments.html) after `npm run dev:upper-body`.
+
+- **A — independent rig:** `/tests/body-comparison.html` compares Realistic, MakeHuman and the CC0 Quaternius Superhero Male. Shared cameras and torso, head and shoulder controls allow direct checks of folds. Quaternius is also available in the original `/tests/upper-body.html` control playground, including undo/redo. Its stylized proportions are a limitation, not a proposed final anatomical style.
+- **B — native MHR:** `/tests/mhr.html` compares one fixed MHR body with learned pose corrections disabled/enabled. The same native skeleton drives both. Drag torso, head and shoulder dots or use the sliders; reset returns to the fitted source pose. This isolated bench has not replaced the main renderer.
+
+MHR needs an additional local service. Setup is already complete on this workstation. On another checkout run `npm run setup:mhr` (requires uv or Python 3.12); then run `npm run dev:mhr` in a second terminal. The service binds only `127.0.0.1:4354`, reached through the experimental Vite proxy. Model files and the Python environment stay under ignored `.local/`. No paid calls, SAM generation, image generation or credentials are used by either bench. The original deployment is unchanged.
+
+The MHR setup downloads the official ~190 MB release archive and retains the ~665 MB TorchScript model. The isolated Python dependencies take additional space. License, source checksums and experiment limitations are in `server/experiments/mhr-provenance.json`; Quaternius provenance is alongside its FBX in `public/models/`.
+
+Six library skeletons were fitted to MHR native articulation with its joint limits, fixed identity and neutral fingers. Mean joint-position residual is 2.9–4.5% of stature; this is **not** the contact-gap measure shown in A. Hand/foot contacts and self-collisions are not guaranteed. Torso moves carry arms and head; shoulders carry their own arms; the head edits leave arms and legs unchanged. Native joint-limit clamping is reported in the UI. No body sliders have been added.
+
+Validation: `npm run test:mhr` checks all six poses, upper-control isolation, finite surfaces, actual corrective displacement, deterministic reset and the local API. `node --test tests/poser2-quaternius.test.mjs` checks the alternative rig, transfer, controls, undo and body switching. The original skinning comparison is retained at `/tests/skinning.html`.
+
+Measured on this workstation: both MHR surfaces together took ~15 ms median, ~16 ms p95 across 30 warm CPU samples, excluding browser work. Initial browser checks took roughly 28–40 ms including transfer and normal recomputation. These are local experiment timings, not deployment or SAM latency estimates.

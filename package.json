@@ -11,7 +11,10 @@
     "test": "node --test tests/*.test.mjs",
     "setup": "node scripts/setup.mjs",
     "predev": "node scripts/check-setup.mjs",
-    "prestart": "node scripts/check-setup.mjs"
+    "prestart": "node scripts/check-setup.mjs",
+    "setup:mhr": "python3 scripts/experiments/setup-mhr.py",
+    "dev:mhr": ".local/mhr-env/bin/python server/experiments/mhr_server.py",
+    "test:mhr": ".local/mhr-env/bin/python tests/mhr-native.test.py"
   },
   "dependencies": {
     "@phosphor-icons/react": "^2.1.10",

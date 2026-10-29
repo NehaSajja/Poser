@@ -1,0 +1,21 @@
+{
+  "name": "Meta Momentum Human Rig (MHR)",
+  "source": "https://github.com/facebookresearch/MHR",
+  "referenceSourceCommit": "dd4340315901ba2e367133b86971e0caf8e91dd5",
+  "release": "v1.0.1",
+  "downloadUrl": "https://github.com/facebookresearch/MHR/releases/download/v1.0.1/assets.zip",
+  "archiveSha256": "e4f4f205cd87c0fa106577ba1de4fc763e4eb197c924461d2ef7e6944e9d6b94",
+  "modelSha256": "352e271a6c42729c68554ceaea0c955e866970160c31e35506d782dc0f7377bc",
+  "license": "Apache-2.0",
+  "modelPath": ".local/mhr/assets/mhr_model.pt",
+  "setup": "scripts/experiments/setup-mhr.py",
+  "nativeParameters": {"pose": 204, "identity": 45, "expression": 72},
+  "experiment": "Fixed zero identity and expression; six existing skeleton poses fitted to native articulation with official limits. No SAM calls or image generation.",
+  "limitations": [
+    "Pose fitting is approximate, with mean joint-position residuals of 2.9–4.5% of stature; not the same measure as Track A contact gaps.",
+    "Fingers remain neutral. There is no collision or contact solver in the native MHR experiment.",
+    "Pose corrections can reduce collapse but do not guarantee collision-free deep folds.",
+    "Native constraints can clamp head or shoulder adjustments; the test UI reports this.",
+    "The local Python service recomputes native mesh vertices. This behavior is not preserved by exporting an ordinary GLB alone."
+  ]
+}
