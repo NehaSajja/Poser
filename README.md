@@ -213,17 +213,17 @@ A deployed canvas also needs a valid [tldraw license](https://tldraw.dev/communi
 
 ## Experimental body comparison (local branch only)
 
-The `experiment/upper-body` branch keeps all existing bodies and adds two independent tests.
+The `experiment/upper-body` branch keeps all existing bodies and adds independent comparison tests.
 Open [the experiment index](http://127.0.0.1:4352/tests/experiments.html) after `npm run dev:upper-body`.
 
 - **A — independent rig:** `/tests/body-comparison.html` compares Realistic, MakeHuman and the CC0 Quaternius Superhero Male. Shared cameras and torso, head and shoulder controls allow direct checks of folds. Quaternius is also available in the original `/tests/upper-body.html` control playground, including undo/redo. Its stylized proportions are a limitation, not a proposed final anatomical style.
 - **B — native MHR:** `/tests/mhr.html` compares one fixed MHR body with learned pose corrections disabled/enabled. The same native skeleton drives both. Drag torso, head and shoulder dots or use the sliders; reset returns to the fitted source pose. The bench remains available alongside the native integration in the experimental Poser flow.
 
-MHR needs an additional local service. Setup is already complete on this workstation. On another checkout run `npm run setup:mhr` (requires uv or Python 3.12). `npm run dev:upper-body` starts the MHR service automatically; `npm run dev:mhr` remains available for running the bench separately. The service binds only `127.0.0.1:4354`, reached through the experimental Vite proxy. Model files and the Python environment stay under ignored `.local/`. Neither comparison bench uses paid calls, SAM generation, image generation or credentials. The main Poser drawing flow continues to use its existing Gemini sketch search and historical-reference connection; MHR fitting and edits run locally. The original deployment is unchanged.
+MHR needs an additional local service. Setup is already complete on this workstation. On another checkout run `npm run setup:mhr` (requires uv or Python 3.12). `npm run dev:upper-body` starts the MHR service automatically; `npm run dev:mhr` remains available for running the bench separately. The service binds only `127.0.0.1:4354`, reached through the experimental Vite proxy. Model files and the Python environment stay under ignored `.local/`. The comparison benches do not use paid calls, SAM generation, image generation or credentials. The main Poser drawing flow continues to use its existing Gemini sketch search and historical-reference connection; MHR fitting and edits run locally. The original deployment is unchanged.
 
 The MHR setup downloads the official ~190 MB release archive and retains the ~665 MB TorchScript model. The isolated Python dependencies take additional space. License, source checksums and experiment limitations are in `server/experiments/mhr-provenance.json`; Quaternius provenance is alongside its FBX in `public/models/`.
 
-Six library skeletons were fitted to MHR native articulation with its joint limits, fixed identity and neutral fingers. Mean joint-position residual is 2.9–4.5% of stature; this is **not** the contact-gap measure shown in A. Hand/foot contacts and self-collisions are not guaranteed. Torso moves carry arms and head; shoulders carry their own arms; the head edits leave arms and legs unchanged. Native joint-limit clamping is reported in the UI. No body sliders have been added.
+Six library skeletons were fitted to MHR native articulation with its joint limits, fixed identity and neutral fingers. Mean joint-position residual is 2.9–4.5% of stature; this is **not** the contact-gap measure shown in A. Hand/foot contacts and self-collisions are not guaranteed. Torso moves carry arms and head; shoulders carry their own arms; the head edits leave arms and legs unchanged. Native joint-limit clamping is reported in the UI. Body sliders are isolated in the separate C bench below; the main Poser flow still uses the fixed body.
 
 Validation: `npm run test:mhr` checks all six poses, upper-control isolation, finite surfaces, actual corrective displacement, deterministic reset and the local API. `node --test tests/poser2-quaternius.test.mjs` checks the alternative rig, transfer, controls, undo and body switching. The original skinning comparison is retained at `/tests/skinning.html`.
 
@@ -240,3 +240,17 @@ Body switching preserves the authored edit as the transfer source. Switching to 
 `server/experiments/start-mhr.mjs` manages a loopback-only service when the experiment flag is enabled. `mhr_server.py` owns native fitting and deformation; `src/poser2/mhrRig.js` owns the corrected mesh and joint adapter; `mhrJointControls.js` owns local gesture coalescing, joint edits and native history. `poseRenderer.js` integrates those into the existing flow.
 
 Validation: `npm run test:mhr-flow` exports bundled source poses, checks native fitting/limb isolation and packet validation, then verifies the browser-side joint adapter and native history with real model output. Existing upper-body/history tests and the application build also pass. Browser checks covered sketch → four MHR previews → selection, upper-body and wrist edits, undo/redo, old-body edits transferred back to MHR, and the existing lighting/layout controls.
+
+### C — body-shape comparison (local experiment only)
+
+Open http://127.0.0.1:4352/tests/mhr-shape.html after `npm run dev:upper-body`.
+The left panel is the current corrected MHR body; the right panel is a shape variation. Both receive the same torso/head/shoulder edits. Cameras are synchronized. A neutral rest pose and the six fitted poses are available. Changing a pose resets articulation offsets while retaining body settings. **Baseline** resets body settings; **Reset pose** resets only articulation; **Reset view** reframes both surfaces. Body edits are not saved across reloads or applied to the normal Poser flow.
+
+This is an explicitly provisional art-direction mapping, not a demographic classifier or a calibrated measurement system:
+
+- Fullness drives body identity coefficient 0 in [-0.8, 1.2]. Inspection of neutral geometry showed increasing torso/hip depth and width.
+- Masculine/feminine appearance is a silhouette trial: slider [-1,1] drives body coefficient 1 at 1.5×, shoulder-width scaling at -0.12× and hip-width scaling at 0.06×. Positive values broaden the hips relative to the upper body. These labels are review aids, not ground-truth attributes of MHR's coefficients. Head and hand identity stay unchanged.
+- Height uniformly scales the corrected mesh **and skeleton** from 85–115%. It is overall stature scaling, not independent leg/torso length or a centimetre measurement. Camera zoom stays unchanged while sliding, so size remains visible. Each body's lowest surface point is placed at floor height.
+- Learned pose corrections remain on for both. Contacts can drift, and larger bodies can intersect themselves in tight seated poses; there is no collision/contact solver here.
+
+The isolated `/mhr-experiment/api/shape` endpoint validates bounded controls and uses fresh tensors. It does not change the existing `/api/flow` identity, caches or packet protocol. No cloud calls are made by this bench. `npm run test:mhr-shape` checks exact baseline/reset isolation, all seven poses at 8 combined slider extremes with upper-body edits, height/handle alignment, finite mesh triangles, and API validation. These tests do not certify anatomical quality or absence of self-intersection; visual review is still required.

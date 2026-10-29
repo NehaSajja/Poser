@@ -14,6 +14,7 @@
     "prestart": "node scripts/check-setup.mjs",
     "setup:mhr": "python3 scripts/experiments/setup-mhr.py",
     "dev:mhr": ".local/mhr-env/bin/python server/experiments/mhr_server.py",
+    "test:mhr-shape": ".local/mhr-env/bin/python tests/mhr-shape.test.py",
     "test:mhr": ".local/mhr-env/bin/python tests/mhr-native.test.py",
     "test:mhr-flow": "node scripts/experiments/export-pose-targets.mjs && .local/mhr-env/bin/python tests/mhr-flow.test.py && node --test tests/poser2-mhr-flow.test.mjs"
   },

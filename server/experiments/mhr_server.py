@@ -29,10 +29,10 @@ CONTROLS = {
 }
 RANGES = {'torso': (-30,30), 'lean': (-25,25), 'nod': (-35,35), 'turn': (-60,60), 'left': (-15,25), 'right': (-15,25)}
 
-def parameters(pose_id, offsets):
+def parameters(pose_id, offsets, *, neutral=False):
     if pose_id not in POSES or not isinstance(offsets, dict) or set(offsets) - set(CONTROLS):
         raise ValueError('Unknown pose or control')
-    params = torch.tensor(POSES[pose_id]['params'])
+    params = torch.zeros(204) if neutral else torch.tensor(POSES[pose_id]['params'])
     clamped = []
     for control, changes in CONTROLS.items():
         value = offsets.get(control, 0)
@@ -205,6 +205,59 @@ def flow():
     headers={'X-MHR-MS':str(round((time.perf_counter()-started)*1000,2)),'Cache-Control':'no-store'}
     if error is not None:headers['X-MHR-Fit']=str(round(error,3))
     return Response(payload,mimetype='application/octet-stream',headers=headers)
+
+# Separate body-shape bench. The Poser flow above continues to use fixed IDENTITY.
+SHAPE_RANGES = {'fullness': (-0.8, 1.2), 'silhouette': (-1.0, 1.0), 'height': (0.85, 1.15)}
+
+def shape_inputs(values):
+    if not isinstance(values, dict) or set(values) - set(SHAPE_RANGES):
+        raise ValueError('Unknown body control')
+    result = {}
+    for name, (lo, hi) in SHAPE_RANGES.items():
+        value = values.get(name, 1.0 if name == 'height' else 0.0)
+        if isinstance(value, bool) or not isinstance(value, (int, float)) or not math.isfinite(value) or not lo <= value <= hi:
+            raise ValueError('Body control outside experiment range: ' + name)
+        result[name] = value
+    return result
+
+def shape_parameters(params, values):
+    identity = IDENTITY.clone()
+    identity[0, 0] = values['fullness']
+    identity[0, 1] = values['silhouette'] * 1.5
+    shaped = params.clone()
+    # Art-directed silhouette, not a calibrated sex/gender or weight predictor.
+    shaped[NAMES.index('scale_shoulder_width')] = -0.12 * values['silhouette']
+    shaped[NAMES.index('scale_hip_width')] = 0.06 * values['silhouette']
+    return identity, shaped
+
+def evaluate_shape(pose_id, offsets, values):
+    values = shape_inputs(values)
+    params, clamped = parameters('1176' if pose_id == 'neutral' else pose_id, offsets, neutral=pose_id == 'neutral')
+    identity, shaped = shape_parameters(params, values)
+    started = time.perf_counter()
+    with LOCK, torch.inference_mode():
+        base, base_s = MODEL(IDENTITY, params[None], EXPRESSION, apply_correctives=True)
+        variant, variant_s = MODEL(identity, shaped[None], EXPRESSION, apply_correctives=True)
+    vertices = [base[0].numpy().copy()/100, variant[0].numpy().copy()/100 * values['height']]
+    skeletons = [base_s[0,:,:3].numpy().copy()/100, variant_s[0,:,:3].numpy().copy()/100 * values['height']]
+    # Ground each surface, keeping its skeleton in exactly the same coordinate frame.
+    for v, skel in zip(vertices, skeletons):
+        ground = float(v[:,1].min()); v[:,1] -= ground; skel[:,1] -= ground
+    arrays = vertices + skeletons
+    if not all(np.isfinite(a).all() for a in arrays):
+        raise ValueError('Non-finite body surface')
+    return b''.join(np.asarray(a, dtype='<f4').tobytes() for a in arrays), (time.perf_counter()-started)*1000, clamped
+
+@app.post('/api/shape')
+def shape_route():
+    body = request.get_json(silent=True)
+    try:
+        if not isinstance(body, dict): raise ValueError('Expected object')
+        payload, ms, clamped = evaluate_shape(body.get('pose'), body.get('offsets', {}), body.get('shape', {}))
+    except (ValueError, TypeError) as error:
+        return jsonify(error=str(error)), 400
+    return Response(payload, mimetype='application/octet-stream', headers={
+        'X-MHR-MS': str(round(ms,2)), 'X-MHR-Clamped': ','.join(clamped), 'Cache-Control':'no-store'})
 
 if __name__ == '__main__':
     # Warm both execution paths before opening the local listener.
