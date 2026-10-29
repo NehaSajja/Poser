@@ -38,6 +38,24 @@ class FlowTests(unittest.TestCase):
       idx=s.JOINTS.index(unchanged);np.testing.assert_allclose(base[idx],after[idx],atol=1e-5)
      self.assertTrue(torch.all(fitted>=s.LIMITS[:,0]-1e-5));self.assertTrue(torch.all(fitted<=s.LIMITS[:,1]+1e-5))
 
+ def test_shaped_flow_and_limb_ik(self):
+  client=s.app.test_client()
+  for shape in [{'silhouette':1,'fullness':-.8,'height':1}, {'silhouette':-2,'fullness':-1.67,'height':.85}, {'silhouette':1.41,'fullness':3,'height':1.15}]:
+   params=torch.tensor(s.POSES['2013']['params'])
+   packet=np.frombuffer(s.surface_packet(params,shape),dtype='<f4')
+   skeleton=packet[18439*3:-204].reshape(127,8)
+   _,shaped=s.shape_parameters(params,shape);expected=s.fk(shaped).detach().numpy()
+   np.testing.assert_allclose(skeleton[:,:3],expected[:,:3]*shape['height']/100,atol=1e-6)
+   ji=s.JOINTS.index('l_wrist');target=skeleton[ji,:3]+np.array([.04,.03,0])
+   result=s.solve_native_limb(params,{'role':'LeftHand','target':target.tolist()},shape)
+   after=np.frombuffer(s.surface_packet(result,shape),dtype='<f4')[18439*3:-204].reshape(127,8)
+   self.assertLess(np.linalg.norm(after[ji,:3]-target),np.linalg.norm(skeleton[ji,:3]-target))
+   response=client.post('/api/flow',json={'params':params.tolist(),'shape':shape})
+   self.assertEqual(response.status_code,200);np.testing.assert_array_equal(np.frombuffer(response.data,dtype='<f4'),packet)
+   np.testing.assert_array_equal(packet[-204:],params.numpy())
+  for bad in [{'silhouette':1.42},{'fullness':-1.68}]:
+   self.assertEqual(client.post('/api/flow',json={'params':params.tolist(),'shape':bad}).status_code,400)
+
  def test_flow_api_and_bounded_fixed_body(self):
   client=s.app.test_client();meta=client.get('/api/flow-meta').json
   self.assertEqual(meta['protocol'],1);self.assertEqual(len(meta['parents']),127)

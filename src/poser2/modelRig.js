@@ -83,7 +83,7 @@ export function snapshotModelRig(source) {
     entry.position.copy(rest.position); entry.quaternion.copy(rest.quaternion); entry.scale.copy(rest.scale);
   }
   snapshot.position.copy(source.position); snapshot.quaternion.copy(source.quaternion); snapshot.scale.copy(source.scale);
-  if (source.mhr) snapshot.mhrPose = { params: [...source.mhr.params] };
+  if (source.mhr) snapshot.mhrPose = { params: [...source.mhr.params], shape: {...source.mhr.shape} };
   snapshot.modelId = source.modelId; snapshot.stature = source.stature; snapshot.restJoints = source.restJoints;
   snapshot.joints = new Map([...source.joints].map(([role, bone]) => [role, snapshot.bones.get(normalized(bone.name)).object]));
   updateRigMatrices(snapshot);

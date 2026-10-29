@@ -9,7 +9,7 @@ const fields = [['torso','Torso tilt',-30,30],['lean','Torso lean',-25,25],['nod
 const defaults = Object.fromEntries(fields.map(([id])=>[id,0]));
 let syncing=false;
 let offsets={...defaults}, pose='neutral', meta, skeleton, loadedPose, busy=false, pending=false, desiredVersion=0, disposed=false;
-let shape={silhouette:0,fullness:0,height:1};
+let shape={silhouette:1,fullness:-.8,height:1};
 const shapeFieldset=document.querySelector('#shape-controls');
 const shapeInputs=new Map();
 const views=[], handles=[], inputs=new Map(), status=document.querySelector('.status');
@@ -23,7 +23,7 @@ for(const [id,label,min,max] of fields){
  el.append(out,input);fieldset.append(el);inputs.set(id,{input,out,min,max});
 }
 const reset=document.createElement('button');reset.textContent='Reset pose';reset.addEventListener('click',()=>{offsets={...defaults};updateInputs();requestUpdate();});fieldset.append(reset);
-const shapeFields=[['silhouette','Masculine ↔ feminine',-1,1,.01,0],['fullness','Slender ↔ fuller',-.8,1.2,.01,0],['height','Height',.85,1.15,.01,1]];
+const shapeFields=[['silhouette','Masculine ↔ feminine',-2,1.41,.01,1],['fullness','Slender ↔ fuller',-1.67,3,.01,-.8],['height','Height',.85,1.15,.01,1]];
 for(const [id,label,min,max,step,value] of shapeFields){
  const el=document.createElement('label');el.textContent=label;
  const out=document.createElement('output');const input=document.createElement('input');
@@ -31,7 +31,7 @@ for(const [id,label,min,max,step,value] of shapeFields){
  input.addEventListener('input',()=>{shape[id]=Number(input.value);syncShape();requestUpdate();});
  el.append(out,input);shapeFieldset.append(el);shapeInputs.set(id,{input,out});
 }
-const presets=[['Baseline',{silhouette:0,fullness:0,height:1}],['Feminine',{silhouette:1,fullness:0,height:1}],['Masculine',{silhouette:-1,fullness:0,height:1}],['Slender',{silhouette:0,fullness:-.8,height:1}],['Fuller',{silhouette:0,fullness:1.2,height:1}]];
+const presets=[['Masculine',{silhouette:-1,fullness:-.8,height:1}],['Feminine',{silhouette:1,fullness:-.8,height:1}]];
 for(const [label,values] of presets){const b=document.createElement('button');b.textContent=label;b.disabled=true;b.addEventListener('click',()=>{shape={...values};syncShape();requestUpdate();});document.querySelector('#presets').append(b);}
 function syncShape(){
  for(const [id,{input,out}]of shapeInputs){input.value=shape[id];out.value=id==='height'?`${Math.round(shape[id]*100)}%`:`${shape[id]>0?'+':''}${shape[id].toFixed(2)}`;}
@@ -95,7 +95,7 @@ async function flush(){
    skeleton=[data.slice(n*2,n*2+meta.jointNames.length*3),data.slice(n*2+meta.jointNames.length*3)];
    if(loadedPose!==pose){loadedPose=pose;frame();}
    const clamped=r.headers.get('X-MHR-Clamped');status.textContent=clamped?`Native joint limit reached: ${clamped}. Reduce the adjustment to continue in that direction.`:'Both bodies use MHR corrections. Orbit either view; drag the dots to test the same upper-body adjustment on both.';
-   document.querySelector('#fit').textContent=`Provisional shape mapping · not calibrated body measurements · contact points may shift as proportions change`;
+   document.querySelector('#fit').textContent=`Expanded shape range · extremes may distort or intersect · presets retain their original proportions`;
    document.querySelector('#timing').textContent=`Surface update ${r.headers.get('X-MHR-MS')} ms · browser round trip + normals ${Math.round(performance.now()-start)} ms`;
    document.querySelector('.comparison').setAttribute('aria-busy','false');fieldset.disabled=false;shapeFieldset.disabled=false;document.querySelectorAll('#presets button').forEach(b=>b.disabled=false);
    // Render every completed edit rather than discarding all frames during a drag.

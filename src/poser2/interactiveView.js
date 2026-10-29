@@ -124,6 +124,8 @@ export function mountPoseView({ renderer, scene, camera, light, container, view,
     undo: () => joints.undo(),
     redo: () => joints.redo(),
     finishPoseEdit: () => joints.finish(),
+    setBodyShape: (shape, commit) => joints.setBodyShape?.(shape, commit),
+    commitBodyShape: () => joints.commitBodyShape?.(),
     replaceRig(rig, nextHistory) {
       joints.dispose();
       joints = createJointControls({ rig, camera, container, orbit, invalidate, onEdit: onPoseEdit,

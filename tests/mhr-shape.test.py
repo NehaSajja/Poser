@@ -26,7 +26,7 @@ class ShapeTests(unittest.TestCase):
 
  def test_all_pose_shape_extremes_and_controls(self):
   faces=s.MODEL.character_torch.mesh.faces.numpy()
-  for pose,appearance,fullness,height in itertools.product(['neutral', *s.POSES],[-1,1],[-.8,1.2],[.85,1.15]):
+  for pose,appearance,fullness,height in itertools.product(['neutral', *s.POSES],[-2,1.41],[-1.67,3],[.85,1.15]):
    with self.subTest(pose=pose,appearance=appearance,fullness=fullness,height=height):
     a,b,sk=unpack(s.evaluate_shape(pose,{'torso':10,'nod':15,'turn':20,'left':8,'right':-8},{'silhouette':appearance,'fullness':fullness,'height':height})[0])
     self.assertTrue(np.isfinite(b).all());self.assertTrue(np.isfinite(sk).all())
@@ -49,6 +49,21 @@ class ShapeTests(unittest.TestCase):
     _,two=s.MODEL(identity,p2[None],s.EXPRESSION,apply_correctives=True)
    j=s.JOINTS.index(joint);sl=slice(3,7) if rotation else slice(0,3)
    self.assertGreater(float(torch.linalg.norm(one[0,j,sl]-two[0,j,sl])),1e-4)
+
+ def test_presets_and_documented_coefficient_endpoints(self):
+  for direction in [-1,1]:
+   identity,p=s.shape_parameters(torch.zeros(204),s.shape_inputs({'silhouette':direction,'fullness':-.8}))
+   self.assertAlmostEqual(float(identity[0,0]),-.8,places=6)
+   self.assertAlmostEqual(float(identity[0,1]),direction*1.5)
+   self.assertAlmostEqual(float(p[s.NAMES.index('scale_shoulder_width')]),direction*-.12,places=6)
+   self.assertAlmostEqual(float(p[s.NAMES.index('scale_hip_width')]),direction*.06,places=6)
+  for appearance,fullness in [(-2,-1.67),(1.41,3)]:
+   identity,_=s.shape_parameters(torch.zeros(204),s.shape_inputs({'silhouette':appearance,'fullness':fullness}))
+   self.assertAlmostEqual(float(identity[0,0]),fullness,places=6)
+   self.assertAlmostEqual(float(identity[0,1]),appearance*1.5,places=6)
+  client=s.app.test_client()
+  for field,value in [('silhouette',1.42),('silhouette',-2.01),('fullness',3.01),('fullness',-1.68)]:
+   self.assertEqual(client.post('/api/shape',json={'pose':'neutral','shape':{field:value}}).status_code,400)
 
  def test_api_rejects_invalid_shape(self):
   client=s.app.test_client()

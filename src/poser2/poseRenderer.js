@@ -244,7 +244,7 @@ export function createPoseRenderer() {
     try {
       if (view.rig.mhr) resetNative(view.rig);
       else applyLibraryPose(view.rig, view.preview.model);
-      const session = view.rig.mhr ? { source: 'mhr-native-v1', history: createMhrHistory(view.rig.mhr.params) } : restoreEdits(item, view.rig, view.preview);
+      const session = view.rig.mhr ? { source: 'mhr-native-v1', history: createMhrHistory(view.rig.mhr.state) } : restoreEdits(item, view.rig, view.preview);
       let activeRig = view.rig, activeHistory = session.history;
       let authored = snapshotModelRig(view.rig), revision = 0;
       const solvedAt = new Map([[view.rig, revision]]);
@@ -301,6 +301,7 @@ export function createPoseRenderer() {
         onPoseEdit, onPoseCommit, onClose, updateShadow, history: session.history, onControlsChange, animate });
       return { ...mounted,
         get modelId() { return activeRig.modelId; },
+        get bodyShape() { return activeRig.mhr ? {...activeRig.mhr.shape} : null; },
         async setModel(id) {
           const option = MODEL_OPTIONS.find(model => model.id === id);
           if (!option) throw new Error('Unknown model.');
@@ -325,7 +326,7 @@ export function createPoseRenderer() {
             }
             solvedAt.set(next, revision);
           }
-          const pose = next.mhr ? next.mhr.params : editedBones(next).map(bone => bone.quaternion.toArray());
+          const pose = next.mhr ? next.mhr.state : editedBones(next).map(bone => bone.quaternion.toArray());
           activeHistory = histories.get(next);
           if (activeHistory) activeHistory.commit(pose);
           else { activeHistory = next.mhr ? createMhrHistory(pose) : createPoseHistory(pose); histories.set(next, activeHistory); }

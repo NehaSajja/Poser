@@ -49,6 +49,7 @@ export function usePoseRenders(data, paused = false) {
               const release = () => { if (!released) { mounted.dispose(); released = true; } };
               return { ...mounted,
                 get modelId() { return mounted.modelId; },
+                get bodyShape() { return mounted.bodyShape; },
                 close(done, animate) {
                   mounted.close(async () => {
                     // Keep the final edited frame visible while the shared WebGL

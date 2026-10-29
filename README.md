@@ -223,7 +223,7 @@ MHR needs an additional local service. Setup is already complete on this worksta
 
 The MHR setup downloads the official ~190 MB release archive and retains the ~665 MB TorchScript model. The isolated Python dependencies take additional space. License, source checksums and experiment limitations are in `server/experiments/mhr-provenance.json`; Quaternius provenance is alongside its FBX in `public/models/`.
 
-Six library skeletons were fitted to MHR native articulation with its joint limits, fixed identity and neutral fingers. Mean joint-position residual is 2.9–4.5% of stature; this is **not** the contact-gap measure shown in A. Hand/foot contacts and self-collisions are not guaranteed. Torso moves carry arms and head; shoulders carry their own arms; the head edits leave arms and legs unchanged. Native joint-limit clamping is reported in the UI. Body sliders are isolated in the separate C bench below; the main Poser flow still uses the fixed body.
+Six library skeletons were fitted to MHR native articulation with its joint limits, fixed identity and neutral fingers. Mean joint-position residual is 2.9–4.5% of stature; this is **not** the contact-gap measure shown in A. Hand/foot contacts and self-collisions are not guaranteed. Torso moves carry arms and head; shoulders carry their own arms; the head edits leave arms and legs unchanged. Native joint-limit clamping is reported in the UI. Body sliders were first evaluated in the separate C bench below and are now available in the experimental Model menu.
 
 Validation: `npm run test:mhr` checks all six poses, upper-control isolation, finite surfaces, actual corrective displacement, deterministic reset and the local API. `node --test tests/poser2-quaternius.test.mjs` checks the alternative rig, transfer, controls, undo and body switching. The original skinning comparison is retained at `/tests/skinning.html`.
 
@@ -231,11 +231,11 @@ Measured on this workstation: both MHR surfaces together took ~15 ms median, ~16
 
 ### Native MHR in the experimental Poser flow
 
-Run `npm run dev:upper-body` and open http://127.0.0.1:4352/. Corrected MHR is the default body for the retrieved carousel previews and selected pose. The Model menu retains all previous bodies for comparison. The experiment flag (`VITE_MHR_ENABLED=true`) only enables the integration in Vite development; normal production builds do not enable it. No Fly configuration or deployed checkout is changed.
+Run `npm run dev:upper-body` and open http://127.0.0.1:4352/. Corrected MHR is the default body for the retrieved carousel previews and selected pose. The experimental Model menu now offers Feminine, Masculine and Custom; the original bodies remain in the independent comparison pages and unchanged deployed version. The experiment flag (`VITE_MHR_ENABLED=true`) only enables the integration in Vite development; normal production builds do not enable it. No Fly configuration or deployed checkout is changed.
 
 The existing sketch search still retrieves library poses. Their normalized joint positions and rest-relative orientations are fitted locally to MHR native articulation and cached. This supports arbitrary retrieved poses, not only the six bench fixtures. Torso/head/shoulder handles edit native parameters. Elbow/wrist/knee/ankle handles solve only the selected native limb; all subsequent surfaces use learned corrections. Camera, light, layout transition, model switching, and undo/redo use the existing interface. Returning to pose options discards the edit, as before; MHR edits are currently kept for the open editing session rather than persisted across page reloads.
 
-Body switching preserves the authored edit as the transfer source. Switching to a different skeleton can introduce fitting differences; unchanged MHR poses can be restored from native parameters without repeatedly refitting. The body remains fixed, fingers are neutral, and native joint limits/contact inaccuracies still apply. On a service failure, previews fall back to original bodies with a visible message; the existing Model choices remain accessible.
+Body switching preserves the authored edit as the transfer source. Switching to a different skeleton can introduce fitting differences; unchanged MHR poses can be restored from native parameters without repeatedly refitting. Body controls are now enabled in the experimental flow; fingers remain neutral, and native joint limits/contact inaccuracies still apply. On a service failure, previews fall back to original bodies with a visible message; the existing Model choices remain accessible.
 
 `server/experiments/start-mhr.mjs` manages a loopback-only service when the experiment flag is enabled. `mhr_server.py` owns native fitting and deformation; `src/poser2/mhrRig.js` owns the corrected mesh and joint adapter; `mhrJointControls.js` owns local gesture coalescing, joint edits and native history. `poseRenderer.js` integrates those into the existing flow.
 
@@ -244,13 +244,28 @@ Validation: `npm run test:mhr-flow` exports bundled source poses, checks native 
 ### C — body-shape comparison (local experiment only)
 
 Open http://127.0.0.1:4352/tests/mhr-shape.html after `npm run dev:upper-body`.
-The left panel is the current corrected MHR body; the right panel is a shape variation. Both receive the same torso/head/shoulder edits. Cameras are synchronized. A neutral rest pose and the six fitted poses are available. Changing a pose resets articulation offsets while retaining body settings. **Baseline** resets body settings; **Reset pose** resets only articulation; **Reset view** reframes both surfaces. Body edits are not saved across reloads or applied to the normal Poser flow.
+The left panel is the current corrected MHR body; the right panel is a shape variation. Both receive the same torso/head/shoulder edits. Cameras are synchronized. A neutral rest pose and the six fitted poses are available. Changing a pose resets articulation offsets while retaining body settings. The variation starts at **Feminine + slender** (silhouette +1, fullness -0.8, height 100%). The only presets are **Masculine** (-1, -0.8, 100%) and **Feminine** (+1, -0.8, 100%); all three sliders remain adjustable. **Reset pose** resets only articulation; **Reset view** reframes both surfaces. Bench edits are independent of Poser sessions and are not saved across reloads.
 
 This is an explicitly provisional art-direction mapping, not a demographic classifier or a calibrated measurement system:
 
-- Fullness drives body identity coefficient 0 in [-0.8, 1.2]. Inspection of neutral geometry showed increasing torso/hip depth and width.
-- Masculine/feminine appearance is a silhouette trial: slider [-1,1] drives body coefficient 1 at 1.5×, shoulder-width scaling at -0.12× and hip-width scaling at 0.06×. Positive values broaden the hips relative to the upper body. These labels are review aids, not ground-truth attributes of MHR's coefficients. Head and hand identity stay unchanged.
+- Fullness drives body identity coefficient 0 in [-1.67, 3]. Inspection of neutral geometry showed increasing torso/hip depth and width.
+- Masculine/feminine appearance is a silhouette trial: slider [-2,1.41] drives body coefficient 1 at 1.5× (reaching [-3,2.115]), shoulder-width scaling at -0.12× and hip-width scaling at 0.06×. Positive values broaden the hips relative to the upper body. These labels are review aids, not ground-truth attributes of MHR's coefficients. Head and hand identity stay unchanged.
 - Height uniformly scales the corrected mesh **and skeleton** from 85–115%. It is overall stature scaling, not independent leg/torso length or a centimetre measurement. Camera zoom stays unchanged while sliding, so size remains visible. Each body's lowest surface point is placed at floor height.
 - Learned pose corrections remain on for both. Contacts can drift, and larger bodies can intersect themselves in tight seated poses; there is no collision/contact solver here.
 
-The isolated `/mhr-experiment/api/shape` endpoint validates bounded controls and uses fresh tensors. It does not change the existing `/api/flow` identity, caches or packet protocol. No cloud calls are made by this bench. `npm run test:mhr-shape` checks exact baseline/reset isolation, all seven poses at 8 combined slider extremes with upper-body edits, height/handle alignment, finite mesh triangles, and API validation. These tests do not certify anatomical quality or absence of self-intersection; visual review is still required.
+The isolated `/mhr-experiment/api/shape` endpoint validates bounded controls and uses fresh tensors. The `/api/flow` endpoint also accepts an optional bounded shape object; omitted shapes retain the original neutral body and binary packet layout. No cloud calls are made by this bench. `npm run test:mhr-shape` checks exact baseline/reset isolation, all seven poses at 8 combined slider extremes with upper-body edits, height/handle alignment, finite mesh triangles, and API validation. These tests do not certify anatomical quality or absence of self-intersection; visual review is still required.
+
+### Body controls in experimental Poser
+
+Select a pose, then **Model → Feminine / Masculine / Custom**. Previews and newly selected poses start with feminine/slender. The two presets preserve their approved settings: silhouette ±1, fullness -0.8, height 100%. Custom retains the current body and opens a non-modal panel from the right, with an inset track and raised grip. Controls respond while dragging; closing the panel keeps the result. Escape closes the panel while focused inside it. Reduced-motion settings disable its slide animation.
+
+Current limits: proportions -2 to +1.41, build -1.67 to +3, height 85–115%. Model evaluation and limb solving use the same shape and height. Each slider gesture commits a single undo step; pose and shape share session history. Changes in shape retain the body's current floor contact height. As before, returning to options discards session edits. There is no persistent body preference, body measurement calibration or collision solver.
+
+Design seams:
+- `src/poser2/BodyShapePanel.jsx`: reusable accessible panel and native range inputs; no model calls.
+- `src/poser2/BodyShapePanel.css`: scoped panel layout, motion, colors, slider track and knob styling. Replace this to change the visual language.
+- `src/poser2/bodyShape.js`: preset values, slider definitions, history serialization.
+- `InteractivePose.jsx`: menu/panel orchestration. `mhrJointControls.js`: coalesced local updates and undo. `mhrRig.js`: corrected mesh, skeleton and body state.
+- `server/experiments/mhr_server.py`: matching bounds and deformation/IK, loopback-only.
+
+The menu and panel are gated by the existing experimental dev flag. No deployment configuration or original checkout has changed. Validation includes 64 pose-editor JavaScript tests, 5 shape-model groups, 4 native-flow groups (including shaped limb IK), and a successful build. Browser review covers presets, panel opening, bounds, shape updates, undo and upper-body/wrist edits. Comparison/testing uses bundled poses without paid API calls.

@@ -158,7 +158,7 @@ def fit_source(body):
     while len(FIT_CACHE)>128:FIT_CACHE.popitem(last=False)
     return p,error
 
-def solve_native_limb(params, limb):
+def solve_native_limb(params, limb, shape=None):
     role=limb.get('role');target=np.asarray(limb.get('target'),dtype=np.float32)
     allowed={side+part:(prefix,part) for side,prefix in [('Left','l'),('Right','r')] for part in ['ForeArm','Hand','Leg','Foot']}
     if role not in allowed or target.shape!=(3,) or not np.isfinite(target).all() or np.abs(target).max()>10:raise ValueError('Invalid limb target')
@@ -171,16 +171,20 @@ def solve_native_limb(params, limb):
     # Only the chosen limb changes. A small rest preference selects a stable bend plane.
     opt=torch.optim.LBFGS([x],lr=.8,max_iter=24,tolerance_change=1e-8,line_search_fn='strong_wolfe')
     def closure():
-        opt.zero_grad();bounded=torch.maximum(lo,torch.minimum(hi,x));s=fk(seed.index_copy(0,indices,bounded))
+        opt.zero_grad();bounded=torch.maximum(lo,torch.minimum(hi,x));candidate=seed.index_copy(0,indices,bounded)
+        s=fk(shape_parameters(candidate,shape)[1] if shape else candidate)
+        if shape:s=s.clone();s[:,:3]*=shape['height']
         loss=((s[ji,:3]-desired)/STATURE).square().sum()+.00002*(bounded-seed[indices]).square().sum()+10*(x-bounded).square().sum()
         loss.backward();return loss
     opt.step(closure)
     return seed.index_copy(0,indices,torch.maximum(lo,torch.minimum(hi,x))).detach()
 
-def surface_packet(params):
-    with torch.inference_mode():v,s=MODEL(IDENTITY,params[None],EXPRESSION,apply_correctives=True)
-    s=s[0].clone();s[:,:3]/=100
-    arrays=[v[0].numpy()/100,s.numpy(),params.numpy()]
+def surface_packet(params, shape=None):
+    identity, shaped = shape_parameters(params,shape) if shape else (IDENTITY,params)
+    height=shape['height'] if shape else 1
+    with torch.inference_mode():v,s=MODEL(identity,shaped[None],EXPRESSION,apply_correctives=True)
+    s=s[0].clone();s[:,:3]*=height/100
+    arrays=[v[0].numpy()*height/100,s.numpy(),params.numpy()]
     if not all(np.isfinite(a).all() for a in arrays):raise ValueError('Non-finite surface')
     return b''.join(np.asarray(a,dtype='<f4').tobytes() for a in arrays)
 
@@ -198,16 +202,18 @@ def flow():
         with LOCK:
             if 'source' in body:params,error=fit_source(body['source'])
             else:params=validated_params(body.get('params'))
-            if 'limb' in body:params=solve_native_limb(params,body['limb'])
-            payload=surface_packet(params)
+            shape=shape_inputs(body['shape']) if 'shape' in body else None
+            if 'limb' in body:params=solve_native_limb(params,body['limb'],shape)
+            payload=surface_packet(params,shape)
     except (ValueError,TypeError,KeyError,IndexError) as exc:
         return jsonify(error=str(exc)),400
     headers={'X-MHR-MS':str(round((time.perf_counter()-started)*1000,2)),'Cache-Control':'no-store'}
     if error is not None:headers['X-MHR-Fit']=str(round(error,3))
     return Response(payload,mimetype='application/octet-stream',headers=headers)
 
-# Separate body-shape bench. The Poser flow above continues to use fixed IDENTITY.
-SHAPE_RANGES = {'fullness': (-0.8, 1.2), 'silhouette': (-1.0, 1.0), 'height': (0.85, 1.15)}
+# Shared bounded controls for the local comparison bench and experimental Poser flow.
+# Silhouette is multiplied by 1.5 below; these narrower limits were chosen in visual review.
+SHAPE_RANGES = {'fullness': (-1.67, 3.0), 'silhouette': (-2.0, 1.41), 'height': (0.85, 1.15)}
 
 def shape_inputs(values):
     if not isinstance(values, dict) or set(values) - set(SHAPE_RANGES):
