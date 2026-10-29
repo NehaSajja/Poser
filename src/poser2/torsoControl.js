@@ -1,6 +1,7 @@
 import { Quaternion, Vector3 } from 'three';
 import { limbChains } from './twoBoneIK.js';
 import { headControl } from './headControl.js';
+import { shoulderControls } from './shoulderControl.js';
 
 // Local experiment: VITE_TORSO_CONTROLS=false restores the original handles.
 export const TORSO_CONTROLS_ENABLED = import.meta.env?.VITE_TORSO_CONTROLS !== 'false';
@@ -22,6 +23,7 @@ export function editablePoseBones(rig) {
     ...limbChains(rig).flatMap(chain => [chain.root, chain.mid, chain.tip]),
     ...(torso ? [torso.root] : []),
     ...(head ? [head.root] : []),
+    ...shoulderControls(rig).map(control => control.root),
   ])];
 }
 

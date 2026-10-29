@@ -8,6 +8,7 @@ import { applyLibraryPose, captureRig, updateRigMatrices } from '../poser/librar
 import { createContactShadow } from './contactShadow';
 import { previewFrame } from './previewFrame';
 import { editablePoseBones } from './torsoControl';
+import { shoulderControls } from './shoulderControl';
 import { clearPoseEdit, createPoseHistory, readPoseEdit, writePoseEdit } from './poseHistory';
 
 // One WebGL context; each body is parsed once and shared by the previews/viewer.
@@ -39,17 +40,19 @@ export function createPoseRenderer() {
   try { storage = window.localStorage; } catch { /* Local editing works without storage. */ }
   const editedBones = editablePoseBones;
   const getSession = (item, rig, preview) => {
-    const previousSource = JSON.stringify(preview.model) + '|upper-body-v1';
-    const source = JSON.stringify(preview.model) + '|upper-body-v2';
+    const baseSource = JSON.stringify(preview.model);
+    const source = baseSource + '|upper-body-v3';
     let session = sessions.get(item.key);
     if (session?.source === source) return session;
     const bones = editedBones(rig);
     const history = createPoseHistory(bones.map(bone => bone.quaternion.toArray()));
     let saved = readPoseEdit(storage, item.key, source, bones.length);
-    // The new head rotation is appended: preserve edits from the torso checkpoint.
-    if (!saved && bones.at(-1) === rig.joints.get('Head')) {
-      const previous = readPoseEdit(storage, item.key, previousSource, bones.length - 1);
-      if (previous) saved = [...previous, bones.at(-1).quaternion.toArray()];
+    // New controls are appended, so retain edits from either earlier checkpoint.
+    const previousCounts = [[2, bones.length - shoulderControls(rig).length], [1, bones.indexOf(rig.joints.get('Head'))]];
+    for (const [version, count] of previousCounts) {
+      if (saved || count < 0) continue;
+      const previous = readPoseEdit(storage, item.key, `${baseSource}|upper-body-v${version}`, count);
+      if (previous) saved = [...previous, ...bones.slice(count).map(bone => bone.quaternion.toArray())];
     }
     if (saved) history.commit(saved);
     session = { source, history }; sessions.set(item.key, session);

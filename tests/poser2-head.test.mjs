@@ -83,7 +83,7 @@ test('combined head/torso edits survive undo, redo, persistence and body transfe
   const rig = await load('female'), head = headControl(rig), torso = torsoChain(rig);
   const bones = editablePoseBones(rig), snapshot = () => bones.map(b => b.quaternion.toArray());
   const apply = state => { bones.forEach((b, i) => b.quaternion.fromArray(state[i])); updateRigMatrices(rig); };
-  assert.equal(bones.at(-1), head.root);
+  assert.ok(bones.includes(head.root));
   const history = createPoseHistory(snapshot()), ref = captureTorso(torso);
   aimTorso(torso, ref.pivot.clone().add(ref.direction.clone().applyAxisAngle(new Vector3(1, 0, 0), .2)), ref);
   const torsoOnly = snapshot(); history.commit(torsoOnly);

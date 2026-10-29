@@ -23,7 +23,7 @@ function Experiment() {
       <label>Upper body <select value={id} onChange={event => setId(event.target.value)}>
         {poses.map(([value, label]) => <option value={value} key={value}>{label}</option>)}
       </select></label>
-      <p>Enable Rig. Chest dot tilts the torso. Head dot: up/down to nod, left/right to turn.</p>
+      <p>Enable Rig. Chest tilts; head nods and turns. Drag either shoulder dot up or down; its arm follows.</p>
     </header>
     <section className="preview-pane" id="preview-pane" data-medium="poser2">
       <Poser2Thumbnails pose={{ data, busy: false, status: 'ready' }}/>
