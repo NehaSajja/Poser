@@ -7,7 +7,7 @@ import { mountPoseView } from './interactiveView';
 import { applyLibraryPose, captureRig, updateRigMatrices } from '../poser/libraryPose';
 import { createContactShadow } from './contactShadow';
 import { previewFrame } from './previewFrame';
-import { limbChains } from './twoBoneIK';
+import { editablePoseBones } from './torsoControl';
 import { clearPoseEdit, createPoseHistory, readPoseEdit, writePoseEdit } from './poseHistory';
 
 // One WebGL context; each body is parsed once and shared by the previews/viewer.
@@ -37,9 +37,9 @@ export function createPoseRenderer() {
   const rigs = new Map(), previews = new Map(), views = new Map(), sessions = new Map();
   let storage;
   try { storage = window.localStorage; } catch { /* Local editing works without storage. */ }
-  const editedBones = rig => [...new Set(limbChains(rig).flatMap(chain => [chain.root, chain.mid, chain.tip]))];
+  const editedBones = editablePoseBones;
   const getSession = (item, rig, preview) => {
-    const source = JSON.stringify(preview.model);
+    const source = JSON.stringify(preview.model) + '|upper-body-v1';
     let session = sessions.get(item.key);
     if (session?.source === source) return session;
     const bones = editedBones(rig);
