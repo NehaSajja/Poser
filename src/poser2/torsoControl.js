@@ -1,5 +1,6 @@
 import { Quaternion, Vector3 } from 'three';
 import { limbChains } from './twoBoneIK.js';
+import { headControl } from './headControl.js';
 
 // Local experiment: VITE_TORSO_CONTROLS=false restores the original handles.
 export const TORSO_CONTROLS_ENABLED = import.meta.env?.VITE_TORSO_CONTROLS !== 'false';
@@ -16,9 +17,11 @@ export function torsoChain(rig) {
 // A shared ordering keeps dragging, undo and body switching in agreement.
 export function editablePoseBones(rig) {
   const torso = torsoChain(rig);
+  const head = headControl(rig);
   return [...new Set([
     ...limbChains(rig).flatMap(chain => [chain.root, chain.mid, chain.tip]),
     ...(torso ? [torso.root] : []),
+    ...(head ? [head.root] : []),
   ])];
 }
 

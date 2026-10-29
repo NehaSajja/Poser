@@ -39,12 +39,18 @@ export function createPoseRenderer() {
   try { storage = window.localStorage; } catch { /* Local editing works without storage. */ }
   const editedBones = editablePoseBones;
   const getSession = (item, rig, preview) => {
-    const source = JSON.stringify(preview.model) + '|upper-body-v1';
+    const previousSource = JSON.stringify(preview.model) + '|upper-body-v1';
+    const source = JSON.stringify(preview.model) + '|upper-body-v2';
     let session = sessions.get(item.key);
     if (session?.source === source) return session;
     const bones = editedBones(rig);
     const history = createPoseHistory(bones.map(bone => bone.quaternion.toArray()));
-    const saved = readPoseEdit(storage, item.key, source, bones.length);
+    let saved = readPoseEdit(storage, item.key, source, bones.length);
+    // The new head rotation is appended: preserve edits from the torso checkpoint.
+    if (!saved && bones.at(-1) === rig.joints.get('Head')) {
+      const previous = readPoseEdit(storage, item.key, previousSource, bones.length - 1);
+      if (previous) saved = [...previous, bones.at(-1).quaternion.toArray()];
+    }
     if (saved) history.commit(saved);
     session = { source, history }; sessions.set(item.key, session);
     while (sessions.size > 32) sessions.delete(sessions.keys().next().value);

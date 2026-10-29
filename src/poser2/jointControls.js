@@ -3,12 +3,16 @@ import { aimLimb, captureLimb, limbChains, solveLimb } from './twoBoneIK';
 import { createJointDrag } from './jointDrag';
 import { updateRigMatrices } from '../poser/libraryPose';
 import { aimTorso, captureTorso, editablePoseBones, torsoChain, TORSO_CONTROLS_ENABLED } from './torsoControl';
+import { captureHead, headControl, headHandlePosition, rotateHead, HEAD_CONTROLS_ENABLED } from './headControl';
 
 export function createJointControls({ rig, camera, container, orbit, invalidate, onEdit, onCommit, history, onControlsChange }) {
   const chains = limbChains(rig);
   const bones = editablePoseBones(rig);
   const torso = TORSO_CONTROLS_ENABLED && torsoChain(rig);
+  const head = HEAD_CONTROLS_ENABLED && headControl(rig);
   const anchor = handle => handle.kind === 'torso' ? handle.chain.tip : handle.chain[handle.kind];
+  const position = (handle, result = new Vector3()) => handle.kind === 'head'
+    ? headHandlePosition(handle.chain, result) : anchor(handle).getWorldPosition(result);
   const capture = handle => handle.kind === 'torso' ? captureTorso(handle.chain) : captureLimb(handle.chain);
   const snapshot = () => bones.map(bone => bone.quaternion.toArray());
   const refreshActions = () => onControlsChange?.({ canUndo: history.canUndo, canRedo: history.canRedo });
@@ -45,7 +49,13 @@ export function createJointControls({ rig, camera, container, orbit, invalidate,
       button.focus({ preventScroll: true });
       orbit.enableDamping = false; orbit.update(); orbit.enableDamping = true;
       camera.updateMatrixWorld();
-      const start = anchor(handle).getWorldPosition(new Vector3());
+      if (handle.kind === 'head') {
+        const orbitEnabled = orbit.enabled;
+        orbit.enabled = false; button.dataset.dragging = 'true';
+        return { ...handle, before: snapshot(), reference: captureHead(handle.chain),
+          startX: event.clientX, startY: event.clientY, orbitEnabled };
+      }
+      const start = position(handle);
       plane.setFromNormalAndCoplanarPoint(camera.getWorldDirection(new Vector3()), start);
       const intersection = hit(event);
       if (!intersection) return null;
@@ -54,6 +64,10 @@ export function createJointControls({ rig, camera, container, orbit, invalidate,
       return { ...handle, before: snapshot(), reference: capture(handle), offset: start.sub(intersection), orbitEnabled };
     },
     move(active, event) {
+      if (active.kind === 'head') {
+        rotateHead(active.chain, event.clientX - active.startX, active.startY - event.clientY, active.reference);
+        repaint(); return;
+      }
       const intersection = hit(event);
       if (intersection) moveJoint(active, intersection.clone().add(active.offset), active.reference);
     },
@@ -65,13 +79,16 @@ export function createJointControls({ rig, camera, container, orbit, invalidate,
   });
   const specifications = chains.flatMap(chain => ['mid', 'tip'].map((kind, index) => ({ chain, kind, label: chain.labels[index] })));
   if (torso) specifications.push({ chain: torso, kind: 'torso', label: 'Torso tilt' });
+  if (head) specifications.push({ chain: head, kind: 'head', label: 'Head turn and nod' });
   const handles = specifications.map(({ chain, kind, label }) => {
     const button = document.createElement('button');
     button.type = 'button'; button.className = 'poser2-joint';
     button.setAttribute('aria-label', label);
     button.title = label;
     button.dataset.joint = kind;
-    button.setAttribute('aria-description', kind === 'torso'
+    button.setAttribute('aria-description', kind === 'head'
+      ? 'Drag up or down to nod; left or right to turn. Arrow keys make small adjustments; Shift moves further.'
+      : kind === 'torso'
       ? 'Drag to tilt the upper body; arms and head follow. Orbit for a different direction. Arrow keys tilt; Shift moves further.'
       : 'Drag to pose. Arrow keys move this joint; Shift moves further.');
     const handle = { chain, kind, button };
@@ -80,6 +97,11 @@ export function createJointControls({ rig, camera, container, orbit, invalidate,
       const directions = { ArrowLeft: [-1, 0], ArrowRight: [1, 0], ArrowUp: [0, 1], ArrowDown: [0, -1] };
       if (!enabled || !directions[event.key] || drag.active) return;
       event.preventDefault(); event.stopPropagation();
+      if (kind === 'head') {
+        const [x, y] = directions[event.key], step = event.shiftKey ? 16 : 4;
+        rotateHead(chain, x * step, y * step, captureHead(chain));
+        repaint(); commit(); return;
+      }
       const reference = capture(handle), [x, y] = directions[event.key];
       const step = (camera.top - camera.bottom) / camera.zoom / container.clientHeight * (event.shiftKey ? 16 : 4);
       const target = anchor(handle).getWorldPosition(new Vector3())
@@ -110,7 +132,7 @@ export function createJointControls({ rig, camera, container, orbit, invalidate,
       const { width, height } = container.getBoundingClientRect();
       for (const handle of handles) {
         const { button } = handle;
-        anchor(handle).getWorldPosition(point).project(camera);
+        position(handle, point).project(camera);
         button.style.visibility = point.z < -1 || point.z > 1 || Math.abs(point.x) > 1 || Math.abs(point.y) > 1 ? 'hidden' : 'visible';
         button.style.left = `${(point.x + 1) * width / 2}px`; button.style.top = `${(1 - point.y) * height / 2}px`;
         button.style.zIndex = String(2 + Math.round((1 - point.z) * 100));
