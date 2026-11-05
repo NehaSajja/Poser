@@ -73,3 +73,18 @@ export function skinSurface(vertices,states,data,attributes,height=1){
  for(let v=0;v<data.vertexCount;v++)for(let k=0;k<4;k++){const slot=v*4+k,w=attributes.weights[slot];if(!w)continue;p.fromArray(vertices,v*3).applyMatrix4(transforms[attributes.ids[slot]]);out[v*3]+=p.x*w;out[v*3+1]+=p.y*w;out[v*3+2]+=p.z*w;}
  return out;
 }
+
+// Three's skin-normal shader applies the blended skin matrix directly. Recover
+// an input direction which produces the normals of the corrected posed mesh;
+// recomputing normals on the inverse-skinned surface gives a different result.
+export function unposeNormals(normals,states,data,attributes,height=1){
+ const transforms=matricesFromStates(states),bind=inverseBindMatrices(data,height);transforms.forEach((m,i)=>m.multiply(bind[i]));
+ const out=new Float32Array(normals.length),blend=new Matrix4(),p=new Vector3();
+ for(let v=0;v<data.vertexCount;v++){
+  blend.elements.fill(0);
+  for(let k=0;k<4;k++){const slot=v*4+k,w=attributes.weights[slot];if(!w)continue;const e=transforms[attributes.ids[slot]].elements;for(let j=0;j<16;j++)blend.elements[j]+=w*e[j];}
+  if(Math.abs(blend.determinant())<1e-10)throw new Error('Cannot recover skin normals for a singular pose');
+  p.fromArray(normals,v*3).transformDirection(blend.invert()).toArray(out,v*3);
+ }
+ return out;
+}

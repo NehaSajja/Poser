@@ -133,7 +133,7 @@ export function createPoseRenderer() {
         if (!nativePreviews.has(cacheKey)) nativePreviews.set(cacheKey, (async () => {
           const native = await createMhrRig(humanMaterial); nativeRigs.add(native);
           native.mhr.cacheKey = cacheKey;
-          try { await native.mhr.fit(source, lifetime.signal); }
+          try { await native.mhr.fit(source, lifetime.signal, item.key); }
           catch (error) { native.mhr.dispose(); nativeRigs.delete(native); throw error; }
           native.mhr.baseline = { packet: native.mhr.capture(), position: native.root.position.clone(), quaternion: native.root.quaternion.clone(), scale: native.root.scale.clone() };
           return native;

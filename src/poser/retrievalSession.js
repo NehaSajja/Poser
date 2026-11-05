@@ -22,5 +22,6 @@ export async function requestPoseRetrieval(payload, signal) {
     body: JSON.stringify(payload), signal: AbortSignal.any([signal, AbortSignal.timeout(55000)]) });
   const body = await response.json();
   if (!response.ok) throw new Error(body.error || 'Search failed.');
+  if(import.meta.env?.DEV&&import.meta.env?.VITE_MHR_BROWSER_NATIVE==='true')console.info('poser search timing',JSON.stringify(body.timing));
   return body;
 }

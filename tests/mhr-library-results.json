@@ -1,0 +1,40 @@
+{
+  "date": "2026-11-05",
+  "libraryCount": 1361,
+  "failures": [],
+  "timeBoundedIds": [],
+  "localCalculationMeasurements": [
+    {
+      "pose": "2013",
+      "coldFitAndSurfaceMs": 1401.36,
+      "savedFitSurfaceMs": 26.99,
+      "maxSurfaceDifferenceMm": 7.458418846130371
+    },
+    {
+      "pose": "1351",
+      "coldFitAndSurfaceMs": 549.76,
+      "savedFitSurfaceMs": 12.54,
+      "maxSurfaceDifferenceMm": 11.838166236877441
+    },
+    {
+      "pose": "1010",
+      "coldFitAndSurfaceMs": 547.84,
+      "savedFitSurfaceMs": 12.43,
+      "maxSurfaceDifferenceMm": 5.178779125213623
+    }
+  ],
+  "browserMhrPreparationMs": [
+    270,
+    445,
+    592,
+    738
+  ],
+  "browserFitSource": "saved-library for all four preview results",
+  "notes": [
+    "Local calculations exclude Gemini and network.",
+    "Fresh numerical fitting can converge to a slightly different solution; saved fits reuse one validated solution.",
+    "Browser timings include remote evaluation and queueing.",
+    "Initial surface geometry is unchanged by the normals fix.",
+    "Public deployment unchanged."
+  ]
+}

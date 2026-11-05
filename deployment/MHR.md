@@ -65,3 +65,34 @@ warm seated-body request took 0.47 seconds end to end (57 ms model evaluation);
 this is one measurement, not a latency guarantee. With the warmed body service,
 about 2.7 GiB of the existing 4-GB machine remained available before the reference
 worker was restarted. No additional permanent machine was created.
+
+
+## Browser posing experiment (not deployed)
+
+Branch `experiment/browser-native-mhr` runs with `npm run dev:browser-pose`
+on port 4358. The interface is local; MHR corrections use the existing Fly
+service so network latency remains part of the experiment. Browser GPU posing
+is immediate; the server supplies corrected surfaces after a pause or release.
+
+`npm run build:mhr-library` exports the 1,361 existing library skeletons and
+precomputes their native MHR parameters locally. It requires the installed MHR
+weights/runtime and original pose-library assets. It makes no AI API calls.
+Intermediate fits are resumable in `.local/mhr-library-fits/`; the committed
+outputs are `public/experiments/mhr-library/*.json` and their manifest.
+The build fingerprints the model and fitter, validates sources, normalizes
+rotations, and reports failures rather than silently accepting an incomplete
+library. An offline-only optimization time bound retains the best finite result
+and records any bounded fits; none were needed for the completed library.
+
+Only fits whose source positions and rotations still match are reused.
+Edited poses fall back to the fitter. Body-shape evaluation and pose corrections
+still use the server. The four preview images still appear together, and Gemini
+caption/embedding search remains unchanged; this experiment removes fitting
+from the initial library-preview requests, not all initial-search latency.
+
+Initial bent-knee shading was incorrect because normals were recalculated on
+an inverse-skinned mesh. The new adapter computes normals on the authoritative
+corrected surface, then inverse-transforms those directions for Three's skin
+shader. Surface vertices are unchanged. During motion the preview remains an
+approximation until a correction arrives. Numerical tests compare shader-space
+normals and vertices against MHR, including seated, kneeling and squat fixtures.

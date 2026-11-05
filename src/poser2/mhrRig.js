@@ -2,6 +2,7 @@ import * as THREE from 'three';
 import { captureRig, updateRigMatrices } from '../poser/libraryPose.js';
 import { prepareModelRig } from './modelRig.js';
 import {loadBrowserRig,attachBrowserPreview} from './mhrBrowserPreview.js';
+import {loadLibraryFit} from './mhrLibraryFits.js';
 import { BODY_PRESETS, bodyState } from './bodyShape.js';
 
 const API='/mhr-experiment/api';
@@ -23,7 +24,7 @@ export function sourceTargets(source){
   const positions={},orientations={};
   for(const [role,bone] of source.joints){
     positions[role]=bone.getWorldPosition(new THREE.Vector3()).sub(hips).divideScalar(height).toArray();
-    orientations[role]=bone.getWorldQuaternion(new THREE.Quaternion()).multiply(source.restJoints.get(role).rotation.clone().invert()).toArray();
+    orientations[role]=bone.getWorldQuaternion(new THREE.Quaternion()).multiply(source.restJoints.get(role).rotation.clone().invert()).normalize().toArray();
   }
   return {source:{positions,orientations},hips,height};
 }
@@ -52,19 +53,22 @@ export async function createMhrRig(material,{browserNative=import.meta.env?.VITE
       const changed=packet&&Object.keys(nextShape).some(k=>nextShape[k]!==this.shape[k]);
       const floor=changed?new THREE.Box3().setFromObject(root,true).min.y:null;
       this.shape=nextShape;packet=data.slice();packet.bodyShape={...this.shape};if(preview)preview.apply(data);else geometry.attributes.position.array.set(data.subarray(0,n));geometry.attributes.position.needsUpdate=true;
-      geometry.computeVertexNormals();geometry.computeBoundingBox();geometry.computeBoundingSphere();
+      if(!preview)geometry.computeVertexNormals();geometry.computeBoundingBox();geometry.computeBoundingSphere();
       setSkeleton(data.subarray(n,n+j));this.params=Array.from(data.subarray(n+j));
       if(changed){root.position.y+=floor-new THREE.Box3().setFromObject(root,true).min.y;root.updateMatrixWorld(true);}
     },
     capture(){if(!packet)return null;const copy=packet.slice();copy.bodyShape={...this.shape};return preview?.active?preview.capture(copy):copy;},
     async evaluate(body,signal){const shape={...(body.shape||this.shape)};const response=await request('flow',{...body,shape},signal);const data=new Float32Array(await response.arrayBuffer());data.bodyShape=shape;return data;},
-    async fit(source,signal){
+    async fit(source,signal,libraryKey){
+      const fitStarted=performance.now();
       const {source:targets,hips,height}=sourceTargets(source);
       const state=source.mhrPose;
+      const saved=state?null:await loadLibraryFit(libraryKey,targets,meta);signal?.throwIfAborted();
       const shape={...(state?.shape||BODY_PRESETS.feminine)};
-      const response=await request('flow',{...(state?{params:state.params}:{source:targets}),shape},signal);
+      const response=await request('flow',{...(state?{params:state.params}:saved?{params:saved.params}:{source:targets}),shape},signal);
       const data=new Float32Array(await response.arrayBuffer());signal?.throwIfAborted();
-      data.bodyShape=shape;this.apply(data);this.fitError=Number(response.headers.get('X-MHR-Fit'));
+      data.bodyShape=shape;this.apply(data);this.fitError=saved?.fitError??Number(response.headers.get('X-MHR-Fit'));this.fitSource=saved?'saved-library':state?'existing-parameters':'optimizer';
+      if(import.meta.env?.DEV&&import.meta.env?.VITE_MHR_BROWSER_NATIVE==='true')console.info('poser MHR preparation',JSON.stringify({key:libraryKey,source:this.fitSource,ms:Math.round(performance.now()-fitStarted)}));
       if(state){root.position.copy(source.root.position);root.quaternion.copy(source.root.quaternion);root.scale.copy(source.root.scale);}
       else{
         root.position.set(0,0,0);root.quaternion.identity();root.scale.setScalar(height/meta.stature);root.updateMatrixWorld(true);
