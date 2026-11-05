@@ -5,6 +5,10 @@ ARG POSER_ASSET_REVISION=462a54f5c24cb00aa7a44c73204e391a2cbff6aa
 WORKDIR /assets
 RUN python -c "import os,tarfile,urllib.request; r=os.environ['POSER_ASSET_REVISION']; u='https://codeload.github.com/NehaSajja/Poser/tar.gz/'+r; t=tarfile.open(fileobj=urllib.request.urlopen(u,timeout=180),mode='r|gz'); prefix='Poser-'+r+'/data/'; [(setattr(m,'name',m.name[len(prefix):]),t.extract(m,path='data',filter='data')) for m in t if m.name.startswith(prefix) and m.name != prefix]"
 
+FROM python:3.11-slim-bookworm AS mhr-assets
+COPY scripts/experiments/download-mhr-runtime.py /download-mhr-runtime.py
+RUN python /download-mhr-runtime.py /mhr
+
 FROM node:24-bookworm-slim AS web
 WORKDIR /app
 COPY package*.json ./
@@ -13,6 +17,7 @@ COPY . .
 COPY --from=assets /assets/data ./data
 # Only the browser-safe license is a build argument. API keys are runtime secrets.
 ARG VITE_TLDRAW_LICENSE_KEY
+ARG VITE_MHR_ENABLED=false
 RUN npm run build
 RUN node --input-type=module -e "import { restoreMetAssets } from './scripts/met-assets.mjs'; await restoreMetAssets(process.cwd());"
 
@@ -24,6 +29,9 @@ WORKDIR /app
 COPY tools/met-art/requirements.txt /tmp/requirements.txt
 RUN python -m pip install --no-cache-dir torch==2.9.0 torchvision==0.24.0 --index-url https://download.pytorch.org/whl/cpu \
     && python -m pip install --no-cache-dir -r /tmp/requirements.txt
+RUN python -m pip install --no-cache-dir Flask==3.1.3 scipy==1.15.3
+COPY --from=mhr-assets /mhr/mhr_model.pt /opt/poser/mhr_model.pt
+COPY --from=mhr-assets /mhr/LICENSE.txt /opt/poser/MHR-LICENSE.txt
 COPY --from=web /app/node_modules ./node_modules
 COPY --from=web /app/dist ./dist
 COPY --from=web /app/.local/met-art/mobileclip-s1.safetensors /opt/poser/mobileclip-s1.safetensors
@@ -41,6 +49,8 @@ ENV NODE_ENV=production HOST=0.0.0.0 PORT=8080 \
     MET_SEARCH_WORKERS=1 MET_QUEUE_LIMIT=4 MET_TORCH_THREADS=2
 RUN mkdir -p /data && node scripts/check-setup.mjs \
     && python tools/met-art/verify_setup.py
+# Fail the build if the Linux CPU runtime cannot load/evaluate the pinned model.
+RUN MHR_MODEL_PATH=/opt/poser/mhr_model.pt python -c "import sys; sys.path.insert(0,'server/experiments'); import mhr_server as m; p=m.surface_packet(m.torch.zeros(204),m.shape_inputs({'silhouette':1,'fullness':-.8,'height':1})); assert len(p)>200000; print('MHR CPU surface verified')"
 # Single replica: the local queue and persistent quotas are not distributed.
 EXPOSE 8080
 CMD ["node", "server/index.mjs"]

@@ -7,7 +7,7 @@ const API='/mhr-experiment/api';
 let assets;
 async function request(path, body, signal){
   const r=await fetch(`${API}/${path}`,{signal,...(body?{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)}:{})});
-  if(!r.ok)throw new Error('The local MHR service is unavailable. Restart the experimental server.');
+  if(!r.ok)throw new Error('Body controls are temporarily unavailable. Please try again.');
   return r;
 }
 export function loadMhrAssets(){

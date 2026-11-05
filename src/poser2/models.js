@@ -1,4 +1,4 @@
-export const MHR_FLOW_ENABLED = Boolean(import.meta.env?.DEV && import.meta.env?.VITE_MHR_ENABLED === 'true');
+export const MHR_FLOW_ENABLED = Boolean(import.meta.env?.VITE_MHR_ENABLED === 'true');
 export const MODEL_OPTIONS = [
   ...(MHR_FLOW_ENABLED ? [{ id: 'mhr', label: 'MHR · corrected', anatomical: true, native: true }] : []),
   { id: 'female', label: 'Female', url: '/api/pose-library/assets/female.fbx' },

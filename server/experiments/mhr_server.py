@@ -1,9 +1,10 @@
 """Loopback-only MHR comparison service. No cloud calls or uploaded input.
 Start with .local/mhr-env/bin/python server/experiments/mhr_server.py.
-The original application and production routes do not import this module.
+The hosted app proxies the flow endpoints through same-origin Node routes.
 """
 from pathlib import Path
 import json
+import os
 import math
 import threading
 import time
@@ -13,7 +14,7 @@ from flask import Flask, Response, abort, jsonify, request
 
 ROOT = Path(__file__).resolve().parents[2]
 torch.set_num_threads(2)
-MODEL = torch.jit.load(str(ROOT / '.local/mhr/assets/mhr_model.pt'), map_location='cpu').eval()
+MODEL = torch.jit.load(os.environ.get('MHR_MODEL_PATH', str(ROOT / '.local/mhr/assets/mhr_model.pt')), map_location='cpu').eval()
 NAMES = list(MODEL.get_parameter_names())[:204]
 JOINTS = list(MODEL.get_joint_names())
 LIMITS = MODEL.get_parameter_limits()[:204]

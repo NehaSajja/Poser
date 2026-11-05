@@ -1,6 +1,7 @@
 import { allowedOrigins, isAllowedRequest } from './access.mjs';
 import { createDailyQuota, createVisitorLimiter, clientAddress, limitValue } from './usage.mjs';
 import http from 'node:http';
+import { createMhrProxy } from './experiments/mhr-proxy.mjs';
 import { readFile } from 'node:fs/promises';
 import { resolve, extname, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -20,7 +21,8 @@ if (!['openai','openrouter'].includes(provider)) throw new Error('DECISIONS_PROV
 const key = provider === 'openai' ? process.env.OPENAI_API_KEY : process.env.OPENROUTER_API_KEY;
 const port = Number(process.env.PORT || 4317);
 const production = process.env.NODE_ENV === 'production';
-const stopMhr = !production && process.env.VITE_MHR_ENABLED === 'true'
+const mhrEnabled = process.env.MHR_ENABLED === 'true' || (!production && process.env.VITE_MHR_ENABLED === 'true');
+const stopMhr = mhrEnabled
   ? await (await import('./experiments/start-mhr.mjs')).startMhrExperiment(root) : () => {};
 const origins = allowedOrigins(port);
 const runtime = resolve(process.env.POSER_DATA_DIR || resolve(root, '.local'));
@@ -35,12 +37,22 @@ const handlePoseAssets = poseAssetRoutes({ port, json, origins });
 const handlePoseRetrieval = poseRetrievalRoutes({port,json,key:process.env.GEMINI_API_KEY,origins,beforeProviderCall:reserve});
 const references = createReferenceService(root);
 const handleArtReferences = artReferenceRoutes({ port, json, request: references, origins });
+const handleMhr = createMhrProxy({ enabled: mhrEnabled, origins, json, allowBench: !production });
 let inFlight = 0;
 const server = http.createServer(async (req, res) => {
   const path = new URL(req.url, 'http://localhost').pathname;
   res.setHeader('X-Content-Type-Options', 'nosniff');
   res.setHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
-  if (path === '/healthz' && req.method === 'GET') return json(res, 200, { ok: true });
+  if (path === '/healthz' && req.method === 'GET') {
+    if (mhrEnabled) {
+      try {
+        const ready = await fetch('http://127.0.0.1:4354/api/flow-meta', { signal: AbortSignal.timeout(2000) });
+        if (!ready.ok) throw new Error('MHR unavailable');
+      } catch { return json(res, 503, { ok: false, mhr: false }); }
+    }
+    return json(res, 200, { ok: true, mhr: mhrEnabled });
+  }
+  if (await handleMhr(req, res, path)) return;
   if (production && path.startsWith('/api/')) {
     if (!isAllowedRequest(req, origins)) return json(res, 403, { error: 'Invalid origin.' });
     if (req.method === 'POST' && !allowVisitor(clientAddress(req, process.env.TRUST_PROXY === 'fly' ? 'fly' : process.env.TRUST_RAILWAY_PROXY === 'true'))) {

@@ -8,5 +8,7 @@
   "volume": "vol_458573mo9e58q1q4",
   "config": "deployment/checkpoints/pre-mhr-2026-11-04.fly.toml",
   "rollbackCommand": "flyctl deploy --config deployment/checkpoints/pre-mhr-2026-11-04.fly.toml --image registry.fly.io/poser-demo:deployment-01M5J5DBYHZF2MP6YS5HW0484C --ha=false",
-  "note": "Reuse current /data volume and secrets. Do not reset usage ledgers. Snapshot is disaster recovery only."
+  "note": "Reuse current /data volume and secrets. Do not reset usage ledgers. Snapshot is disaster recovery only.",
+  "volumeSnapshot": "vs_Qe0mZeDZ7yVDh7qm5aqAG0RM",
+  "snapshotRetentionDays": 5
 }
