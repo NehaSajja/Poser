@@ -67,7 +67,7 @@ about 2.7 GiB of the existing 4-GB machine remained available before the referen
 worker was restarted. No additional permanent machine was created.
 
 
-## Browser posing experiment (not deployed)
+## Browser posing release — November 5, 2026
 
 Branch `experiment/browser-native-mhr` runs with `npm run dev:browser-pose`
 on port 4358. The interface is local; MHR corrections use the existing Fly
@@ -96,3 +96,23 @@ corrected surface, then inverse-transforms those directions for Three's skin
 shader. Surface vertices are unchanged. During motion the preview remains an
 approximation until a correction arrives. Numerical tests compare shader-space
 normals and vertices against MHR, including seated, kneeling and squat fixtures.
+
+
+The browser-posing release is now live at https://poser-demo.fly.dev/ using
+`registry.fly.io/poser-demo:browser-mhr-2026-11-05`. Source and image digest are
+recorded in `checkpoints/browser-mhr-live-2026-11-05.json`. Both
+`VITE_MHR_ENABLED` and `VITE_MHR_BROWSER_NATIVE` are enabled at build time.
+The original experiment remains available at commit `54cf22d`.
+
+To restore the previous server-driven MHR release:
+
+```sh
+flyctl deploy --config deployment/checkpoints/pre-browser-mhr-2026-11-05.fly.toml \
+  --image registry.fly.io/poser-demo:mhr-2026-11-04 --ha=false
+```
+
+The pre-MHR tag and rollback image documented above remain available too.
+The live check covered pose matches, head/shoulder edits, undo/redo, and artwork
+references. Cold MHR startup after this deployment took approximately 55 seconds;
+auto-stop settings are unchanged, so first-visit latency should be measured
+separately from warm matching latency.

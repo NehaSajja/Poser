@@ -1,0 +1,25 @@
+{
+  "app": "poser-demo",
+  "url": "https://poser-demo.fly.dev/",
+  "sourceCommit": "ac9ed0746504f229342c8b87bd97a3ad4a5165c5",
+  "image": "registry.fly.io/poser-demo:browser-mhr-2026-11-05",
+  "imageDigest": "sha256:417bb69bd9a3ced10288c0a066a9947ad28bfc188e73597942fb34362be1685c",
+  "machine": "874222f0301de8",
+  "rollbackConfig": "deployment/checkpoints/pre-browser-mhr-2026-11-05.fly.toml",
+  "preMhrTag": "checkpoint/live-before-mhr-2026-11-04",
+  "savedLibraryFits": 1361,
+  "verified": [
+    "Linux CPU MHR surface evaluation",
+    "Live sketch to four pose matches",
+    "Live head and shoulder editing",
+    "Undo and redo",
+    "Historical references",
+    "Public saved-fit manifest",
+    "Single 4 GB server retained"
+  ],
+  "health": {
+    "ok": true,
+    "mhr": true
+  },
+  "temporaryBuilderRemoved": true
+}
