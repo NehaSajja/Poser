@@ -19,7 +19,9 @@ COPY --from=assets /assets/data ./data
 ARG VITE_TLDRAW_LICENSE_KEY
 ARG VITE_MHR_ENABLED=false
 ARG VITE_MHR_BROWSER_NATIVE=false
+ARG VITE_MHR_SAVED_BODIES=false
 RUN npm run build
+RUN if [ "$VITE_MHR_SAVED_BODIES" = "true" ]; then node scripts/experiments/verify-mhr-bodies.mjs dist/experiments/mhr-bodies; fi
 RUN node --input-type=module -e "import { restoreMetAssets } from './scripts/met-assets.mjs'; await restoreMetAssets(process.cwd());"
 
 FROM python:3.11-slim-bookworm

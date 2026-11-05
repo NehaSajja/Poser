@@ -1,0 +1,10 @@
+# Incremental release on the exact verified browser-MHR runtime.
+# dist is built locally with all three MHR flags and the existing browser license.
+FROM registry.fly.io/poser-demo@sha256:417bb69bd9a3ced10288c0a066a9947ad28bfc188e73597942fb34362be1685c
+RUN rm -rf /app/dist
+COPY dist /app/dist
+COPY server/index.mjs /app/server/index.mjs
+COPY server/experiments/mhr-body-assets.mjs /app/server/experiments/mhr-body-assets.mjs
+COPY src/poser2/mhrRig.js src/poser2/mhrLibraryFits.js src/poser2/mhrSavedBodies.js /app/src/poser2/
+COPY scripts/experiments/verify-mhr-bodies.mjs /app/scripts/experiments/verify-mhr-bodies.mjs
+RUN node /app/scripts/experiments/verify-mhr-bodies.mjs /app/dist/experiments/mhr-bodies

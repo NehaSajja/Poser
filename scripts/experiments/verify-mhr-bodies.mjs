@@ -1,0 +1,30 @@
+import {readFileSync} from 'node:fs';
+import {resolve} from 'node:path';
+import {gunzipSync} from 'node:zlib';
+import {createHash} from 'node:crypto';
+import assert from 'node:assert/strict';
+const base=resolve(process.argv[2]||'public/experiments/mhr-bodies');
+const manifest=JSON.parse(readFileSync(resolve(base,'manifest.json')));
+assert.equal(manifest.version,1);
+assert.match(manifest.revision,/^[a-f0-9]{20}$/);
+assert.equal(Object.keys(manifest.bodies).length,manifest.count);
+assert.equal(manifest.count,1361);
+const directory=resolve(base,manifest.revision);
+const meta=JSON.parse(readFileSync(resolve(directory,'meta.json')));
+assert.equal(meta.vertexCount,manifest.vertexCount);
+assert.equal(meta.jointNames.length,manifest.jointCount);
+assert.equal(manifest.packetBytes,(manifest.vertexCount*3+manifest.jointCount*8+204)*4);
+const topology=readFileSync(resolve(directory,'topology.bin'));
+assert.equal(topology.length%4,0);
+assert.ok(new Uint32Array(topology.buffer,topology.byteOffset,topology.length/4).every(i=>i<manifest.vertexCount));
+let total=0;
+for(const [id,entry] of Object.entries(manifest.bodies)){
+ assert.match(id,/^\d+$/);assert.match(entry.file,new RegExp(`^${id}-[a-f0-9]{16}\\.bin$`));
+ const bytes=gunzipSync(readFileSync(resolve(directory,entry.file+'.gz')));
+ assert.equal(bytes.length,manifest.packetBytes);
+ assert.equal(createHash('sha256').update(bytes).digest('hex'),entry.sha256);
+ assert.ok(new Float32Array(bytes.buffer,bytes.byteOffset,bytes.length/4).every(Number.isFinite));
+ total+=bytes.length;
+}
+assert.equal(total,manifest.totalRawBytes);
+console.log(`Verified ${manifest.count} saved MHR bodies, revision ${manifest.revision}`);

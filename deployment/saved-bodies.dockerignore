@@ -1,0 +1,17 @@
+**
+!deployment/
+!deployment/Dockerfile.saved-bodies
+!dist/
+!dist/**
+!server/
+!server/index.mjs
+!server/experiments/
+!server/experiments/mhr-body-assets.mjs
+!src/
+!src/poser2/
+!src/poser2/mhrRig.js
+!src/poser2/mhrLibraryFits.js
+!src/poser2/mhrSavedBodies.js
+!scripts/
+!scripts/experiments/
+!scripts/experiments/verify-mhr-bodies.mjs

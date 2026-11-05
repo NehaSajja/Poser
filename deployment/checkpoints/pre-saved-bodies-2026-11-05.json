@@ -1,0 +1,17 @@
+{
+  "app": "poser-demo",
+  "recordedAt": "2026-11-05T19:36:46.680498+00:00",
+  "sourceCommit": "ac9ed0746504f229342c8b87bd97a3ad4a5165c5",
+  "sourceTag": "checkpoint/live-before-saved-bodies-2026-11-05",
+  "image": "registry.fly.io/poser-demo:browser-mhr-2026-11-05",
+  "imageDigest": "sha256:417bb69bd9a3ced10288c0a066a9947ad28bfc188e73597942fb34362be1685c",
+  "machine": "874222f0301de8",
+  "guest": {
+    "cpu_kind": "shared",
+    "cpus": 2,
+    "memory_mb": 4096
+  },
+  "volume": "vol_458573mo9e58q1q4",
+  "config": "deployment/checkpoints/pre-saved-bodies-2026-11-05.fly.toml",
+  "note": "Rollback code/image only; retain runtime secrets, reference caches and usage ledgers."
+}

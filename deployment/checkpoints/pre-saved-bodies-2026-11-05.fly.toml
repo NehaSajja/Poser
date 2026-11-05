@@ -1,0 +1,60 @@
+# fly.toml app configuration file generated for poser-demo on 2026-11-05T14:36:44-05:00
+#
+# See https://fly.io/docs/reference/configuration/ for information about how to use this file.
+#
+
+app = 'poser-demo'
+primary_region = 'iad'
+kill_signal = 'SIGTERM'
+kill_timeout = '15s'
+
+[build]
+  dockerfile = 'Dockerfile'
+
+  [build.args]
+    VITE_MHR_BROWSER_NATIVE = 'true'
+    VITE_MHR_ENABLED = 'true'
+
+[env]
+  DAILY_NODE_API_CALLS = '100'
+  DAILY_REFERENCE_API_CALLS = 'unlimited'
+  HOST = '0.0.0.0'
+  MET_REFERENCE_PROFILE = 'fast'
+  MHR_ENABLED = 'true'
+  MHR_MODEL_PATH = '/opt/poser/mhr_model.pt'
+  MHR_PYTHON = '/usr/local/bin/python'
+  NODE_ENV = 'production'
+  PORT = '8080'
+  POSER_DATA_DIR = '/data'
+  REQUESTS_PER_MINUTE = '12'
+  TOTAL_NODE_API_CALLS = '200'
+  TOTAL_REFERENCE_API_CALLS = 'unlimited'
+  TRUST_PROXY = 'fly'
+
+[[mounts]]
+  source = 'poser_data'
+  destination = '/data'
+
+[http_service]
+  internal_port = 8080
+  force_https = true
+  auto_stop_machines = 'stop'
+  auto_start_machines = true
+  min_machines_running = 0
+
+  [http_service.concurrency]
+    type = 'requests'
+    hard_limit = 30
+    soft_limit = 20
+
+  [[http_service.checks]]
+    interval = '30s'
+    timeout = '5s'
+    grace_period = '1m0s'
+    method = 'GET'
+    path = '/healthz'
+
+[[vm]]
+  memory = '4gb'
+  cpu_kind = 'shared'
+  cpus = 2

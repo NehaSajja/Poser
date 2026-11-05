@@ -9,6 +9,7 @@ kill_timeout = '15s'
   [build.args]
     VITE_MHR_ENABLED = 'true'
     VITE_MHR_BROWSER_NATIVE = 'true'
+    VITE_MHR_SAVED_BODIES = 'true'
 
 [env]
   NODE_ENV = 'production'
