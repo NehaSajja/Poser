@@ -13,7 +13,7 @@ export function matchLibraryFit(entry,source,meta){
   const qn=Math.hypot(...q),rn=Math.hypot(...r);if(qn<1e-8||rn<1e-8)return null;
   if(Math.min(Math.hypot(...q.map((v,i)=>v/qn-r[i]/rn)),Math.hypot(...q.map((v,i)=>v/qn+r[i]/rn)))>1e-5)return null;
  }
- return {params:entry.params.slice(),fitError:entry.meanJointErrorPercent};
+ return {params:entry.params.slice(),fitError:entry.meanJointErrorPercent,fingerprint:entry.fingerprint};
 }
 export async function loadLibraryFit(key,source,meta){
  const id=/^(\d+)-(?:authored|front)$/.exec(key||'')?.[1];if(!id)return null;

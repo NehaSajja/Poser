@@ -16,3 +16,6 @@ __pycache__/
 .DS_Store
 deployment/assets/
 public/deployed/
+
+# Reproducible corrected-body assets; manifest and builder are tracked.
+/public/experiments/mhr-bodies/*/

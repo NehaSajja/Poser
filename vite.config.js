@@ -13,5 +13,5 @@ export default defineConfig({
   // Vite's dependency-discovery reload and disconnect a newly chosen pen.
   optimizeDeps: { include: ['three/addons/loaders/FBXLoader.js', 'three/addons/loaders/GLTFLoader.js', 'three/addons/controls/OrbitControls.js',
     'firebase/app', 'firebase/storage', 'jquery', 'jszip'] },
-  server: { host: '127.0.0.1', proxy: { '/mhr-experiment/api': { target: 'http://127.0.0.1:4354', rewrite: path => path.replace('/mhr-experiment', '') } }, ...(process.env.VITE_HMR_PORT ? { hmr: { port: Number(process.env.VITE_HMR_PORT) } } : {}), watch: { ignored: ['**/.local/**', '**/output/**', '**/server/**', '**/tests/**'] } },
+  server: { host: '127.0.0.1', proxy: { '/mhr-experiment/api': { target: 'http://127.0.0.1:4354', rewrite: path => path.replace('/mhr-experiment', '') } }, ...(process.env.VITE_HMR_PORT ? { hmr: { port: Number(process.env.VITE_HMR_PORT) } } : {}), watch: { ignored: ['**/.local/**', '**/output/**', '**/server/**', '**/tests/**', '**/public/experiments/mhr-bodies/**'] } },
 });

@@ -19,7 +19,9 @@
     "test:mhr-flow": "node scripts/experiments/export-pose-targets.mjs && .local/mhr-env/bin/python tests/mhr-flow.test.py && node --test tests/poser2-mhr-flow.test.mjs",
     "dev:browser-pose": "PORT=4358 VITE_HMR_PORT=4359 VITE_MHR_ENABLED=true VITE_MHR_BROWSER_NATIVE=true MHR_REMOTE=true node server/index.mjs",
     "test:mhr-browser": ".local/mhr-env/bin/python scripts/experiments/export-mhr-browser.py && node --test tests/poser2-mhr-browser.test.mjs tests/poser2-mhr-gpu-rig.test.mjs tests/poser2-mhr-edit-queue.test.mjs",
-    "build:mhr-library": "node scripts/experiments/build-mhr-library-targets.mjs && .local/mhr-env/bin/python scripts/experiments/build-mhr-library.py"
+    "build:mhr-library": "node scripts/experiments/build-mhr-library-targets.mjs && .local/mhr-env/bin/python scripts/experiments/build-mhr-library.py",
+    "build:mhr-bodies": "node scripts/experiments/build-mhr-bodies.mjs",
+    "dev:saved-bodies": "PORT=4360 VITE_HMR_PORT=4361 VITE_MHR_ENABLED=true VITE_MHR_BROWSER_NATIVE=true VITE_MHR_SAVED_BODIES=true MHR_REMOTE=true node server/index.mjs"
   },
   "dependencies": {
     "@phosphor-icons/react": "^2.1.10",

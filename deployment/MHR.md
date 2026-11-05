@@ -116,3 +116,46 @@ The live check covered pose matches, head/shoulder edits, undo/redo, and artwork
 references. Cold MHR startup after this deployment took approximately 55 seconds;
 auto-stop settings are unchanged, so first-visit latency should be measured
 separately from warm matching latency.
+
+## Experimental saved initial bodies (2026-11-05, not deployed)
+
+Branch `experiment/saved-mhr-bodies` starts from live checkpoint `2bc265f`.
+Run `npm run build:mhr-bodies` once, with the existing local MHR Python environment
+and weights installed, then `npm run dev:saved-bodies`. The separate experiment is
+at `http://127.0.0.1:4360/`; `tests/saved-bodies.html` is its comparison bench.
+The deployed app and its build flags remain unchanged.
+
+The builder evaluates all 1,361 saved library fits at the existing feminine preset
+(silhouette 1, fullness -0.8, height 1). Each packet contains the fully corrected
+18,439-vertex surface, 127 joint transforms, and 204 pose parameters. Authored and
+front camera views share a body. Rig initialization uses the same browser skinning
+and corrected-normal path; selection, local posing, server corrections, undo/redo,
+body shape changes, and root placement are unchanged. Modified source skeletons
+and existing MHR edits do not get replaced by the default saved body.
+
+Assets live under `public/experiments/mhr-bodies/<revision>/`. The generated packet
+folders are ignored by Git; the generator and manifest are tracked. Preserve this
+local folder or regenerate it before enabling `VITE_MHR_SAVED_BODIES=true` in a
+future build. Do not enable the flag on a deployment without including the assets.
+Vite copies them to dist; the Node static route serves gzip packets, so responses
+arrive decoded as the existing float32 body protocol. Revisioned URLs are cached
+for a year; the manifest is revalidated. The client verifies SHA-256, fit fingerprint,
+shape and pose parameters and keeps at most 16 packet promises. A missing or invalid
+individual body uses the existing MHR evaluation path rather than a different pose.
+
+Storage: 307,787,428 raw bytes; 276,606,744 compressed packet bytes (about 203 KB per
+pose). This is server/disk library size, not an initial browser download. Only the
+requested matches plus shared metadata, topology and rig weights are loaded.
+
+Validation: all 1,361 packets checked for checksum, size, finite data and matching
+parameters. The real browser rig test loads a saved body with every MHR request
+blocked, verifies corrected vertex positions within 0.03 mm, then checks local
+posing, the subsequent correction request, and edited-source fallback. All 94
+posing/deployment checks and the experimental production build passed. Browser
+bench: six poses displayed in 1.25 seconds on this computer with MHR blocked,
+zero MHR requests and zero fallback bodies. With an artificial 300 ms delay on
+each asset fetch and fresh in-memory caches, six sequential previews took 5.49
+seconds, again with zero MHR requests and zero fallbacks. The normal drawing flow also loaded
+all four matches from saved bodies (individual preparation logs: 62–431 ms).
+These are local observations, not hosted latency promises. Gemini interpretation,
+retrieval ranking and historical artwork searches are unchanged.

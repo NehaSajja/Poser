@@ -1,6 +1,7 @@
 import { allowedOrigins, isAllowedRequest } from './access.mjs';
 import { createDailyQuota, createVisitorLimiter, clientAddress, limitValue } from './usage.mjs';
 import http from 'node:http';
+import {createMhrBodyAssets} from './experiments/mhr-body-assets.mjs';
 import { createMhrProxy } from './experiments/mhr-proxy.mjs';
 import { readFile } from 'node:fs/promises';
 import { resolve, extname, dirname } from 'node:path';
@@ -45,6 +46,7 @@ const handlePoseRetrieval = poseRetrievalRoutes({port,json,key:process.env.GEMIN
 const references = createReferenceService(root);
 const handleArtReferences = artReferenceRoutes({ port, json, request: references, origins });
 const handleMhr = createMhrProxy({ enabled: mhrEnabled, origins, json, allowBench: !production, ready: mhrStartup, remote: mhrRemote });
+const handleMhrBodyAssets=createMhrBodyAssets(resolve(root,production?'dist':'public','experiments/mhr-bodies'));
 let inFlight = 0;
 const server = http.createServer(async (req, res) => {
   const path = new URL(req.url, 'http://localhost').pathname;
@@ -60,6 +62,7 @@ const server = http.createServer(async (req, res) => {
     }
     return json(res, 200, { ok: true, mhr: mhrEnabled });
   }
+  if (await handleMhrBodyAssets(req,res,path)) return;
   if (await handleMhr(req, res, path)) return;
   if (production && path.startsWith('/api/')) {
     if (!isAllowedRequest(req, origins)) return json(res, 403, { error: 'Invalid origin.' });

@@ -2,20 +2,20 @@ import * as THREE from 'three';
 import { captureRig, updateRigMatrices } from '../poser/libraryPose.js';
 import { prepareModelRig } from './modelRig.js';
 import {loadBrowserRig,attachBrowserPreview} from './mhrBrowserPreview.js';
+import {loadSavedMhrAssets,loadSavedBody} from './mhrSavedBodies.js';
 import {loadLibraryFit} from './mhrLibraryFits.js';
 import { BODY_PRESETS, bodyState } from './bodyShape.js';
 
 const API='/mhr-experiment/api';
-let assets;
+const assets=new Map();
 async function request(path, body, signal){
   const r=await fetch(`${API}/${path}`,{signal,...(body?{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)}:{})});
   if(!r.ok)throw new Error('Body controls are temporarily unavailable. Please try again.');
   return r;
 }
-export function loadMhrAssets(){
-  assets??=Promise.all([request('flow-meta').then(r=>r.json()),request('topology').then(r=>r.arrayBuffer()).then(b=>new Uint32Array(b))])
-    .then(([meta,indices])=>({meta,indices})).catch(e=>{assets=null;throw e;});
-  return assets;
+export function loadMhrAssets(savedBodies=false){
+  if(!assets.has(savedBodies))assets.set(savedBodies,(savedBodies?loadSavedMhrAssets():Promise.all([request('flow-meta').then(r=>r.json()),request('topology').then(r=>r.arrayBuffer()).then(b=>new Uint32Array(b))]).then(([meta,indices])=>({meta,indices}))).catch(e=>{assets.delete(savedBodies);throw e;}));
+  return assets.get(savedBodies);
 }
 export function sourceTargets(source){
   updateRigMatrices(source);
@@ -28,8 +28,8 @@ export function sourceTargets(source){
   }
   return {source:{positions,orientations},hips,height};
 }
-export async function createMhrRig(material,{browserNative=import.meta.env?.VITE_MHR_BROWSER_NATIVE==='true'}={}){
-  const {meta,indices}=await loadMhrAssets();
+export async function createMhrRig(material,{browserNative=import.meta.env?.VITE_MHR_BROWSER_NATIVE==='true',savedBodies=import.meta.env?.VITE_MHR_SAVED_BODIES==='true'}={}){
+  const {meta,indices}=await loadMhrAssets(savedBodies);
   const root=new THREE.Group(), reverse=new Map(Object.entries(meta.mapping).map(([role,name])=>[name,role]));
   const bones=meta.jointNames.map(name=>{const b=new THREE.Bone();b.name=reverse.has(name)?`mixamorig${reverse.get(name)}`:`mhr_${name}`;return b;});
   bones.forEach((b,i)=>{(meta.parents[i]<0?root:bones[meta.parents[i]]).add(b);});
@@ -65,9 +65,11 @@ export async function createMhrRig(material,{browserNative=import.meta.env?.VITE
       const state=source.mhrPose;
       const saved=state?null:await loadLibraryFit(libraryKey,targets,meta);signal?.throwIfAborted();
       const shape={...(state?.shape||BODY_PRESETS.feminine)};
-      const response=await request('flow',{...(state?{params:state.params}:saved?{params:saved.params}:{source:targets}),shape},signal);
-      const data=new Float32Array(await response.arrayBuffer());signal?.throwIfAborted();
-      data.bodyShape=shape;this.apply(data);this.fitError=saved?.fitError??Number(response.headers.get('X-MHR-Fit'));this.fitSource=saved?'saved-library':state?'existing-parameters':'optimizer';
+      let data=savedBodies&&!state?await loadSavedBody(libraryKey,saved,shape,signal):null,response;
+      const fromBody=Boolean(data);
+      if(!data){response=await request('flow',{...(state?{params:state.params}:saved?{params:saved.params}:{source:targets}),shape},signal);data=new Float32Array(await response.arrayBuffer());}
+      signal?.throwIfAborted();
+      data.bodyShape=shape;this.apply(data);this.fitError=saved?.fitError??Number(response?.headers.get('X-MHR-Fit'));this.fitSource=fromBody?'saved-body':saved?'saved-library':state?'existing-parameters':'optimizer';
       if(import.meta.env?.DEV&&import.meta.env?.VITE_MHR_BROWSER_NATIVE==='true')console.info('poser MHR preparation',JSON.stringify({key:libraryKey,source:this.fitSource,ms:Math.round(performance.now()-fitStarted)}));
       if(state){root.position.copy(source.root.position);root.quaternion.copy(source.root.quaternion);root.scale.copy(source.root.scale);}
       else{
