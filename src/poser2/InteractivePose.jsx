@@ -61,6 +61,6 @@ export default function InteractivePose({ ref, preview, origin, animate, onClose
       <div className="poser2-interactive-canvas" ref={host}/>
       {error&&<div className="poser2-view-status" role="status">Could not open this pose. Go back and try again.</div>}
     </section>
-    {MHR_FLOW_ENABLED&&<BodyShapePanel open={panelOpen} value={shape} error={shapeError} onChange={changeShape} onCommit={()=>viewer.current?.commitBodyShape()} onClose={closePanel}/>}
+    {MHR_FLOW_ENABLED&&<BodyShapePanel open={Boolean(panelOpen)} collapsed={panelOpen==='collapsed'} onCollapse={()=>setPanelOpen('collapsed')} onExpand={()=>setPanelOpen(true)} value={shape} error={shapeError} onChange={changeShape} onCommit={()=>viewer.current?.commitBodyShape()} onClose={closePanel}/>}
   </>;
 }

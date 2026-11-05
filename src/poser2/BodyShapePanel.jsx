@@ -1,38 +1,46 @@
-import { useEffect, useRef } from 'react';
-import { XIcon } from '@phosphor-icons/react';
+import { useEffect, useId, useRef } from 'react';
+import { CollapseIcon, CloseIcon } from '../tldraw/drawesome/ToolbarIcons';
+import '../tldraw/drawing-toolbar.css';
 import { BODY_FIELDS } from './bodyShape';
+import ReservoirSlider from './ReservoirSlider';
 import './BodyShapePanel.css';
 
 // Presentation is deliberately independent of the model service and pose editor.
-export default function BodyShapePanel({ open, value, error, onChange, onCommit, onClose }) {
-  const panel = useRef(null);
+export default function BodyShapePanel({ open, collapsed, onCollapse, onExpand, value, error, onChange, onCommit, onClose }) {
+  const panel = useRef(null), dial = useRef(null), contentId = useId();
   useEffect(() => {
     if (!open) return;
-    const frame = requestAnimationFrame(() => panel.current?.querySelector('input')?.focus({ preventScroll: true }));
-    return () => cancelAnimationFrame(frame);
-  }, [open]);
-  return <aside ref={panel} className="body-shape-panel" data-open={open}
-    aria-label="Custom body" aria-hidden={!open || undefined} inert={!open}
+    // Wait until the transitioning control is visible before moving keyboard focus.
+    const delay = window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 0 : 320;
+    const timer = setTimeout(() => (collapsed ? dial.current : panel.current?.querySelector('input'))?.focus({ preventScroll: true }), delay);
+    return () => clearTimeout(timer);
+  }, [open, collapsed]);
+  return <aside ref={panel} className="body-shape-panel" data-open={open} data-collapsed={collapsed}
+    aria-label="Model adjustments" aria-hidden={!open || undefined} inert={!open}
     onKeyDown={event => {
       event.stopPropagation();
       if (event.key === 'Escape') { event.preventDefault(); onClose(); }
     }}>
-    <header className="body-shape-panel__header"><h2>Custom body</h2>
-      <button type="button" aria-label="Close body controls" onClick={onClose}><XIcon size={18}/></button>
-    </header>
-    <div className="body-shape-panel__sliders">
-      {BODY_FIELDS.map(field => <label className="body-shape-slider" key={field.id}>
-        <span className="body-shape-slider__heading"><span>{field.label}</span>
-          <output>{field.id === 'height' ? `${Math.round(value[field.id]*100)}%` : value[field.id].toFixed(2)}</output>
-        </span>
-        <span className="body-shape-slider__well">
-          <input type="range" aria-label={field.label} min={field.min} max={field.max} step={field.step}
-            onPointerUp={onCommit} onPointerCancel={onCommit} onKeyUp={onCommit} onBlur={onCommit}
-            value={value[field.id]} onChange={event => onChange({ ...value, [field.id]: Number(event.target.value) })}/>
-        </span>
-        <span className="body-shape-slider__ends"><span>{field.start}</span><span>{field.end}</span></span>
-      </label>)}
+    <div id={contentId} className="body-shape-panel__content" aria-hidden={collapsed || undefined} inert={collapsed}>
+      <header className="body-shape-panel__header">
+        <h2>Body</h2>
+        <div className="body-shape-panel__actions">
+        <button type="button" className="body-shape-panel__action" aria-label="Collapse body controls" title="Collapse" onClick={onCollapse}><CollapseIcon/></button>
+        <button type="button" className="body-shape-panel__action" aria-label="Close body controls" title="Close" onClick={onClose}><CloseIcon/></button>
+        </div>
+      </header>
+      <div className="body-shape-panel__sliders">
+        {BODY_FIELDS.filter(field => field.id !== 'height').map(field =>
+          <ReservoirSlider key={field.id} field={field} value={value[field.id]} enabled={open && !collapsed}
+            onChange={next => onChange({ ...value, [field.id]: next })} onCommit={onCommit}/>
+        )}
+      </div>
+      {error && <p className="body-shape-panel__error" role="status">{error}</p>}
     </div>
-    {error && <p className="body-shape-panel__error" role="status">{error}</p>}
+    <button ref={dial} type="button" className="body-shape-panel__expand" aria-label="Expand body controls"
+      title="Body controls" aria-expanded={false} aria-controls={contentId} aria-hidden={!collapsed || undefined}
+      tabIndex={collapsed ? 0 : -1} inert={!collapsed} onClick={onExpand}>
+      <span className="body-shape-dial" aria-hidden="true"><span/></span>
+    </button>
   </aside>;
 }

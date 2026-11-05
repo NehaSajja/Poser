@@ -1,35 +1,39 @@
-/* Replace this file to restyle the controls; shape behavior lives in bodyShape.js. */
+/* A small companion to the model toolbar; palette shared with drawing controls. */
 .body-shape-panel {
-  --body-panel-surface: #f1f2f3;
-  --body-panel-ink: #30332f;
-  --body-panel-muted: #777a73;
-  position: absolute; z-index: 25; right: 24px; top: 100px;
-  width: min(292px, calc(100% - 32px)); max-height: calc(100dvh - 210px); overflow: auto;
-  padding: 22px; color: var(--body-panel-ink); font-family: inherit;
-  border: 1px solid #ffffff9c; border-radius: 18px;
-  background: linear-gradient(145deg, #ffffff, var(--body-panel-surface) 65%, #e7e9ec);
-  box-shadow: 0 12px 32px #0002, inset 0 1px 0 #fff, inset 0 -1px 1px #0000000c;
+  --dock-highlight: #0000000e;
+  --dock-ease: cubic-bezier(.22,.9,.16,1);
+  --body-panel-surface: var(--workspace-background, #fff);
+  --body-panel-ink: #55555a;
+  --body-panel-muted: #8a8a8e;
+  position: absolute; z-index: 25; right: 24px; top: 50%; translate: 0 -50%;
+  box-sizing: border-box; width: 244px; height: 196px; max-width: calc(100% - 24px);
+  color: var(--body-panel-ink); font-family: var(--app-font);
+  letter-spacing: var(--app-ui-tracking); line-height: var(--app-ui-leading);
+  border: 1px solid rgba(0,0,0,.08); border-radius: 24px;
+  background: var(--body-panel-surface);
+  box-shadow: inset 0 1px 0 hsla(0,0%,100%,.9), 0 1px 2px rgba(0,0,0,.02), 0 .375rem 1rem rgba(0,0,0,.025);
   opacity: 0; visibility: hidden; transform: translateX(calc(100% + 32px)); pointer-events: none;
-  transition: transform 420ms cubic-bezier(.22,1,.36,1), opacity 220ms ease, visibility 420ms;
+  transition: width 300ms cubic-bezier(.22,1,.36,1), height 300ms cubic-bezier(.22,1,.36,1), border-radius 300ms ease, transform 420ms cubic-bezier(.22,1,.36,1), opacity 220ms ease, visibility 420ms;
 }
 .body-shape-panel[data-open="true"] { opacity: 1; visibility: visible; transform: translateX(0); pointer-events: auto; }
-.body-shape-panel__header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 28px; }
-.body-shape-panel__header h2 { margin: 0; font-size: 15px; font-weight: 600; letter-spacing: -.02em; }
-.body-shape-panel__header button { display: grid; place-items: center; width: 28px; height: 28px; padding: 0; border: 0; border-radius: 50%; background: transparent; color: #64675f; cursor: pointer; }
-.body-shape-panel__header button:hover { background: #00000008; }
-.body-shape-panel__sliders { display: grid; gap: 28px; }
-.body-shape-slider { display: block; }
-.body-shape-slider__heading, .body-shape-slider__ends { display: flex; justify-content: space-between; gap: 12px; }
-.body-shape-slider__heading { font-size: 13px; }
-.body-shape-slider__heading output { font-size: 12px; font-variant-numeric: tabular-nums; color: var(--body-panel-muted); }
-.body-shape-slider__well { display: block; margin: 14px 0 10px; padding: 0 2px; border-radius: 8px; }
-.body-shape-slider__well input { appearance: none; -webkit-appearance: none; display: block; width: 100%; height: 30px; margin: 0; background: transparent; cursor: ew-resize; touch-action: pan-y; }
-.body-shape-slider__well input::-webkit-slider-runnable-track { height: 7px; border-radius: 8px; background: linear-gradient(#92978e,#c0c4bb); box-shadow: inset 0 2px 3px #0004, 0 1px 0 #fff; border: 1px solid #8e938a55; }
-.body-shape-slider__well input::-webkit-slider-thumb { appearance: none; -webkit-appearance: none; width: 25px; height: 27px; margin-top: -11px; border-radius: 7px; border: 1px solid #aaaFA5; background: repeating-linear-gradient(90deg,transparent 0 4px,#00000016 4px 5px,transparent 5px 7px) center/12px 12px no-repeat,linear-gradient(#fff,#e5e7e9); box-shadow: 0 2px 3px #0003, inset 0 1px 1px #fff, inset 0 -1px 1px #b3b7ac; }
-.body-shape-slider__well input::-moz-range-track { height: 7px; border-radius: 8px; background: linear-gradient(#92978e,#c0c4bb); box-shadow: inset 0 2px 3px #0004, 0 1px 0 #fff; }
-.body-shape-slider__well input::-moz-range-thumb { width: 25px; height: 27px; border-radius: 7px; border: 1px solid #aaafa5; background: repeating-linear-gradient(90deg,transparent 0 4px,#00000016 4px 5px,transparent 5px 7px) center/12px 12px no-repeat,linear-gradient(#fff,#e5e7e9); box-shadow: 0 2px 3px #0003, inset 0 1px 1px #fff; }
-.body-shape-slider__well input:focus-visible { outline: 2px solid #76866b; outline-offset: 4px; border-radius: 6px; }
-.body-shape-slider__ends { color: var(--body-panel-muted); font-size: 11px; }
-.body-shape-panel__error { margin: 18px 0 0; font-size: 12px; line-height: 1.4; }
-@media(max-width:700px) { .body-shape-panel { right: 12px; top: 76px; padding: 18px; width: min(268px,calc(100% - 24px)); } }
-@media(prefers-reduced-motion:reduce) { .body-shape-panel { transition: none; } }
+.body-shape-panel[data-collapsed="true"] { width: 64px; height: 64px; border-radius: 50%; }
+.body-shape-panel__content { box-sizing: border-box; width: 242px; padding: 10px 16px 14px; opacity: 1; visibility: visible; transition: opacity 150ms ease 120ms, visibility 150ms; }
+.body-shape-panel[data-collapsed="true"] .body-shape-panel__content { opacity: 0; visibility: hidden; pointer-events: none; transition-delay: 0ms; }
+.body-shape-panel__header { display: flex; align-items: center; justify-content: space-between; gap: 4px; margin-bottom: 9px; }
+.body-shape-panel__header h2 { margin: 0; font: 500 12px/1.4 var(--app-font); letter-spacing: var(--app-ui-tracking); color: var(--body-panel-ink); white-space: nowrap; }
+.body-shape-panel__actions { display: flex; align-items: center; justify-content: flex-end; gap: 2px; }
+.body-shape-panel button:focus-visible { outline: 2px solid var(--body-panel-muted); outline-offset: 2px; }
+.body-shape-panel__sliders { display: grid; grid-template-columns: minmax(0,1fr); gap: 8px; }
+.body-shape-panel__error { margin: 10px 0 0; padding: 8px; border-radius: 8px; background: var(--body-panel-surface); font-size: 11px; line-height: 1.4; }
+.body-shape-panel__expand { position: absolute; inset: 0; display: grid; place-items: center; width: 100%; height: 100%; padding: 0; border: 0; border-radius: 50%; background: transparent; cursor: pointer; opacity: 0; visibility: hidden; pointer-events: none; transition: opacity 150ms ease, visibility 150ms; }
+.body-shape-panel[data-collapsed="true"] .body-shape-panel__expand { opacity: 1; visibility: visible; pointer-events: auto; transition-delay: 130ms; }
+/* Small physical dial: recessed rim, raised face and an engraved indicator. */
+.body-shape-dial { position: relative; display: grid; place-items: center; width: 34px; height: 34px; border-radius: 50%;
+  background: repeating-conic-gradient(from -1deg, #8a8a8e55 0deg 2deg, transparent 2deg 30deg), linear-gradient(145deg,#d8d8da,#f5f5f5);
+  box-shadow: inset 0 1px 2px #0002, 0 1px 0 #fff;
+}
+.body-shape-dial > span { position: relative; width: 26px; height: 26px; border-radius: 50%; background: linear-gradient(145deg,#fff,#e2e2e4); box-shadow: 0 2px 3px #0002, inset 0 1px 0 #fff; transform: rotate(35deg); transition: transform 200ms ease; }
+.body-shape-dial > span::after { content: ''; position: absolute; width: 2px; height: 7px; top: 4px; left: 12px; border-radius: 2px; background: var(--body-panel-muted); box-shadow: 1px 0 0 #fff; }
+.body-shape-panel__expand:hover .body-shape-dial > span { transform: rotate(50deg); }
+@media(max-width:700px) { .body-shape-panel { right: 12px; } }
+@media(prefers-reduced-motion:reduce) { .body-shape-panel, .body-shape-panel__content, .body-shape-panel__expand, .body-shape-dial > span { transition: none; } }

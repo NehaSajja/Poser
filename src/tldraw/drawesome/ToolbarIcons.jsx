@@ -36,3 +36,8 @@ export function TrashIcon() {
 export function CollapseIcon() {
   return <Glyph><path d="M6.6 2.9v3.7H2.9"/><path d="M2.6 2.6 6.6 6.6"/><path d="M9.4 13.1V9.4h3.7"/><path d="M13.4 13.4 9.4 9.4"/></Glyph>;
 }
+
+// Panel dismissal uses the same stroke, cap and dimensions as toolbar controls.
+export function CloseIcon() {
+  return <Glyph><path d="m4.2 4.2 7.6 7.6m0-7.6-7.6 7.6"/></Glyph>;
+}

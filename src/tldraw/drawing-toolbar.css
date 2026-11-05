@@ -73,7 +73,7 @@
 }
 .dock-actions, .dock-tools { display: flex; align-items: center; gap: .125rem; }
 .dock-actions { flex-shrink: 0; }
-.drawing-dock .dock-control, .sketch-workspace .drawing-dock .tool {
+.drawing-dock .dock-control, .sketch-workspace .drawing-dock .tool, .body-shape-panel__action {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -109,7 +109,7 @@
 }
 .sketch-workspace .drawing-dock .tool:is([aria-pressed="true"], [data-state="open"]) > :is(img, svg) { transform: scale(var(--tool-icon-scale)); }
 .drawing-dock .dock-control:disabled { opacity: .28; cursor: default; }
-.drawing-dock .dock-control:focus-visible, .sketch-workspace .drawing-dock .tool:focus-visible {
+.drawing-dock .dock-control:focus-visible, .sketch-workspace .drawing-dock .tool:focus-visible, .body-shape-panel__action:focus-visible {
   outline: 2px solid #8a8a8e;
   outline-offset: 2px;
 }
@@ -117,12 +117,12 @@
 .dock-trash { overflow: visible; }
 .dock-trash-lid { transform-origin: 3.6px 5.6px; transform-box: view-box; transition: transform 360ms var(--dock-snappy); }
 @media (hover: hover) and (pointer: fine) {
-  .drawing-dock .dock-control:hover:not(:disabled) { background: var(--dock-highlight); color: #111; }
+  .drawing-dock .dock-control:hover:not(:disabled), .body-shape-panel__action:hover { background: var(--dock-highlight); color: #111; }
   .sketch-workspace .drawing-dock .tool:hover:not(:disabled) > :is(img, svg) { transform: scale(var(--tool-icon-scale)); }
   .drawing-dock .dock-control[data-tone="danger"]:hover:not(:disabled) { background: #ff383c1f; color: #ff383c; }
   .drawing-dock button:hover:not(:disabled) .dock-trash-lid { transform: rotate(-24deg) translate(.6px, -1.1px); }
 }
-.drawing-dock .dock-control:active:not(:disabled) { transform: scale(.9); }
+.drawing-dock .dock-control:active:not(:disabled), .body-shape-panel__action:active { transform: scale(.9); }
 .sketch-workspace .drawing-dock .tool:active:not(:disabled) { transform: scale(.97); }
 @media (prefers-reduced-motion: reduce) {
   .sketch-workspace .drawing-dock[data-motion="pointer"] .tool,

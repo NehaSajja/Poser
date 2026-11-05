@@ -1,0 +1,12 @@
+{
+  "date": "2026-11-04",
+  "app": "poser-demo",
+  "sourceCommit": "c1446c31c6075c71cffe1cf2981d000bb28a5d51",
+  "image": "registry.fly.io/poser-demo:deployment-01M5J5DBYHZF2MP6YS5HW0484C",
+  "digest": "sha256:680b337c348b7bf261300210796ddf3a597a0d68b4b4e8f353a1c5c10260748e",
+  "machine": "874222f0301de8",
+  "volume": "vol_458573mo9e58q1q4",
+  "config": "deployment/checkpoints/pre-mhr-2026-11-04.fly.toml",
+  "rollbackCommand": "flyctl deploy --config deployment/checkpoints/pre-mhr-2026-11-04.fly.toml --image registry.fly.io/poser-demo:deployment-01M5J5DBYHZF2MP6YS5HW0484C --ha=false",
+  "note": "Reuse current /data volume and secrets. Do not reset usage ledgers. Snapshot is disaster recovery only."
+}
