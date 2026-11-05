@@ -1,0 +1,21 @@
+{
+  "app": "poser-demo",
+  "url": "https://poser-demo.fly.dev/",
+  "sourceCommit": "b6f57a438b0dd588cfa77cf152098f463fcb4731",
+  "image": "registry.fly.io/poser-demo:mhr-2026-11-04",
+  "imageDigest": "sha256:bc9179afd0a8f88dac22c63c2fa019552b4851c784c432465f6361122ecb366c",
+  "machine": "874222f0301de8",
+  "rollbackCheckpoint": "checkpoint/live-before-mhr-2026-11-04",
+  "rollbackConfig": "deployment/checkpoints/pre-mhr-2026-11-04.fly.toml",
+  "verified": [
+    "Linux CPU body evaluation",
+    "Sketch to pose selection",
+    "Body sliders and collapse/expand",
+    "Torso, head and shoulder controls",
+    "Historical references in browser",
+    "HTTP page available while model warms",
+    "Queued body request succeeds after startup",
+    "Single 4GB machine retained"
+  ],
+  "temporaryBuilderRemoved": true
+}

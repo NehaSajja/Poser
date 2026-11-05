@@ -50,3 +50,18 @@ hosting time but adds model-loading delay to the first visit after idle.
 - Local production build and same-origin real corrected-body packet smoke test.
 - The Docker build evaluates a real corrected body using Linux CPU Torch before
   it can produce a deployable image.
+
+## Verified live release
+
+`registry.fly.io/poser-demo:mhr-2026-11-04` is live at
+https://poser-demo.fly.dev/. Exact source and image digest are in
+`checkpoints/mhr-live-2026-11-04.json`. The temporary remote builder was removed.
+
+A real browser sketch produced pose choices, the corrected body loaded, body
+sliders updated it, and head/torso/shoulder drags worked. Historical references
+loaded and switching back retained the edits. The final build served the page
+while MHR warmed; a pending metadata request completed after startup. An example
+warm seated-body request took 0.47 seconds end to end (57 ms model evaluation);
+this is one measurement, not a latency guarantee. With the warmed body service,
+about 2.7 GiB of the existing 4-GB machine remained available before the reference
+worker was restarted. No additional permanent machine was created.
