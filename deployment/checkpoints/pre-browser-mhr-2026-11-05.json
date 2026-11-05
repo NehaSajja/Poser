@@ -1,0 +1,10 @@
+{
+  "app": "poser-demo",
+  "image": "registry.fly.io/poser-demo:mhr-2026-11-04",
+  "imageDigest": "sha256:bc9179afd0a8f88dac22c63c2fa019552b4851c784c432465f6361122ecb366c",
+  "sourceCommit": "b6f57a438b0dd588cfa77cf152098f463fcb4731",
+  "sourceTag": "checkpoint/mhr-live-2026-11-04",
+  "machine": "874222f0301de8",
+  "config": "deployment/checkpoints/pre-browser-mhr-2026-11-05.fly.toml",
+  "note": "Retain existing secrets and data volume when rolling back."
+}

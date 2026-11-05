@@ -18,6 +18,7 @@ COPY --from=assets /assets/data ./data
 # Only the browser-safe license is a build argument. API keys are runtime secrets.
 ARG VITE_TLDRAW_LICENSE_KEY
 ARG VITE_MHR_ENABLED=false
+ARG VITE_MHR_BROWSER_NATIVE=false
 RUN npm run build
 RUN node --input-type=module -e "import { restoreMetAssets } from './scripts/met-assets.mjs'; await restoreMetAssets(process.cwd());"
 

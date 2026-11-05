@@ -1,0 +1,54 @@
+app = 'poser-demo'
+primary_region = 'iad'
+kill_signal = 'SIGTERM'
+kill_timeout = '15s'
+
+[build]
+  dockerfile = 'Dockerfile'
+
+  [build.args]
+    VITE_MHR_ENABLED = 'true'
+
+[env]
+  NODE_ENV = 'production'
+  MHR_ENABLED = 'true'
+  MHR_PYTHON = '/usr/local/bin/python'
+  MHR_MODEL_PATH = '/opt/poser/mhr_model.pt'
+  HOST = '0.0.0.0'
+  PORT = '8080'
+  POSER_DATA_DIR = '/data'
+  TRUST_PROXY = 'fly'
+  DAILY_NODE_API_CALLS = '100'
+  DAILY_REFERENCE_API_CALLS = 'unlimited'
+  TOTAL_NODE_API_CALLS = '200'
+  TOTAL_REFERENCE_API_CALLS = 'unlimited'
+  REQUESTS_PER_MINUTE = '12'
+  MET_REFERENCE_PROFILE = 'fast'
+
+[[mounts]]
+  source = 'poser_data'
+  destination = '/data'
+
+[http_service]
+  internal_port = 8080
+  force_https = true
+  auto_stop_machines = 'stop'
+  auto_start_machines = true
+  min_machines_running = 0
+
+  [http_service.concurrency]
+    type = 'requests'
+    soft_limit = 20
+    hard_limit = 30
+
+  [[http_service.checks]]
+    grace_period = '60s'
+    interval = '30s'
+    timeout = '5s'
+    method = 'GET'
+    path = '/healthz'
+
+[[vm]]
+  cpu_kind = 'shared'
+  cpus = 2
+  memory = '4gb'
