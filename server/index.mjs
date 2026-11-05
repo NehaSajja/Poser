@@ -22,9 +22,10 @@ const key = provider === 'openai' ? process.env.OPENAI_API_KEY : process.env.OPE
 const port = Number(process.env.PORT || 4317);
 const production = process.env.NODE_ENV === 'production';
 const mhrEnabled = process.env.MHR_ENABLED === 'true' || (!production && process.env.VITE_MHR_ENABLED === 'true');
+const mhrRemote = !production && process.env.MHR_REMOTE === 'true';
 let stopMhr = () => {};
-let mhrReady = !mhrEnabled;
-const mhrStartup = mhrEnabled
+let mhrReady = !mhrEnabled || mhrRemote;
+const mhrStartup = mhrEnabled && !mhrRemote
   ? import('./experiments/start-mhr.mjs').then(m => m.startMhrExperiment(root)).then(stop => { stopMhr = stop; mhrReady = true; })
   : Promise.resolve();
 // Serve the drawing interface while the CPU model loads after an idle stop.
@@ -43,7 +44,7 @@ const handlePoseAssets = poseAssetRoutes({ port, json, origins });
 const handlePoseRetrieval = poseRetrievalRoutes({port,json,key:process.env.GEMINI_API_KEY,origins,beforeProviderCall:reserve});
 const references = createReferenceService(root);
 const handleArtReferences = artReferenceRoutes({ port, json, request: references, origins });
-const handleMhr = createMhrProxy({ enabled: mhrEnabled, origins, json, allowBench: !production, ready: mhrStartup });
+const handleMhr = createMhrProxy({ enabled: mhrEnabled, origins, json, allowBench: !production, ready: mhrStartup, remote: mhrRemote });
 let inFlight = 0;
 const server = http.createServer(async (req, res) => {
   const path = new URL(req.url, 'http://localhost').pathname;
@@ -51,7 +52,7 @@ const server = http.createServer(async (req, res) => {
   res.setHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
   if (path === '/healthz' && req.method === 'GET') {
     if (mhrEnabled && !mhrReady) return json(res, 200, { ok: true, mhr: false, warming: true });
-    if (mhrEnabled) {
+    if (mhrEnabled && !mhrRemote) {
       try {
         const ready = await fetch('http://127.0.0.1:4354/api/flow-meta', { signal: AbortSignal.timeout(2000) });
         if (!ready.ok) throw new Error('MHR unavailable');

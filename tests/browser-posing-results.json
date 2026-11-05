@@ -1,0 +1,3783 @@
+{
+  "experiment": "browser-native-mhr",
+  "date": "2026-11-05",
+  "startCommand": "npm run dev:browser-pose",
+  "app": "http://127.0.0.1:4358/",
+  "comparison": "http://127.0.0.1:4358/tests/browser-posing.html",
+  "corrections": "Actual HTTPS requests to poser-demo.fly.dev through a local development relay. Public deployment was not modified.",
+  "method": "Same 1.5-second torso drag in both panels. Input-to-frame is event-to-render submission, not display photon latency. Additional delay is applied after each actual server response.",
+  "architecture": [
+    "Exact MHR kinematics and four-weight GPU skinning in browser",
+    "Latest corrected surface retained during drag",
+    "One server correction on release or after 140 ms idle",
+    "120 ms surface blend when correction arrives",
+    "Stale replies discarded; local preview survives failed correction"
+  ],
+  "limits": [
+    "Body shape sliders still require server evaluation",
+    "Skin correction is approximate during drag; final settled result uses the server",
+    "Measurements are from this computer and connection, not a cross-device performance guarantee",
+    "Initial model loading and pose fitting still require the server"
+  ],
+  "validation": {
+    "nodeTestsPassed": 86,
+    "nodeTestsFailed": 0,
+    "productionBuild": "passed",
+    "fixtureCases": 12,
+    "manual": [
+      "drawing to model selection",
+      "head and shoulder controls",
+      "undo and redo",
+      "blocked corrections leave preview responsive",
+      "correction recovery"
+    ]
+  },
+  "runs": [
+    {
+      "at": "2026-11-05T17:09:11.232Z",
+      "pose": "2013",
+      "extraDelayMs": 0,
+      "blocked": false,
+      "inputs": 181,
+      "finalMaxDifferenceMm": 0,
+      "views": [
+        {
+          "mode": "server",
+          "events": [
+            {
+              "type": "request",
+              "time": 8043.70000000298
+            },
+            {
+              "type": "network",
+              "ms": 2401.39999999851,
+              "time": 10445.10000000149
+            },
+            {
+              "type": "response-frame",
+              "ms": 2407,
+              "time": 10450.70000000298
+            },
+            {
+              "type": "request",
+              "time": 10450.80000000447
+            },
+            {
+              "type": "network",
+              "ms": 129.39999999850988,
+              "time": 10580.20000000298
+            },
+            {
+              "type": "response-frame",
+              "ms": 1038.5,
+              "time": 10583.80000000447
+            }
+          ]
+        },
+        {
+          "mode": "browser",
+          "events": [
+            {
+              "type": "preview",
+              "ms": 0.6000000014901161,
+              "time": 8052.60000000149
+            },
+            {
+              "type": "input-frame",
+              "ms": 9.300000004470348,
+              "time": 8053.30000000447
+            },
+            {
+              "type": "preview",
+              "ms": 0.19999999552965164,
+              "time": 8059.60000000149
+            },
+            {
+              "type": "input-frame",
+              "ms": 6.799999997019768,
+              "time": 8060.20000000298
+            },
+            {
+              "type": "preview",
+              "ms": 0.20000000298023224,
+              "time": 8069
+            },
+            {
+              "type": "input-frame",
+              "ms": 9.100000001490116,
+              "time": 8069.4000000059605
+            },
+            {
+              "type": "preview",
+              "ms": 0.19999999552965164,
+              "time": 8077.10000000149
+            },
+            {
+              "type": "input-frame",
+              "ms": 7.899999998509884,
+              "time": 8077.5
+            },
+            {
+              "type": "preview",
+              "ms": 0,
+              "time": 8085.5
+            },
+            {
+              "type": "input-frame",
+              "ms": 8.399999998509884,
+              "time": 8086
+            },
+            {
+              "type": "preview",
+              "ms": 0.09999999403953552,
+              "time": 8093
+            },
+            {
+              "type": "input-frame",
+              "ms": 7.200000002980232,
+              "time": 8093.30000000447
+            },
+            {
+              "type": "preview",
+              "ms": 0.10000000149011612,
+              "time": 8101.80000000447
+            },
+            {
+              "type": "input-frame",
+              "ms": 8.700000002980232,
+              "time": 8102.20000000298
+            },
+            {
+              "type": "preview",
+              "ms": 0.10000000149011612,
+              "time": 8109.70000000298
+            },
+            {
+              "type": "input-frame",
+              "ms": 7.799999997019768,
+              "time": 8110.10000000149
+            },
+            {
+              "type": "preview",
+              "ms": 0.10000000149011612,
+              "time": 8118.9000000059605
+            },
+            {
+              "type": "input-frame",
+              "ms": 9.200000002980232,
+              "time": 8119.4000000059605
+            },
+            {
+              "type": "preview",
+              "ms": 0.10000000149011612,
+              "time": 8127.30000000447
+            },
+            {
+              "type": "input-frame",
+              "ms": 8.100000001490116,
+              "time": 8127.70000000298
+            },
+            {
+              "type": "preview",
+              "ms": 0.09999999403953552,
+              "time": 8135.5
+            },
+            {
+              "type": "input-frame",
+              "ms": 8,
+              "time": 8135.9000000059605
+            },
+            {
+              "type": "preview",
+              "ms": 0,
+              "time": 8143.80000000447
+            },
+            {
+              "type": "input-frame",
+              "ms": 8.200000002980232,
+              "time": 8144.20000000298
+            },
+            {
+              "type": "preview",
+              "ms": 0.10000000149011612,
+              "time": 8152.20000000298
+            },
+            {
+              "type": "input-frame",
+              "ms": 8.199999995529652,
+              "time": 8152.60000000149
+            },
+            {
+              "type": "preview",
+              "ms": 0.09999999403953552,
+              "time": 8160.5
+            },
+            {
+              "type": "input-frame",
+              "ms": 8.200000002980232,
+              "time": 8160.9000000059605
+            },
+            {
+              "type": "preview",
+              "ms": 0.10000000149011612,
+              "time": 8168.9000000059605
+            },
+            {
+              "type": "input-frame",
+              "ms": 8.100000001490116,
+              "time": 8169.20000000298
+            },
+            {
+              "type": "preview",
+              "ms": 0.10000000149011612,
+              "time": 8177.10000000149
+            },
+            {
+              "type": "input-frame",
+              "ms": 8,
+              "time": 8177.4000000059605
+            },
+            {
+              "type": "preview",
+              "ms": 0.09999999403953552,
+              "time": 8185
+            },
+            {
+              "type": "input-frame",
+              "ms": 7.700000002980232,
+              "time": 8185.30000000447
+            },
+            {
+              "type": "preview",
+              "ms": 0.20000000298023224,
+              "time": 8193.90000000596
+            },
+            {
+              "type": "input-frame",
+              "ms": 8.799999997019768,
+              "time": 8194.20000000298
+            },
+            {
+              "type": "preview",
+              "ms": 0.20000000298023224,
+              "time": 8202.20000000298
+            },
+            {
+              "type": "input-frame",
+              "ms": 8.299999997019768,
+              "time": 8202.60000000149
+            },
+            {
+              "type": "preview",
+              "ms": 0.09999999403953552,
+              "time": 8210.5
+            },
+            {
+              "type": "input-frame",
+              "ms": 8.200000002980232,
+              "time": 8210.90000000596
+            },
+            {
+              "type": "preview",
+              "ms": 0.10000000149011612,
+              "time": 8218.90000000596
+            },
+            {
+              "type": "input-frame",
+              "ms": 8.300000004470348,
+              "time": 8219.30000000447
+            },
+            {
+              "type": "preview",
+              "ms": 0.10000000149011612,
+              "time": 8227.20000000298
+            },
+            {
+              "type": "input-frame",
+              "ms": 8.100000001490116,
+              "time": 8227.60000000149
+            },
+            {
+              "type": "preview",
+              "ms": 0.10000000149011612,
+              "time": 8235.60000000149
+            },
+            {
+              "type": "input-frame",
+              "ms": 8,
+              "time": 8235.90000000596
+            },
+            {
+              "type": "preview",
+              "ms": 0.19999999552965164,
+              "time": 8243
+            },
+            {
+              "type": "input-frame",
+              "ms": 7.5,
+              "time": 8243.40000000596
+            },
+            {
+              "type": "preview",
+              "ms": 0.19999999552965164,
+              "time": 8251.60000000149
+            },
+            {
+              "type": "input-frame",
+              "ms": 8.5,
+              "time": 8252.10000000149
+            },
+            {
+              "type": "preview",
+              "ms": 0.09999999403953552,
+              "time": 8260.10000000149
+            },
+            {
+              "type": "input-frame",
+              "ms": 8.199999995529652,
+              "time": 8260.5
+            },
+            {
+              "type": "preview",
+              "ms": 0.10000000149011612,
+              "time": 8268.90000000596
+            },
+            {
+              "type": "input-frame",
+              "ms": 8.900000005960464,
+              "time": 8269.40000000596
+            },
+            {
+              "type": "preview",
+              "ms": 0.10000000149011612,
+              "time": 8277.20000000298
+            },
+            {
+              "type": "input-frame",
+              "ms": 8.299999997019768,
+              "time": 8277.70000000298
+            },
+            {
+              "type": "preview",
+              "ms": 0.30000000447034836,
+              "time": 8285.80000000447
+            },
+            {
+              "type": "input-frame",
+              "ms": 8.5,
+              "time": 8286.30000000447
+            },
+            {
+              "type": "preview",
+              "ms": 0.10000000149011612,
+              "time": 8294.10000000149
+            },
+            {
+              "type": "input-frame",
+              "ms": 8,
+              "time": 8294.5
+            },
+            {
+              "type": "preview",
+              "ms": 0.20000000298023224,
+              "time": 8302.30000000447
+            },
+            {
+              "type": "input-frame",
+              "ms": 8,
+              "time": 8302.70000000298
+            },
+            {
+              "type": "preview",
+              "ms": 0.19999999552965164,
+              "time": 8310.60000000149
+            },
+            {
+              "type": "input-frame",
+              "ms": 8.199999995529652,
+              "time": 8311
+            },
+            {
+              "type": "preview",
+              "ms": 0.20000000298023224,
+              "time": 8318.90000000596
+            },
+            {
+              "type": "input-frame",
+              "ms": 8.200000002980232,
+              "time": 8319.30000000447
+            },
+            {
+              "type": "preview",
+              "ms": 0.10000000149011612,
+              "time": 8327.20000000298
+            },
+            {
+              "type": "input-frame",
+              "ms": 8.200000002980232,
+              "time": 8327.70000000298
+            },
+            {
+              "type": "preview",
+              "ms": 0.10000000149011612,
+              "time": 8335.60000000149
+            },
+            {
+              "type": "input-frame",
+              "ms": 8.199999995529652,
+              "time": 8336
+            },
+            {
+              "type": "preview",
+              "ms": 0.10000000149011612,
+              "time": 8343.90000000596
+            },
+            {
+              "type": "input-frame",
+              "ms": 8.200000002980232,
+              "time": 8344.30000000447
+            },
+            {
+              "type": "preview",
+              "ms": 0.10000000149011612,
+              "time": 8352.20000000298
+            },
+            {
+              "type": "input-frame",
+              "ms": 8.199999995529652,
+              "time": 8352.60000000149
+            },
+            {
+              "type": "preview",
+              "ms": 0.09999999403953552,
+              "time": 8360.5
+            },
+            {
+              "type": "input-frame",
+              "ms": 8.200000002980232,
+              "time": 8360.90000000596
+            },
+            {
+              "type": "preview",
+              "ms": 0.10000000149011612,
+              "time": 8368.90000000596
+            },
+            {
+              "type": "input-frame",
+              "ms": 8.100000001490116,
+              "time": 8369.20000000298
+            },
+            {
+              "type": "preview",
+              "ms": 0.10000000149011612,
+              "time": 8377.20000000298
+            },
+            {
+              "type": "input-frame",
+              "ms": 8.399999998509884,
+              "time": 8377.70000000298
+            },
+            {
+              "type": "preview",
+              "ms": 0,
+              "time": 8385.30000000447
+            },
+            {
+              "type": "input-frame",
+              "ms": 8,
+              "time": 8385.80000000447
+            },
+            {
+              "type": "preview",
+              "ms": 0.10000000149011612,
+              "time": 8393.40000000596
+            },
+            {
+              "type": "input-frame",
+              "ms": 7.899999998509884,
+              "time": 8393.80000000447
+            },
+            {
+              "type": "preview",
+              "ms": 0.19999999552965164,
+              "time": 8402.10000000149
+            },
+            {
+              "type": "input-frame",
+              "ms": 8.5,
+              "time": 8402.40000000596
+            },
+            {
+              "type": "preview",
+              "ms": 0.10000000149011612,
+              "time": 8410.60000000149
+            },
+            {
+              "type": "input-frame",
+              "ms": 8.399999998509884,
+              "time": 8411
+            },
+            {
+              "type": "preview",
+              "ms": 0.10000000149011612,
+              "time": 8418.80000000447
+            },
+            {
+              "type": "input-frame",
+              "ms": 8.100000001490116,
+              "time": 8419.20000000298
+            },
+            {
+              "type": "preview",
+              "ms": 0.10000000149011612,
+              "time": 8427.20000000298
+            },
+            {
+              "type": "input-frame",
+              "ms": 8.299999997019768,
+              "time": 8427.60000000149
+            },
+            {
+              "type": "preview",
+              "ms": 0.09999999403953552,
+              "time": 8435.5
+            },
+            {
+              "type": "input-frame",
+              "ms": 8.100000001490116,
+              "time": 8435.80000000447
+            },
+            {
+              "type": "preview",
+              "ms": 0.10000000149011612,
+              "time": 8443.80000000447
+            },
+            {
+              "type": "input-frame",
+              "ms": 8.199999995529652,
+              "time": 8444.10000000149
+            },
+            {
+              "type": "preview",
+              "ms": 0.20000000298023224,
+              "time": 8452.20000000298
+            },
+            {
+              "type": "input-frame",
+              "ms": 8.200000002980232,
+              "time": 8452.40000000596
+            },
+            {
+              "type": "preview",
+              "ms": 0.19999999552965164,
+              "time": 8460
+            },
+            {
+              "type": "input-frame",
+              "ms": 7.700000002980232,
+              "time": 8460.30000000447
+            },
+            {
+              "type": "preview",
+              "ms": 0.09999999403953552,
+              "time": 8469
+            },
+            {
+              "type": "input-frame",
+              "ms": 8.900000005960464,
+              "time": 8469.40000000596
+            },
+            {
+              "type": "preview",
+              "ms": 0.10000000149011612,
+              "time": 8477.30000000447
+            },
+            {
+              "type": "input-frame",
+              "ms": 8.100000001490116,
+              "time": 8477.60000000149
+            },
+            {
+              "type": "preview",
+              "ms": 0.09999999403953552,
+              "time": 8485.5
+            },
+            {
+              "type": "input-frame",
+              "ms": 8.200000002980232,
+              "time": 8485.90000000596
+            },
+            {
+              "type": "preview",
+              "ms": 0.10000000149011612,
+              "time": 8493.30000000447
+            },
+            {
+              "type": "input-frame",
+              "ms": 7.899999998509884,
+              "time": 8493.80000000447
+            },
+            {
+              "type": "preview",
+              "ms": 0.10000000149011612,
+              "time": 8501.30000000447
+            },
+            {
+              "type": "input-frame",
+              "ms": 7.799999997019768,
+              "time": 8501.60000000149
+            },
+            {
+              "type": "preview",
+              "ms": 0.09999999403953552,
+              "time": 8510.5
+            },
+            {
+              "type": "input-frame",
+              "ms": 9.100000001490116,
+              "time": 8510.80000000447
+            },
+            {
+              "type": "preview",
+              "ms": 0.10000000149011612,
+              "time": 8518.80000000447
+            },
+            {
+              "type": "input-frame",
+              "ms": 8.299999997019768,
+              "time": 8519.20000000298
+            },
+            {
+              "type": "preview",
+              "ms": 0.20000000298023224,
+              "time": 8527.30000000447
+            },
+            {
+              "type": "input-frame",
+              "ms": 8.199999995529652,
+              "time": 8527.60000000149
+            },
+            {
+              "type": "preview",
+              "ms": 0.19999999552965164,
+              "time": 8535.60000000149
+            },
+            {
+              "type": "input-frame",
+              "ms": 8.200000002980232,
+              "time": 8535.90000000596
+            },
+            {
+              "type": "preview",
+              "ms": 0.10000000149011612,
+              "time": 8543.90000000596
+            },
+            {
+              "type": "input-frame",
+              "ms": 8.399999998509884,
+              "time": 8544.30000000447
+            },
+            {
+              "type": "preview",
+              "ms": 0.20000000298023224,
+              "time": 8552.30000000447
+            },
+            {
+              "type": "input-frame",
+              "ms": 8.299999997019768,
+              "time": 8552.70000000298
+            },
+            {
+              "type": "preview",
+              "ms": 0.19999999552965164,
+              "time": 8560.60000000149
+            },
+            {
+              "type": "input-frame",
+              "ms": 8.199999995529652,
+              "time": 8561.10000000149
+            },
+            {
+              "type": "preview",
+              "ms": 0.10000000149011612,
+              "time": 8568.90000000596
+            },
+            {
+              "type": "input-frame",
+              "ms": 8,
+              "time": 8569.30000000447
+            },
+            {
+              "type": "preview",
+              "ms": 0.20000000298023224,
+              "time": 8577.30000000447
+            },
+            {
+              "type": "input-frame",
+              "ms": 7.899999998509884,
+              "time": 8577.60000000149
+            },
+            {
+              "type": "preview",
+              "ms": 0.19999999552965164,
+              "time": 8585.60000000149
+            },
+            {
+              "type": "input-frame",
+              "ms": 8.199999995529652,
+              "time": 8586.10000000149
+            },
+            {
+              "type": "preview",
+              "ms": 0.10000000149011612,
+              "time": 8593.90000000596
+            },
+            {
+              "type": "input-frame",
+              "ms": 7.899999998509884,
+              "time": 8594.30000000447
+            },
+            {
+              "type": "preview",
+              "ms": 0.09999999403953552,
+              "time": 8602
+            },
+            {
+              "type": "input-frame",
+              "ms": 8.099999994039536,
+              "time": 8602.5
+            },
+            {
+              "type": "preview",
+              "ms": 0.10000000149011612,
+              "time": 8610.60000000149
+            },
+            {
+              "type": "input-frame",
+              "ms": 8.5,
+              "time": 8611.10000000149
+            },
+            {
+              "type": "preview",
+              "ms": 0.20000000298023224,
+              "time": 8618.90000000596
+            },
+            {
+              "type": "input-frame",
+              "ms": 8.100000001490116,
+              "time": 8619.30000000447
+            },
+            {
+              "type": "preview",
+              "ms": 0.20000000298023224,
+              "time": 8627.30000000447
+            },
+            {
+              "type": "input-frame",
+              "ms": 8.299999997019768,
+              "time": 8627.70000000298
+            },
+            {
+              "type": "preview",
+              "ms": 0.09999999403953552,
+              "time": 8635.5
+            },
+            {
+              "type": "input-frame",
+              "ms": 7.9000000059604645,
+              "time": 8635.90000000596
+            },
+            {
+              "type": "preview",
+              "ms": 0,
+              "time": 8643.80000000447
+            },
+            {
+              "type": "input-frame",
+              "ms": 8.100000001490116,
+              "time": 8644.20000000298
+            },
+            {
+              "type": "preview",
+              "ms": 0.20000000298023224,
+              "time": 8652.20000000298
+            },
+            {
+              "type": "input-frame",
+              "ms": 8.199999995529652,
+              "time": 8652.60000000149
+            },
+            {
+              "type": "preview",
+              "ms": 0.10000000149011612,
+              "time": 8660.40000000596
+            },
+            {
+              "type": "input-frame",
+              "ms": 8.100000001490116,
+              "time": 8660.80000000447
+            },
+            {
+              "type": "preview",
+              "ms": 0.20000000298023224,
+              "time": 8668.90000000596
+            },
+            {
+              "type": "input-frame",
+              "ms": 8.299999997019768,
+              "time": 8669.20000000298
+            },
+            {
+              "type": "preview",
+              "ms": 0.10000000149011612,
+              "time": 8677.20000000298
+            },
+            {
+              "type": "input-frame",
+              "ms": 8,
+              "time": 8677.60000000149
+            },
+            {
+              "type": "preview",
+              "ms": 0.19999999552965164,
+              "time": 8685.60000000149
+            },
+            {
+              "type": "input-frame",
+              "ms": 8.199999995529652,
+              "time": 8686
+            },
+            {
+              "type": "preview",
+              "ms": 0.10000000149011612,
+              "time": 8693.80000000447
+            },
+            {
+              "type": "input-frame",
+              "ms": 8.200000002980232,
+              "time": 8694.30000000447
+            },
+            {
+              "type": "preview",
+              "ms": 0.20000000298023224,
+              "time": 8701.90000000596
+            },
+            {
+              "type": "input-frame",
+              "ms": 7.799999997019768,
+              "time": 8702.20000000298
+            },
+            {
+              "type": "preview",
+              "ms": 0.10000000149011612,
+              "time": 8710.60000000149
+            },
+            {
+              "type": "input-frame",
+              "ms": 8.699999995529652,
+              "time": 8711.10000000149
+            },
+            {
+              "type": "preview",
+              "ms": 0.10000000149011612,
+              "time": 8718.90000000596
+            },
+            {
+              "type": "input-frame",
+              "ms": 8,
+              "time": 8719.40000000596
+            },
+            {
+              "type": "preview",
+              "ms": 0.20000000298023224,
+              "time": 8727.30000000447
+            },
+            {
+              "type": "input-frame",
+              "ms": 8,
+              "time": 8727.80000000447
+            },
+            {
+              "type": "preview",
+              "ms": 0.09999999403953552,
+              "time": 8735.5
+            },
+            {
+              "type": "input-frame",
+              "ms": 8,
+              "time": 8736
+            },
+            {
+              "type": "preview",
+              "ms": 0.20000000298023224,
+              "time": 8743.90000000596
+            },
+            {
+              "type": "input-frame",
+              "ms": 8.100000001490116,
+              "time": 8744.30000000447
+            },
+            {
+              "type": "preview",
+              "ms": 0.10000000149011612,
+              "time": 8752.20000000298
+            },
+            {
+              "type": "input-frame",
+              "ms": 8.300000004470348,
+              "time": 8752.80000000447
+            },
+            {
+              "type": "preview",
+              "ms": 0.09999999403953552,
+              "time": 8760.5
+            },
+            {
+              "type": "input-frame",
+              "ms": 7.9000000059604645,
+              "time": 8760.90000000596
+            },
+            {
+              "type": "preview",
+              "ms": 0.20000000298023224,
+              "time": 8768.90000000596
+            },
+            {
+              "type": "input-frame",
+              "ms": 8.200000002980232,
+              "time": 8769.20000000298
+            },
+            {
+              "type": "preview",
+              "ms": 0.20000000298023224,
+              "time": 8777.30000000447
+            },
+            {
+              "type": "input-frame",
+              "ms": 8.299999997019768,
+              "time": 8777.70000000298
+            },
+            {
+              "type": "preview",
+              "ms": 0.19999999552965164,
+              "time": 8785.60000000149
+            },
+            {
+              "type": "input-frame",
+              "ms": 8.100000001490116,
+              "time": 8785.90000000596
+            },
+            {
+              "type": "preview",
+              "ms": 0.10000000149011612,
+              "time": 8793.90000000596
+            },
+            {
+              "type": "input-frame",
+              "ms": 8.100000001490116,
+              "time": 8794.10000000149
+            },
+            {
+              "type": "preview",
+              "ms": 0.10000000149011612,
+              "time": 8801.70000000298
+            },
+            {
+              "type": "input-frame",
+              "ms": 7.899999998509884,
+              "time": 8802.20000000298
+            },
+            {
+              "type": "preview",
+              "ms": 0.20000000298023224,
+              "time": 8810.70000000298
+            },
+            {
+              "type": "input-frame",
+              "ms": 9,
+              "time": 8811.30000000447
+            },
+            {
+              "type": "preview",
+              "ms": 0.10000000149011612,
+              "time": 8818.90000000596
+            },
+            {
+              "type": "input-frame",
+              "ms": 7.800000004470348,
+              "time": 8819.30000000447
+            },
+            {
+              "type": "preview",
+              "ms": 0.10000000149011612,
+              "time": 8827.20000000298
+            },
+            {
+              "type": "input-frame",
+              "ms": 8.299999997019768,
+              "time": 8827.70000000298
+            },
+            {
+              "type": "preview",
+              "ms": 0.30000000447034836,
+              "time": 8835.90000000596
+            },
+            {
+              "type": "input-frame",
+              "ms": 8.799999997019768,
+              "time": 8836.60000000149
+            },
+            {
+              "type": "preview",
+              "ms": 0.10000000149011612,
+              "time": 8843.20000000298
+            },
+            {
+              "type": "input-frame",
+              "ms": 6.600000001490116,
+              "time": 8843.60000000149
+            },
+            {
+              "type": "preview",
+              "ms": 0.10000000149011612,
+              "time": 8852.30000000447
+            },
+            {
+              "type": "input-frame",
+              "ms": 8.899999998509884,
+              "time": 8852.70000000298
+            },
+            {
+              "type": "preview",
+              "ms": 0.20000000298023224,
+              "time": 8860.70000000298
+            },
+            {
+              "type": "input-frame",
+              "ms": 8.599999994039536,
+              "time": 8861.5
+            },
+            {
+              "type": "preview",
+              "ms": 0.19999999552965164,
+              "time": 8868
+            },
+            {
+              "type": "input-frame",
+              "ms": 6.5,
+              "time": 8868.40000000596
+            },
+            {
+              "type": "preview",
+              "ms": 0.19999999552965164,
+              "time": 8877.5
+            },
+            {
+              "type": "input-frame",
+              "ms": 9.800000004470348,
+              "time": 8878.30000000447
+            },
+            {
+              "type": "preview",
+              "ms": 0.09999999403953552,
+              "time": 8885.5
+            },
+            {
+              "type": "input-frame",
+              "ms": 7.200000002980232,
+              "time": 8885.90000000596
+            },
+            {
+              "type": "preview",
+              "ms": 0.29999999701976776,
+              "time": 8894.20000000298
+            },
+            {
+              "type": "input-frame",
+              "ms": 8.899999998509884,
+              "time": 8895
+            },
+            {
+              "type": "preview",
+              "ms": 0.09999999403953552,
+              "time": 8901.5
+            },
+            {
+              "type": "input-frame",
+              "ms": 6.600000001490116,
+              "time": 8901.90000000596
+            },
+            {
+              "type": "preview",
+              "ms": 0.20000000298023224,
+              "time": 8910.80000000447
+            },
+            {
+              "type": "input-frame",
+              "ms": 9.5,
+              "time": 8911.60000000149
+            },
+            {
+              "type": "preview",
+              "ms": 0.10000000149011612,
+              "time": 8918.40000000596
+            },
+            {
+              "type": "input-frame",
+              "ms": 6.899999998509884,
+              "time": 8918.80000000447
+            },
+            {
+              "type": "preview",
+              "ms": 0.10000000149011612,
+              "time": 8927.20000000298
+            },
+            {
+              "type": "input-frame",
+              "ms": 8.699999995529652,
+              "time": 8927.60000000149
+            },
+            {
+              "type": "preview",
+              "ms": 0.10000000149011612,
+              "time": 8935.10000000149
+            },
+            {
+              "type": "input-frame",
+              "ms": 7.799999997019768,
+              "time": 8935.5
+            },
+            {
+              "type": "preview",
+              "ms": 0.10000000149011612,
+              "time": 8943.90000000596
+            },
+            {
+              "type": "input-frame",
+              "ms": 8.700000002980232,
+              "time": 8944.40000000596
+            },
+            {
+              "type": "preview",
+              "ms": 0.10000000149011612,
+              "time": 8951.80000000447
+            },
+            {
+              "type": "input-frame",
+              "ms": 7.800000004470348,
+              "time": 8952.30000000447
+            },
+            {
+              "type": "preview",
+              "ms": 0.10000000149011612,
+              "time": 8960.70000000298
+            },
+            {
+              "type": "input-frame",
+              "ms": 9.100000001490116,
+              "time": 8961.60000000149
+            },
+            {
+              "type": "preview",
+              "ms": 0.20000000298023224,
+              "time": 8968.90000000596
+            },
+            {
+              "type": "input-frame",
+              "ms": 7.299999997019768,
+              "time": 8969.20000000298
+            },
+            {
+              "type": "preview",
+              "ms": 0.20000000298023224,
+              "time": 8977.40000000596
+            },
+            {
+              "type": "input-frame",
+              "ms": 8.799999997019768,
+              "time": 8978.20000000298
+            },
+            {
+              "type": "preview",
+              "ms": 0.10000000149011612,
+              "time": 8984.60000000149
+            },
+            {
+              "type": "input-frame",
+              "ms": 6.5,
+              "time": 8985
+            },
+            {
+              "type": "preview",
+              "ms": 0.20000000298023224,
+              "time": 8993.90000000596
+            },
+            {
+              "type": "input-frame",
+              "ms": 9.200000002980232,
+              "time": 8994.40000000596
+            },
+            {
+              "type": "preview",
+              "ms": 0.10000000149011612,
+              "time": 9001.60000000149
+            },
+            {
+              "type": "input-frame",
+              "ms": 7.5,
+              "time": 9002
+            },
+            {
+              "type": "preview",
+              "ms": 0.10000000149011612,
+              "time": 9009.70000000298
+            },
+            {
+              "type": "input-frame",
+              "ms": 8,
+              "time": 9010.10000000149
+            },
+            {
+              "type": "preview",
+              "ms": 0.19999999552965164,
+              "time": 9019
+            },
+            {
+              "type": "input-frame",
+              "ms": 9.100000001490116,
+              "time": 9019.40000000596
+            },
+            {
+              "type": "preview",
+              "ms": 0.10000000149011612,
+              "time": 9026.70000000298
+            },
+            {
+              "type": "input-frame",
+              "ms": 7.5,
+              "time": 9027.10000000149
+            },
+            {
+              "type": "preview",
+              "ms": 0.20000000298023224,
+              "time": 9035.90000000596
+            },
+            {
+              "type": "input-frame",
+              "ms": 9.299999997019768,
+              "time": 9036.60000000149
+            },
+            {
+              "type": "preview",
+              "ms": 0.10000000149011612,
+              "time": 9042.90000000596
+            },
+            {
+              "type": "input-frame",
+              "ms": 6.5,
+              "time": 9043.40000000596
+            },
+            {
+              "type": "preview",
+              "ms": 0.10000000149011612,
+              "time": 9052.20000000298
+            },
+            {
+              "type": "input-frame",
+              "ms": 9.099999994039536,
+              "time": 9052.5
+            },
+            {
+              "type": "preview",
+              "ms": 0.20000000298023224,
+              "time": 9060.20000000298
+            },
+            {
+              "type": "input-frame",
+              "ms": 8.299999997019768,
+              "time": 9061
+            },
+            {
+              "type": "preview",
+              "ms": 0.19999999552965164,
+              "time": 9068.5
+            },
+            {
+              "type": "input-frame",
+              "ms": 7.5,
+              "time": 9068.90000000596
+            },
+            {
+              "type": "preview",
+              "ms": 0.10000000149011612,
+              "time": 9077.30000000447
+            },
+            {
+              "type": "input-frame",
+              "ms": 8.600000001490116,
+              "time": 9077.70000000298
+            },
+            {
+              "type": "preview",
+              "ms": 0.20000000298023224,
+              "time": 9085.80000000447
+            },
+            {
+              "type": "input-frame",
+              "ms": 8.799999997019768,
+              "time": 9086.60000000149
+            },
+            {
+              "type": "preview",
+              "ms": 0.19999999552965164,
+              "time": 9093
+            },
+            {
+              "type": "input-frame",
+              "ms": 6.4000000059604645,
+              "time": 9093.40000000596
+            },
+            {
+              "type": "preview",
+              "ms": 0.29999999701976776,
+              "time": 9102.60000000149
+            },
+            {
+              "type": "input-frame",
+              "ms": 9.899999998509884,
+              "time": 9103.5
+            },
+            {
+              "type": "preview",
+              "ms": 0.09999999403953552,
+              "time": 9110.5
+            },
+            {
+              "type": "input-frame",
+              "ms": 6.899999998509884,
+              "time": 9110.80000000447
+            },
+            {
+              "type": "preview",
+              "ms": 0.10000000149011612,
+              "time": 9118.40000000596
+            },
+            {
+              "type": "input-frame",
+              "ms": 7.700000002980232,
+              "time": 9118.80000000447
+            },
+            {
+              "type": "preview",
+              "ms": 0.10000000149011612,
+              "time": 9127.20000000298
+            },
+            {
+              "type": "input-frame",
+              "ms": 8.700000002980232,
+              "time": 9127.70000000298
+            },
+            {
+              "type": "preview",
+              "ms": 0.20000000298023224,
+              "time": 9135.70000000298
+            },
+            {
+              "type": "input-frame",
+              "ms": 8.699999995529652,
+              "time": 9136.5
+            },
+            {
+              "type": "preview",
+              "ms": 0.10000000149011612,
+              "time": 9143.90000000596
+            },
+            {
+              "type": "input-frame",
+              "ms": 7.399999998509884,
+              "time": 9144.30000000447
+            },
+            {
+              "type": "preview",
+              "ms": 0.29999999701976776,
+              "time": 9152.60000000149
+            },
+            {
+              "type": "input-frame",
+              "ms": 8.800000004470348,
+              "time": 9153.40000000596
+            },
+            {
+              "type": "preview",
+              "ms": 0.09999999403953552,
+              "time": 9160.5
+            },
+            {
+              "type": "input-frame",
+              "ms": 7.0999999940395355,
+              "time": 9161
+            },
+            {
+              "type": "preview",
+              "ms": 0.29999999701976776,
+              "time": 9169.10000000149
+            },
+            {
+              "type": "input-frame",
+              "ms": 8.399999998509884,
+              "time": 9169.5
+            },
+            {
+              "type": "preview",
+              "ms": 0.3999999985098839,
+              "time": 9177.60000000149
+            },
+            {
+              "type": "input-frame",
+              "ms": 8.700000002980232,
+              "time": 9178.40000000596
+            },
+            {
+              "type": "preview",
+              "ms": 0,
+              "time": 9185
+            },
+            {
+              "type": "input-frame",
+              "ms": 6.699999995529652,
+              "time": 9185.5
+            },
+            {
+              "type": "preview",
+              "ms": 0.20000000298023224,
+              "time": 9193.70000000298
+            },
+            {
+              "type": "input-frame",
+              "ms": 8.5,
+              "time": 9194.10000000149
+            },
+            {
+              "type": "preview",
+              "ms": 0.19999999552965164,
+              "time": 9202.10000000149
+            },
+            {
+              "type": "input-frame",
+              "ms": 8.700000002980232,
+              "time": 9202.90000000596
+            },
+            {
+              "type": "preview",
+              "ms": 0.10000000149011612,
+              "time": 9210.10000000149
+            },
+            {
+              "type": "input-frame",
+              "ms": 7.199999995529652,
+              "time": 9210.5
+            },
+            {
+              "type": "preview",
+              "ms": 0.29999999701976776,
+              "time": 9219.20000000298
+            },
+            {
+              "type": "input-frame",
+              "ms": 9.399999998509884,
+              "time": 9220
+            },
+            {
+              "type": "preview",
+              "ms": 0.10000000149011612,
+              "time": 9227.20000000298
+            },
+            {
+              "type": "input-frame",
+              "ms": 7.200000002980232,
+              "time": 9227.70000000298
+            },
+            {
+              "type": "preview",
+              "ms": 0.19999999552965164,
+              "time": 9235.60000000149
+            },
+            {
+              "type": "input-frame",
+              "ms": 8.199999995529652,
+              "time": 9236
+            },
+            {
+              "type": "preview",
+              "ms": 0.10000000149011612,
+              "time": 9243.90000000596
+            },
+            {
+              "type": "input-frame",
+              "ms": 8.300000004470348,
+              "time": 9244.40000000596
+            },
+            {
+              "type": "preview",
+              "ms": 0.10000000149011612,
+              "time": 9252.20000000298
+            },
+            {
+              "type": "input-frame",
+              "ms": 8.200000002980232,
+              "time": 9252.70000000298
+            },
+            {
+              "type": "preview",
+              "ms": 0.09999999403953552,
+              "time": 9260.5
+            },
+            {
+              "type": "input-frame",
+              "ms": 8.099999994039536,
+              "time": 9261
+            },
+            {
+              "type": "preview",
+              "ms": 0.29999999701976776,
+              "time": 9269.20000000298
+            },
+            {
+              "type": "input-frame",
+              "ms": 9.100000001490116,
+              "time": 9270.20000000298
+            },
+            {
+              "type": "preview",
+              "ms": 0.20000000298023224,
+              "time": 9277.30000000447
+            },
+            {
+              "type": "input-frame",
+              "ms": 7.100000001490116,
+              "time": 9277.70000000298
+            },
+            {
+              "type": "preview",
+              "ms": 0.10000000149011612,
+              "time": 9285.60000000149
+            },
+            {
+              "type": "input-frame",
+              "ms": 8.100000001490116,
+              "time": 9285.90000000596
+            },
+            {
+              "type": "preview",
+              "ms": 0.20000000298023224,
+              "time": 9293.90000000596
+            },
+            {
+              "type": "input-frame",
+              "ms": 8,
+              "time": 9294.20000000298
+            },
+            {
+              "type": "preview",
+              "ms": 0.29999999701976776,
+              "time": 9302.60000000149
+            },
+            {
+              "type": "input-frame",
+              "ms": 9.199999995529652,
+              "time": 9303.5
+            },
+            {
+              "type": "preview",
+              "ms": 0.09999999403953552,
+              "time": 9310
+            },
+            {
+              "type": "input-frame",
+              "ms": 6.600000001490116,
+              "time": 9310.60000000149
+            },
+            {
+              "type": "preview",
+              "ms": 0.10000000149011612,
+              "time": 9318.90000000596
+            },
+            {
+              "type": "input-frame",
+              "ms": 8.5,
+              "time": 9319.20000000298
+            },
+            {
+              "type": "preview",
+              "ms": 0,
+              "time": 9327.10000000149
+            },
+            {
+              "type": "input-frame",
+              "ms": 8.099999994039536,
+              "time": 9327.5
+            },
+            {
+              "type": "preview",
+              "ms": 0.30000000447034836,
+              "time": 9335.90000000596
+            },
+            {
+              "type": "input-frame",
+              "ms": 9,
+              "time": 9336.70000000298
+            },
+            {
+              "type": "preview",
+              "ms": 0.10000000149011612,
+              "time": 9343.90000000596
+            },
+            {
+              "type": "input-frame",
+              "ms": 7.100000001490116,
+              "time": 9344.40000000596
+            },
+            {
+              "type": "preview",
+              "ms": 0.10000000149011612,
+              "time": 9352.20000000298
+            },
+            {
+              "type": "input-frame",
+              "ms": 8.100000001490116,
+              "time": 9352.60000000149
+            },
+            {
+              "type": "preview",
+              "ms": 0.30000000447034836,
+              "time": 9360.80000000447
+            },
+            {
+              "type": "input-frame",
+              "ms": 8.699999995529652,
+              "time": 9361.60000000149
+            },
+            {
+              "type": "preview",
+              "ms": 0.09999999403953552,
+              "time": 9369
+            },
+            {
+              "type": "input-frame",
+              "ms": 7.5,
+              "time": 9369.5
+            },
+            {
+              "type": "preview",
+              "ms": 0.10000000149011612,
+              "time": 9377.20000000298
+            },
+            {
+              "type": "input-frame",
+              "ms": 7.899999998509884,
+              "time": 9377.5
+            },
+            {
+              "type": "preview",
+              "ms": 0,
+              "time": 9385.5
+            },
+            {
+              "type": "input-frame",
+              "ms": 8.299999997019768,
+              "time": 9386
+            },
+            {
+              "type": "preview",
+              "ms": 0.10000000149011612,
+              "time": 9393.90000000596
+            },
+            {
+              "type": "input-frame",
+              "ms": 8.100000001490116,
+              "time": 9394.40000000596
+            },
+            {
+              "type": "preview",
+              "ms": 0.10000000149011612,
+              "time": 9402.20000000298
+            },
+            {
+              "type": "input-frame",
+              "ms": 8.200000002980232,
+              "time": 9402.70000000298
+            },
+            {
+              "type": "preview",
+              "ms": 0.09999999403953552,
+              "time": 9410.5
+            },
+            {
+              "type": "input-frame",
+              "ms": 8.100000001490116,
+              "time": 9410.90000000596
+            },
+            {
+              "type": "preview",
+              "ms": 0.30000000447034836,
+              "time": 9419.30000000447
+            },
+            {
+              "type": "input-frame",
+              "ms": 9.300000004470348,
+              "time": 9420.40000000596
+            },
+            {
+              "type": "preview",
+              "ms": 0.10000000149011612,
+              "time": 9427.20000000298
+            },
+            {
+              "type": "input-frame",
+              "ms": 6.899999998509884,
+              "time": 9427.70000000298
+            },
+            {
+              "type": "preview",
+              "ms": 0.20000000298023224,
+              "time": 9435.90000000596
+            },
+            {
+              "type": "input-frame",
+              "ms": 9,
+              "time": 9436.90000000596
+            },
+            {
+              "type": "preview",
+              "ms": 0.20000000298023224,
+              "time": 9443.90000000596
+            },
+            {
+              "type": "input-frame",
+              "ms": 7.100000001490116,
+              "time": 9444.40000000596
+            },
+            {
+              "type": "preview",
+              "ms": 0,
+              "time": 9452.30000000447
+            },
+            {
+              "type": "input-frame",
+              "ms": 8.200000002980232,
+              "time": 9452.80000000447
+            },
+            {
+              "type": "preview",
+              "ms": 0.19999999552965164,
+              "time": 9461
+            },
+            {
+              "type": "input-frame",
+              "ms": 8.900000005960464,
+              "time": 9461.90000000596
+            },
+            {
+              "type": "preview",
+              "ms": 0.20000000298023224,
+              "time": 9468.90000000596
+            },
+            {
+              "type": "input-frame",
+              "ms": 6.600000001490116,
+              "time": 9469.10000000149
+            },
+            {
+              "type": "preview",
+              "ms": 0.20000000298023224,
+              "time": 9477.30000000447
+            },
+            {
+              "type": "input-frame",
+              "ms": 8.600000001490116,
+              "time": 9477.80000000447
+            },
+            {
+              "type": "preview",
+              "ms": 0.4000000059604645,
+              "time": 9485.90000000596
+            },
+            {
+              "type": "input-frame",
+              "ms": 8.600000001490116,
+              "time": 9486.70000000298
+            },
+            {
+              "type": "preview",
+              "ms": 0.10000000149011612,
+              "time": 9493.90000000596
+            },
+            {
+              "type": "input-frame",
+              "ms": 7.200000002980232,
+              "time": 9494.40000000596
+            },
+            {
+              "type": "preview",
+              "ms": 0.19999999552965164,
+              "time": 9502.60000000149
+            },
+            {
+              "type": "input-frame",
+              "ms": 8.900000005960464,
+              "time": 9503.40000000596
+            },
+            {
+              "type": "preview",
+              "ms": 0.10000000149011612,
+              "time": 9510.20000000298
+            },
+            {
+              "type": "input-frame",
+              "ms": 6.699999995529652,
+              "time": 9510.70000000298
+            },
+            {
+              "type": "preview",
+              "ms": 0.10000000149011612,
+              "time": 9518.90000000596
+            },
+            {
+              "type": "input-frame",
+              "ms": 8.5,
+              "time": 9519.40000000596
+            },
+            {
+              "type": "preview",
+              "ms": 0.19999999552965164,
+              "time": 9527.5
+            },
+            {
+              "type": "input-frame",
+              "ms": 8.600000001490116,
+              "time": 9528.30000000447
+            },
+            {
+              "type": "preview",
+              "ms": 0.09999999403953552,
+              "time": 9535.5
+            },
+            {
+              "type": "input-frame",
+              "ms": 7.299999997019768,
+              "time": 9536
+            },
+            {
+              "type": "preview",
+              "ms": 0.19999999552965164,
+              "time": 9544
+            },
+            {
+              "type": "input-frame",
+              "ms": 8.800000004470348,
+              "time": 9544.90000000596
+            },
+            {
+              "type": "preview",
+              "ms": 0.19999999552965164,
+              "time": 9545.60000000149
+            },
+            {
+              "type": "input-frame",
+              "ms": 1,
+              "time": 9546.40000000596
+            },
+            {
+              "type": "request",
+              "time": 9546.70000000298
+            },
+            {
+              "type": "network",
+              "ms": 981.6000000014901,
+              "time": 10528.30000000447
+            },
+            {
+              "type": "correction",
+              "rmsMm": 0.47671316945019193,
+              "maxMm": 5.026137448999879,
+              "time": 10558.80000000447
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "at": "2026-11-05T17:09:45.730Z",
+      "pose": "1351",
+      "extraDelayMs": 1500,
+      "blocked": false,
+      "inputs": 181,
+      "finalMaxDifferenceMm": 0,
+      "views": [
+        {
+          "mode": "server",
+          "events": [
+            {
+              "type": "request",
+              "time": 41857.80000000447
+            },
+            {
+              "type": "network",
+              "ms": 1707.5,
+              "time": 43565.30000000447
+            },
+            {
+              "type": "response-frame",
+              "ms": 1716.8999999985099,
+              "time": 43574.70000000298
+            },
+            {
+              "type": "request",
+              "time": 43574.80000000447
+            },
+            {
+              "type": "network",
+              "ms": 1608.1999999955297,
+              "time": 45183
+            },
+            {
+              "type": "response-frame",
+              "ms": 1828.5,
+              "time": 45186.5
+            }
+          ]
+        },
+        {
+          "mode": "browser",
+          "events": [
+            {
+              "type": "preview",
+              "ms": 0.19999999552965164,
+              "time": 41866
+            },
+            {
+              "type": "input-frame",
+              "ms": 8.300000004470348,
+              "time": 41866.40000000596
+            },
+            {
+              "type": "preview",
+              "ms": 0.09999999403953552,
+              "time": 41874
+            },
+            {
+              "type": "input-frame",
+              "ms": 8,
+              "time": 41874.5
+            },
+            {
+              "type": "preview",
+              "ms": 0.10000000149011612,
+              "time": 41881.60000000149
+            },
+            {
+              "type": "input-frame",
+              "ms": 7.5,
+              "time": 41882
+            },
+            {
+              "type": "preview",
+              "ms": 0.19999999552965164,
+              "time": 41890.60000000149
+            },
+            {
+              "type": "input-frame",
+              "ms": 8.899999998509884,
+              "time": 41891.10000000149
+            },
+            {
+              "type": "preview",
+              "ms": 0.09999999403953552,
+              "time": 41899
+            },
+            {
+              "type": "input-frame",
+              "ms": 8.200000002980232,
+              "time": 41899.40000000596
+            },
+            {
+              "type": "preview",
+              "ms": 0,
+              "time": 41907.30000000447
+            },
+            {
+              "type": "input-frame",
+              "ms": 8.100000001490116,
+              "time": 41907.70000000298
+            },
+            {
+              "type": "preview",
+              "ms": 0.10000000149011612,
+              "time": 41915.70000000298
+            },
+            {
+              "type": "input-frame",
+              "ms": 8.099999994039536,
+              "time": 41916
+            },
+            {
+              "type": "preview",
+              "ms": 0.10000000149011612,
+              "time": 41922.70000000298
+            },
+            {
+              "type": "input-frame",
+              "ms": 7,
+              "time": 41923.10000000149
+            },
+            {
+              "type": "preview",
+              "ms": 0.10000000149011612,
+              "time": 41932.60000000149
+            },
+            {
+              "type": "input-frame",
+              "ms": 9.699999995529652,
+              "time": 41933
+            },
+            {
+              "type": "preview",
+              "ms": 0.10000000149011612,
+              "time": 41940.60000000149
+            },
+            {
+              "type": "input-frame",
+              "ms": 7.899999998509884,
+              "time": 41941
+            },
+            {
+              "type": "preview",
+              "ms": 0.09999999403953552,
+              "time": 41948.5
+            },
+            {
+              "type": "input-frame",
+              "ms": 7.800000004470348,
+              "time": 41948.90000000596
+            },
+            {
+              "type": "preview",
+              "ms": 0.20000000298023224,
+              "time": 41956.70000000298
+            },
+            {
+              "type": "input-frame",
+              "ms": 8,
+              "time": 41957
+            },
+            {
+              "type": "preview",
+              "ms": 0.10000000149011612,
+              "time": 41965.80000000447
+            },
+            {
+              "type": "input-frame",
+              "ms": 9,
+              "time": 41966.10000000149
+            },
+            {
+              "type": "preview",
+              "ms": 0.20000000298023224,
+              "time": 41973.90000000596
+            },
+            {
+              "type": "input-frame",
+              "ms": 8,
+              "time": 41974.20000000298
+            },
+            {
+              "type": "preview",
+              "ms": 0.10000000149011612,
+              "time": 41982.30000000447
+            },
+            {
+              "type": "input-frame",
+              "ms": 8.299999997019768,
+              "time": 41982.60000000149
+            },
+            {
+              "type": "preview",
+              "ms": 0.10000000149011612,
+              "time": 41990.10000000149
+            },
+            {
+              "type": "input-frame",
+              "ms": 7.800000004470348,
+              "time": 41990.40000000596
+            },
+            {
+              "type": "preview",
+              "ms": 0.19999999552965164,
+              "time": 41999.10000000149
+            },
+            {
+              "type": "input-frame",
+              "ms": 8.800000004470348,
+              "time": 41999.30000000447
+            },
+            {
+              "type": "preview",
+              "ms": 0.10000000149011612,
+              "time": 42006.90000000596
+            },
+            {
+              "type": "input-frame",
+              "ms": 7.800000004470348,
+              "time": 42007.30000000447
+            },
+            {
+              "type": "preview",
+              "ms": 0.10000000149011612,
+              "time": 42015.70000000298
+            },
+            {
+              "type": "input-frame",
+              "ms": 8.700000002980232,
+              "time": 42016.20000000298
+            },
+            {
+              "type": "preview",
+              "ms": 0.09999999403953552,
+              "time": 42023
+            },
+            {
+              "type": "input-frame",
+              "ms": 7.100000001490116,
+              "time": 42023.40000000596
+            },
+            {
+              "type": "preview",
+              "ms": 0.09999999403953552,
+              "time": 42032.5
+            },
+            {
+              "type": "input-frame",
+              "ms": 9.399999998509884,
+              "time": 42032.80000000447
+            },
+            {
+              "type": "preview",
+              "ms": 0.19999999552965164,
+              "time": 42040.60000000149
+            },
+            {
+              "type": "input-frame",
+              "ms": 8.099999994039536,
+              "time": 42041
+            },
+            {
+              "type": "preview",
+              "ms": 0.09999999403953552,
+              "time": 42047.5
+            },
+            {
+              "type": "input-frame",
+              "ms": 6.800000004470348,
+              "time": 42047.90000000596
+            },
+            {
+              "type": "preview",
+              "ms": 0,
+              "time": 42056.30000000447
+            },
+            {
+              "type": "input-frame",
+              "ms": 8.800000004470348,
+              "time": 42056.80000000447
+            },
+            {
+              "type": "preview",
+              "ms": 0.10000000149011612,
+              "time": 42065.60000000149
+            },
+            {
+              "type": "input-frame",
+              "ms": 9.099999994039536,
+              "time": 42066
+            },
+            {
+              "type": "preview",
+              "ms": 0.19999999552965164,
+              "time": 42074
+            },
+            {
+              "type": "input-frame",
+              "ms": 8.200000002980232,
+              "time": 42074.30000000447
+            },
+            {
+              "type": "preview",
+              "ms": 0.19999999552965164,
+              "time": 42082
+            },
+            {
+              "type": "input-frame",
+              "ms": 7.800000004470348,
+              "time": 42082.30000000447
+            },
+            {
+              "type": "preview",
+              "ms": 0.10000000149011612,
+              "time": 42090.70000000298
+            },
+            {
+              "type": "input-frame",
+              "ms": 8.699999995529652,
+              "time": 42091.10000000149
+            },
+            {
+              "type": "preview",
+              "ms": 0.10000000149011612,
+              "time": 42098.90000000596
+            },
+            {
+              "type": "input-frame",
+              "ms": 8.100000001490116,
+              "time": 42099.30000000447
+            },
+            {
+              "type": "preview",
+              "ms": 0.10000000149011612,
+              "time": 42107.30000000447
+            },
+            {
+              "type": "input-frame",
+              "ms": 8.299999997019768,
+              "time": 42107.70000000298
+            },
+            {
+              "type": "preview",
+              "ms": 0.10000000149011612,
+              "time": 42115.60000000149
+            },
+            {
+              "type": "input-frame",
+              "ms": 8,
+              "time": 42115.90000000596
+            },
+            {
+              "type": "preview",
+              "ms": 0.10000000149011612,
+              "time": 42123.10000000149
+            },
+            {
+              "type": "input-frame",
+              "ms": 7.5,
+              "time": 42123.60000000149
+            },
+            {
+              "type": "preview",
+              "ms": 0.10000000149011612,
+              "time": 42131.30000000447
+            },
+            {
+              "type": "input-frame",
+              "ms": 7.899999998509884,
+              "time": 42131.70000000298
+            },
+            {
+              "type": "preview",
+              "ms": 0,
+              "time": 42140.80000000447
+            },
+            {
+              "type": "input-frame",
+              "ms": 9.399999998509884,
+              "time": 42141.30000000447
+            },
+            {
+              "type": "preview",
+              "ms": 0.10000000149011612,
+              "time": 42148.90000000596
+            },
+            {
+              "type": "input-frame",
+              "ms": 8,
+              "time": 42149.30000000447
+            },
+            {
+              "type": "preview",
+              "ms": 0.10000000149011612,
+              "time": 42157.30000000447
+            },
+            {
+              "type": "input-frame",
+              "ms": 8.299999997019768,
+              "time": 42157.70000000298
+            },
+            {
+              "type": "preview",
+              "ms": 0.20000000298023224,
+              "time": 42165.80000000447
+            },
+            {
+              "type": "input-frame",
+              "ms": 8.399999998509884,
+              "time": 42166.30000000447
+            },
+            {
+              "type": "preview",
+              "ms": 0.10000000149011612,
+              "time": 42173.90000000596
+            },
+            {
+              "type": "input-frame",
+              "ms": 7.800000004470348,
+              "time": 42174.40000000596
+            },
+            {
+              "type": "preview",
+              "ms": 0.19999999552965164,
+              "time": 42182
+            },
+            {
+              "type": "input-frame",
+              "ms": 8.099999994039536,
+              "time": 42182.5
+            },
+            {
+              "type": "preview",
+              "ms": 0,
+              "time": 42190.60000000149
+            },
+            {
+              "type": "input-frame",
+              "ms": 8.200000002980232,
+              "time": 42190.90000000596
+            },
+            {
+              "type": "preview",
+              "ms": 0.10000000149011612,
+              "time": 42198.40000000596
+            },
+            {
+              "type": "input-frame",
+              "ms": 8,
+              "time": 42199
+            },
+            {
+              "type": "preview",
+              "ms": 0.10000000149011612,
+              "time": 42205.70000000298
+            },
+            {
+              "type": "input-frame",
+              "ms": 7.100000001490116,
+              "time": 42206.20000000298
+            },
+            {
+              "type": "preview",
+              "ms": 0.19999999552965164,
+              "time": 42215
+            },
+            {
+              "type": "input-frame",
+              "ms": 9.100000001490116,
+              "time": 42215.40000000596
+            },
+            {
+              "type": "preview",
+              "ms": 0.10000000149011612,
+              "time": 42223.30000000447
+            },
+            {
+              "type": "input-frame",
+              "ms": 8.200000002980232,
+              "time": 42223.70000000298
+            },
+            {
+              "type": "preview",
+              "ms": 0.10000000149011612,
+              "time": 42232.40000000596
+            },
+            {
+              "type": "input-frame",
+              "ms": 9,
+              "time": 42232.80000000447
+            },
+            {
+              "type": "preview",
+              "ms": 0.20000000298023224,
+              "time": 42240.80000000447
+            },
+            {
+              "type": "input-frame",
+              "ms": 8.399999998509884,
+              "time": 42241.20000000298
+            },
+            {
+              "type": "preview",
+              "ms": 0.09999999403953552,
+              "time": 42249
+            },
+            {
+              "type": "input-frame",
+              "ms": 8,
+              "time": 42249.40000000596
+            },
+            {
+              "type": "preview",
+              "ms": 0.20000000298023224,
+              "time": 42257.30000000447
+            },
+            {
+              "type": "input-frame",
+              "ms": 8.100000001490116,
+              "time": 42257.60000000149
+            },
+            {
+              "type": "preview",
+              "ms": 0.19999999552965164,
+              "time": 42265.60000000149
+            },
+            {
+              "type": "input-frame",
+              "ms": 8,
+              "time": 42265.90000000596
+            },
+            {
+              "type": "preview",
+              "ms": 0.10000000149011612,
+              "time": 42273.90000000596
+            },
+            {
+              "type": "input-frame",
+              "ms": 8.200000002980232,
+              "time": 42274.20000000298
+            },
+            {
+              "type": "preview",
+              "ms": 0.10000000149011612,
+              "time": 42282.20000000298
+            },
+            {
+              "type": "input-frame",
+              "ms": 8.399999998509884,
+              "time": 42282.70000000298
+            },
+            {
+              "type": "preview",
+              "ms": 0.10000000149011612,
+              "time": 42290.60000000149
+            },
+            {
+              "type": "input-frame",
+              "ms": 8.100000001490116,
+              "time": 42290.90000000596
+            },
+            {
+              "type": "preview",
+              "ms": 0,
+              "time": 42299
+            },
+            {
+              "type": "input-frame",
+              "ms": 8.400000005960464,
+              "time": 42299.40000000596
+            },
+            {
+              "type": "preview",
+              "ms": 0.10000000149011612,
+              "time": 42307.20000000298
+            },
+            {
+              "type": "input-frame",
+              "ms": 8.100000001490116,
+              "time": 42307.60000000149
+            },
+            {
+              "type": "preview",
+              "ms": 0.19999999552965164,
+              "time": 42315.60000000149
+            },
+            {
+              "type": "input-frame",
+              "ms": 8.200000002980232,
+              "time": 42315.80000000447
+            },
+            {
+              "type": "preview",
+              "ms": 0.09999999403953552,
+              "time": 42323.5
+            },
+            {
+              "type": "input-frame",
+              "ms": 8,
+              "time": 42323.90000000596
+            },
+            {
+              "type": "preview",
+              "ms": 0.20000000298023224,
+              "time": 42332.30000000447
+            },
+            {
+              "type": "input-frame",
+              "ms": 8.700000002980232,
+              "time": 42332.70000000298
+            },
+            {
+              "type": "preview",
+              "ms": 0,
+              "time": 42340.5
+            },
+            {
+              "type": "input-frame",
+              "ms": 8,
+              "time": 42340.80000000447
+            },
+            {
+              "type": "preview",
+              "ms": 0.19999999552965164,
+              "time": 42349
+            },
+            {
+              "type": "input-frame",
+              "ms": 8.300000004470348,
+              "time": 42349.30000000447
+            },
+            {
+              "type": "preview",
+              "ms": 0.10000000149011612,
+              "time": 42357.30000000447
+            },
+            {
+              "type": "input-frame",
+              "ms": 8.200000002980232,
+              "time": 42357.70000000298
+            },
+            {
+              "type": "preview",
+              "ms": 0.20000000298023224,
+              "time": 42365.70000000298
+            },
+            {
+              "type": "input-frame",
+              "ms": 8.299999997019768,
+              "time": 42366.10000000149
+            },
+            {
+              "type": "preview",
+              "ms": 0.09999999403953552,
+              "time": 42374
+            },
+            {
+              "type": "input-frame",
+              "ms": 8.200000002980232,
+              "time": 42374.40000000596
+            },
+            {
+              "type": "preview",
+              "ms": 0.10000000149011612,
+              "time": 42381.60000000149
+            },
+            {
+              "type": "input-frame",
+              "ms": 7.5,
+              "time": 42382
+            },
+            {
+              "type": "preview",
+              "ms": 0.09999999403953552,
+              "time": 42389
+            },
+            {
+              "type": "input-frame",
+              "ms": 7.200000002980232,
+              "time": 42389.30000000447
+            },
+            {
+              "type": "preview",
+              "ms": 0.10000000149011612,
+              "time": 42397.70000000298
+            },
+            {
+              "type": "input-frame",
+              "ms": 8.5,
+              "time": 42398.10000000149
+            },
+            {
+              "type": "preview",
+              "ms": 0.10000000149011612,
+              "time": 42407.60000000149
+            },
+            {
+              "type": "input-frame",
+              "ms": 9.899999998509884,
+              "time": 42408.10000000149
+            },
+            {
+              "type": "preview",
+              "ms": 0.09999999403953552,
+              "time": 42415.5
+            },
+            {
+              "type": "input-frame",
+              "ms": 7.5,
+              "time": 42415.90000000596
+            },
+            {
+              "type": "preview",
+              "ms": 0.10000000149011612,
+              "time": 42423.90000000596
+            },
+            {
+              "type": "input-frame",
+              "ms": 8.300000004470348,
+              "time": 42424.30000000447
+            },
+            {
+              "type": "preview",
+              "ms": 0.20000000298023224,
+              "time": 42430.80000000447
+            },
+            {
+              "type": "input-frame",
+              "ms": 6.700000002980232,
+              "time": 42431.20000000298
+            },
+            {
+              "type": "preview",
+              "ms": 0.10000000149011612,
+              "time": 42439.60000000149
+            },
+            {
+              "type": "input-frame",
+              "ms": 8.699999995529652,
+              "time": 42440.10000000149
+            },
+            {
+              "type": "preview",
+              "ms": 0.10000000149011612,
+              "time": 42449.20000000298
+            },
+            {
+              "type": "input-frame",
+              "ms": 9.399999998509884,
+              "time": 42449.60000000149
+            },
+            {
+              "type": "preview",
+              "ms": 0.10000000149011612,
+              "time": 42457.20000000298
+            },
+            {
+              "type": "input-frame",
+              "ms": 8,
+              "time": 42457.80000000447
+            },
+            {
+              "type": "preview",
+              "ms": 0.10000000149011612,
+              "time": 42465.60000000149
+            },
+            {
+              "type": "input-frame",
+              "ms": 8.199999995529652,
+              "time": 42466.10000000149
+            },
+            {
+              "type": "preview",
+              "ms": 0.20000000298023224,
+              "time": 42473.90000000596
+            },
+            {
+              "type": "input-frame",
+              "ms": 8,
+              "time": 42474.20000000298
+            },
+            {
+              "type": "preview",
+              "ms": 0.20000000298023224,
+              "time": 42481.30000000447
+            },
+            {
+              "type": "input-frame",
+              "ms": 7.399999998509884,
+              "time": 42481.80000000447
+            },
+            {
+              "type": "preview",
+              "ms": 0.10000000149011612,
+              "time": 42490.80000000447
+            },
+            {
+              "type": "input-frame",
+              "ms": 9.400000005960464,
+              "time": 42491.40000000596
+            },
+            {
+              "type": "preview",
+              "ms": 0.09999999403953552,
+              "time": 42499
+            },
+            {
+              "type": "input-frame",
+              "ms": 8,
+              "time": 42499.60000000149
+            },
+            {
+              "type": "preview",
+              "ms": 0.19999999552965164,
+              "time": 42506.10000000149
+            },
+            {
+              "type": "input-frame",
+              "ms": 6.699999995529652,
+              "time": 42506.60000000149
+            },
+            {
+              "type": "preview",
+              "ms": 0.19999999552965164,
+              "time": 42516.10000000149
+            },
+            {
+              "type": "input-frame",
+              "ms": 9.899999998509884,
+              "time": 42516.60000000149
+            },
+            {
+              "type": "preview",
+              "ms": 0.20000000298023224,
+              "time": 42523.90000000596
+            },
+            {
+              "type": "input-frame",
+              "ms": 7.5,
+              "time": 42524.30000000447
+            },
+            {
+              "type": "preview",
+              "ms": 0.10000000149011612,
+              "time": 42532.30000000447
+            },
+            {
+              "type": "input-frame",
+              "ms": 8.299999997019768,
+              "time": 42532.70000000298
+            },
+            {
+              "type": "preview",
+              "ms": 0.10000000149011612,
+              "time": 42540.60000000149
+            },
+            {
+              "type": "input-frame",
+              "ms": 8.299999997019768,
+              "time": 42541.20000000298
+            },
+            {
+              "type": "preview",
+              "ms": 0.10000000149011612,
+              "time": 42548.90000000596
+            },
+            {
+              "type": "input-frame",
+              "ms": 7.899999998509884,
+              "time": 42549.20000000298
+            },
+            {
+              "type": "preview",
+              "ms": 0.10000000149011612,
+              "time": 42557.20000000298
+            },
+            {
+              "type": "input-frame",
+              "ms": 8.099999994039536,
+              "time": 42557.5
+            },
+            {
+              "type": "preview",
+              "ms": 0,
+              "time": 42565.5
+            },
+            {
+              "type": "input-frame",
+              "ms": 8.200000002980232,
+              "time": 42565.90000000596
+            },
+            {
+              "type": "preview",
+              "ms": 0.10000000149011612,
+              "time": 42573.90000000596
+            },
+            {
+              "type": "input-frame",
+              "ms": 8.200000002980232,
+              "time": 42574.30000000447
+            },
+            {
+              "type": "preview",
+              "ms": 0.20000000298023224,
+              "time": 42582.30000000447
+            },
+            {
+              "type": "input-frame",
+              "ms": 8.299999997019768,
+              "time": 42582.70000000298
+            },
+            {
+              "type": "preview",
+              "ms": 0.20000000298023224,
+              "time": 42590.80000000447
+            },
+            {
+              "type": "input-frame",
+              "ms": 8.5,
+              "time": 42591.30000000447
+            },
+            {
+              "type": "preview",
+              "ms": 0.19999999552965164,
+              "time": 42598.60000000149
+            },
+            {
+              "type": "input-frame",
+              "ms": 7.5,
+              "time": 42599
+            },
+            {
+              "type": "preview",
+              "ms": 0.10000000149011612,
+              "time": 42607.40000000596
+            },
+            {
+              "type": "input-frame",
+              "ms": 8.700000002980232,
+              "time": 42607.80000000447
+            },
+            {
+              "type": "preview",
+              "ms": 0.19999999552965164,
+              "time": 42615.60000000149
+            },
+            {
+              "type": "input-frame",
+              "ms": 7.9000000059604645,
+              "time": 42615.90000000596
+            },
+            {
+              "type": "preview",
+              "ms": 0.19999999552965164,
+              "time": 42624
+            },
+            {
+              "type": "input-frame",
+              "ms": 8.300000004470348,
+              "time": 42624.40000000596
+            },
+            {
+              "type": "preview",
+              "ms": 0.10000000149011612,
+              "time": 42632.30000000447
+            },
+            {
+              "type": "input-frame",
+              "ms": 8.100000001490116,
+              "time": 42632.70000000298
+            },
+            {
+              "type": "preview",
+              "ms": 0.10000000149011612,
+              "time": 42640.60000000149
+            },
+            {
+              "type": "input-frame",
+              "ms": 8.199999995529652,
+              "time": 42641
+            },
+            {
+              "type": "preview",
+              "ms": 0.09999999403953552,
+              "time": 42648
+            },
+            {
+              "type": "input-frame",
+              "ms": 7.300000004470348,
+              "time": 42648.40000000596
+            },
+            {
+              "type": "preview",
+              "ms": 0.20000000298023224,
+              "time": 42657.70000000298
+            },
+            {
+              "type": "input-frame",
+              "ms": 10,
+              "time": 42658.5
+            },
+            {
+              "type": "preview",
+              "ms": 0.09999999403953552,
+              "time": 42665.5
+            },
+            {
+              "type": "input-frame",
+              "ms": 7.100000001490116,
+              "time": 42665.90000000596
+            },
+            {
+              "type": "preview",
+              "ms": 0.19999999552965164,
+              "time": 42674.10000000149
+            },
+            {
+              "type": "input-frame",
+              "ms": 8.700000002980232,
+              "time": 42674.90000000596
+            },
+            {
+              "type": "preview",
+              "ms": 0.19999999552965164,
+              "time": 42682.5
+            },
+            {
+              "type": "input-frame",
+              "ms": 8,
+              "time": 42683.20000000298
+            },
+            {
+              "type": "preview",
+              "ms": 0.10000000149011612,
+              "time": 42689.70000000298
+            },
+            {
+              "type": "input-frame",
+              "ms": 6.600000001490116,
+              "time": 42690.10000000149
+            },
+            {
+              "type": "preview",
+              "ms": 0.09999999403953552,
+              "time": 42698
+            },
+            {
+              "type": "input-frame",
+              "ms": 8.200000002980232,
+              "time": 42698.40000000596
+            },
+            {
+              "type": "preview",
+              "ms": 0.20000000298023224,
+              "time": 42706.30000000447
+            },
+            {
+              "type": "input-frame",
+              "ms": 8.100000001490116,
+              "time": 42706.70000000298
+            },
+            {
+              "type": "preview",
+              "ms": 0.20000000298023224,
+              "time": 42714.40000000596
+            },
+            {
+              "type": "input-frame",
+              "ms": 8.299999997019768,
+              "time": 42715.10000000149
+            },
+            {
+              "type": "preview",
+              "ms": 0.20000000298023224,
+              "time": 42724.40000000596
+            },
+            {
+              "type": "input-frame",
+              "ms": 9.5,
+              "time": 42725.10000000149
+            },
+            {
+              "type": "preview",
+              "ms": 0.20000000298023224,
+              "time": 42730.70000000298
+            },
+            {
+              "type": "input-frame",
+              "ms": 5.5,
+              "time": 42731
+            },
+            {
+              "type": "preview",
+              "ms": 0.19999999552965164,
+              "time": 42741
+            },
+            {
+              "type": "input-frame",
+              "ms": 10.300000004470348,
+              "time": 42741.40000000596
+            },
+            {
+              "type": "preview",
+              "ms": 0.10000000149011612,
+              "time": 42748.80000000447
+            },
+            {
+              "type": "input-frame",
+              "ms": 7.5,
+              "time": 42749.10000000149
+            },
+            {
+              "type": "preview",
+              "ms": 0.20000000298023224,
+              "time": 42757.40000000596
+            },
+            {
+              "type": "input-frame",
+              "ms": 9.100000001490116,
+              "time": 42758.30000000447
+            },
+            {
+              "type": "preview",
+              "ms": 0.10000000149011612,
+              "time": 42765.70000000298
+            },
+            {
+              "type": "input-frame",
+              "ms": 7.700000002980232,
+              "time": 42766.40000000596
+            },
+            {
+              "type": "preview",
+              "ms": 0.10000000149011612,
+              "time": 42772.90000000596
+            },
+            {
+              "type": "input-frame",
+              "ms": 6.5,
+              "time": 42773.30000000447
+            },
+            {
+              "type": "preview",
+              "ms": 0.10000000149011612,
+              "time": 42782.20000000298
+            },
+            {
+              "type": "input-frame",
+              "ms": 9.199999995529652,
+              "time": 42782.60000000149
+            },
+            {
+              "type": "preview",
+              "ms": 0.29999999701976776,
+              "time": 42790.10000000149
+            },
+            {
+              "type": "input-frame",
+              "ms": 8.100000001490116,
+              "time": 42790.90000000596
+            },
+            {
+              "type": "preview",
+              "ms": 0.10000000149011612,
+              "time": 42798.90000000596
+            },
+            {
+              "type": "input-frame",
+              "ms": 8.200000002980232,
+              "time": 42799.30000000447
+            },
+            {
+              "type": "preview",
+              "ms": 0.3999999985098839,
+              "time": 42807.70000000298
+            },
+            {
+              "type": "input-frame",
+              "ms": 9.100000001490116,
+              "time": 42808.60000000149
+            },
+            {
+              "type": "preview",
+              "ms": 0.10000000149011612,
+              "time": 42815.60000000149
+            },
+            {
+              "type": "input-frame",
+              "ms": 7.0999999940395355,
+              "time": 42816
+            },
+            {
+              "type": "preview",
+              "ms": 0.29999999701976776,
+              "time": 42824.20000000298
+            },
+            {
+              "type": "input-frame",
+              "ms": 9,
+              "time": 42825.10000000149
+            },
+            {
+              "type": "preview",
+              "ms": 0.09999999403953552,
+              "time": 42831
+            },
+            {
+              "type": "input-frame",
+              "ms": 6,
+              "time": 42831.40000000596
+            },
+            {
+              "type": "preview",
+              "ms": 0.10000000149011612,
+              "time": 42840.60000000149
+            },
+            {
+              "type": "input-frame",
+              "ms": 9.5,
+              "time": 42841.10000000149
+            },
+            {
+              "type": "preview",
+              "ms": 0.19999999552965164,
+              "time": 42849.10000000149
+            },
+            {
+              "type": "input-frame",
+              "ms": 8.600000001490116,
+              "time": 42849.90000000596
+            },
+            {
+              "type": "preview",
+              "ms": 0.19999999552965164,
+              "time": 42857
+            },
+            {
+              "type": "input-frame",
+              "ms": 7.5,
+              "time": 42857.80000000447
+            },
+            {
+              "type": "preview",
+              "ms": 0.19999999552965164,
+              "time": 42866
+            },
+            {
+              "type": "input-frame",
+              "ms": 8.700000002980232,
+              "time": 42866.80000000447
+            },
+            {
+              "type": "preview",
+              "ms": 0.19999999552965164,
+              "time": 42874
+            },
+            {
+              "type": "input-frame",
+              "ms": 7.200000002980232,
+              "time": 42874.40000000596
+            },
+            {
+              "type": "preview",
+              "ms": 0.19999999552965164,
+              "time": 42882.5
+            },
+            {
+              "type": "input-frame",
+              "ms": 8.800000004470348,
+              "time": 42883.40000000596
+            },
+            {
+              "type": "preview",
+              "ms": 0.20000000298023224,
+              "time": 42889.70000000298
+            },
+            {
+              "type": "input-frame",
+              "ms": 6.0999999940395355,
+              "time": 42890.10000000149
+            },
+            {
+              "type": "preview",
+              "ms": 0.20000000298023224,
+              "time": 42899.30000000447
+            },
+            {
+              "type": "input-frame",
+              "ms": 10,
+              "time": 42900.20000000298
+            },
+            {
+              "type": "preview",
+              "ms": 0.20000000298023224,
+              "time": 42907.30000000447
+            },
+            {
+              "type": "input-frame",
+              "ms": 7,
+              "time": 42907.70000000298
+            },
+            {
+              "type": "preview",
+              "ms": 0.20000000298023224,
+              "time": 42914.30000000447
+            },
+            {
+              "type": "input-frame",
+              "ms": 7.299999997019768,
+              "time": 42915.20000000298
+            },
+            {
+              "type": "preview",
+              "ms": 0.10000000149011612,
+              "time": 42922.60000000149
+            },
+            {
+              "type": "input-frame",
+              "ms": 7.300000004470348,
+              "time": 42922.90000000596
+            },
+            {
+              "type": "preview",
+              "ms": 0.10000000149011612,
+              "time": 42932.60000000149
+            },
+            {
+              "type": "input-frame",
+              "ms": 9.899999998509884,
+              "time": 42933
+            },
+            {
+              "type": "preview",
+              "ms": 0,
+              "time": 42940.5
+            },
+            {
+              "type": "input-frame",
+              "ms": 7.799999997019768,
+              "time": 42941
+            },
+            {
+              "type": "preview",
+              "ms": 0.10000000149011612,
+              "time": 42947.30000000447
+            },
+            {
+              "type": "input-frame",
+              "ms": 6.600000001490116,
+              "time": 42947.70000000298
+            },
+            {
+              "type": "preview",
+              "ms": 0.10000000149011612,
+              "time": 42956.30000000447
+            },
+            {
+              "type": "input-frame",
+              "ms": 8.799999997019768,
+              "time": 42956.70000000298
+            },
+            {
+              "type": "preview",
+              "ms": 0.10000000149011612,
+              "time": 42965.90000000596
+            },
+            {
+              "type": "input-frame",
+              "ms": 9.299999997019768,
+              "time": 42966.20000000298
+            },
+            {
+              "type": "preview",
+              "ms": 0.10000000149011612,
+              "time": 42973.80000000447
+            },
+            {
+              "type": "input-frame",
+              "ms": 7.899999998509884,
+              "time": 42974.30000000447
+            },
+            {
+              "type": "preview",
+              "ms": 0.10000000149011612,
+              "time": 42982.20000000298
+            },
+            {
+              "type": "input-frame",
+              "ms": 8.199999995529652,
+              "time": 42982.60000000149
+            },
+            {
+              "type": "preview",
+              "ms": 0.10000000149011612,
+              "time": 42990.60000000149
+            },
+            {
+              "type": "input-frame",
+              "ms": 8.200000002980232,
+              "time": 42990.90000000596
+            },
+            {
+              "type": "preview",
+              "ms": 0.29999999701976776,
+              "time": 42998.60000000149
+            },
+            {
+              "type": "input-frame",
+              "ms": 8.200000002980232,
+              "time": 42999.30000000447
+            },
+            {
+              "type": "preview",
+              "ms": 0.20000000298023224,
+              "time": 43007.40000000596
+            },
+            {
+              "type": "input-frame",
+              "ms": 8.299999997019768,
+              "time": 43008
+            },
+            {
+              "type": "preview",
+              "ms": 0.10000000149011612,
+              "time": 43015.60000000149
+            },
+            {
+              "type": "input-frame",
+              "ms": 7.799999997019768,
+              "time": 43016
+            },
+            {
+              "type": "preview",
+              "ms": 0.19999999552965164,
+              "time": 43024
+            },
+            {
+              "type": "input-frame",
+              "ms": 8.100000001490116,
+              "time": 43024.40000000596
+            },
+            {
+              "type": "preview",
+              "ms": 0.29999999701976776,
+              "time": 43032.60000000149
+            },
+            {
+              "type": "input-frame",
+              "ms": 8.800000004470348,
+              "time": 43033.40000000596
+            },
+            {
+              "type": "preview",
+              "ms": 0.10000000149011612,
+              "time": 43039.40000000596
+            },
+            {
+              "type": "input-frame",
+              "ms": 6,
+              "time": 43039.90000000596
+            },
+            {
+              "type": "preview",
+              "ms": 0.10000000149011612,
+              "time": 43048.40000000596
+            },
+            {
+              "type": "input-frame",
+              "ms": 9.400000005960464,
+              "time": 43049.40000000596
+            },
+            {
+              "type": "preview",
+              "ms": 0.10000000149011612,
+              "time": 43055.60000000149
+            },
+            {
+              "type": "input-frame",
+              "ms": 6.199999995529652,
+              "time": 43056
+            },
+            {
+              "type": "preview",
+              "ms": 0.29999999701976776,
+              "time": 43066.20000000298
+            },
+            {
+              "type": "input-frame",
+              "ms": 10.799999997019768,
+              "time": 43067
+            },
+            {
+              "type": "preview",
+              "ms": 0.20000000298023224,
+              "time": 43073.90000000596
+            },
+            {
+              "type": "input-frame",
+              "ms": 6.899999998509884,
+              "time": 43074.30000000447
+            },
+            {
+              "type": "preview",
+              "ms": 0.29999999701976776,
+              "time": 43082.60000000149
+            },
+            {
+              "type": "input-frame",
+              "ms": 8.800000004470348,
+              "time": 43083.30000000447
+            },
+            {
+              "type": "preview",
+              "ms": 0.10000000149011612,
+              "time": 43090.60000000149
+            },
+            {
+              "type": "input-frame",
+              "ms": 7.399999998509884,
+              "time": 43091.10000000149
+            },
+            {
+              "type": "preview",
+              "ms": 0.29999999701976776,
+              "time": 43099.20000000298
+            },
+            {
+              "type": "input-frame",
+              "ms": 8.699999995529652,
+              "time": 43100
+            },
+            {
+              "type": "preview",
+              "ms": 0.10000000149011612,
+              "time": 43107.30000000447
+            },
+            {
+              "type": "input-frame",
+              "ms": 7.199999995529652,
+              "time": 43107.60000000149
+            },
+            {
+              "type": "preview",
+              "ms": 0.20000000298023224,
+              "time": 43115.80000000447
+            },
+            {
+              "type": "input-frame",
+              "ms": 8.899999998509884,
+              "time": 43116.70000000298
+            },
+            {
+              "type": "preview",
+              "ms": 0.20000000298023224,
+              "time": 43123.90000000596
+            },
+            {
+              "type": "input-frame",
+              "ms": 7.200000002980232,
+              "time": 43124.30000000447
+            },
+            {
+              "type": "preview",
+              "ms": 0.29999999701976776,
+              "time": 43131.5
+            },
+            {
+              "type": "input-frame",
+              "ms": 7.800000004470348,
+              "time": 43132.30000000447
+            },
+            {
+              "type": "preview",
+              "ms": 0.19999999552965164,
+              "time": 43140
+            },
+            {
+              "type": "input-frame",
+              "ms": 7.700000002980232,
+              "time": 43140.30000000447
+            },
+            {
+              "type": "preview",
+              "ms": 0.20000000298023224,
+              "time": 43148.40000000596
+            },
+            {
+              "type": "input-frame",
+              "ms": 8.800000004470348,
+              "time": 43149.30000000447
+            },
+            {
+              "type": "preview",
+              "ms": 0.20000000298023224,
+              "time": 43157.70000000298
+            },
+            {
+              "type": "input-frame",
+              "ms": 8.799999997019768,
+              "time": 43158.5
+            },
+            {
+              "type": "preview",
+              "ms": 0.10000000149011612,
+              "time": 43165.60000000149
+            },
+            {
+              "type": "input-frame",
+              "ms": 7.399999998509884,
+              "time": 43166.30000000447
+            },
+            {
+              "type": "preview",
+              "ms": 0.09999999403953552,
+              "time": 43174
+            },
+            {
+              "type": "input-frame",
+              "ms": 7.799999997019768,
+              "time": 43174.5
+            },
+            {
+              "type": "preview",
+              "ms": 0.19999999552965164,
+              "time": 43181.60000000149
+            },
+            {
+              "type": "input-frame",
+              "ms": 7.700000002980232,
+              "time": 43182.40000000596
+            },
+            {
+              "type": "preview",
+              "ms": 0.10000000149011612,
+              "time": 43190.80000000447
+            },
+            {
+              "type": "input-frame",
+              "ms": 8.299999997019768,
+              "time": 43191.20000000298
+            },
+            {
+              "type": "preview",
+              "ms": 0.19999999552965164,
+              "time": 43198.10000000149
+            },
+            {
+              "type": "input-frame",
+              "ms": 7.399999998509884,
+              "time": 43198.80000000447
+            },
+            {
+              "type": "preview",
+              "ms": 0.10000000149011612,
+              "time": 43207.60000000149
+            },
+            {
+              "type": "input-frame",
+              "ms": 8.799999997019768,
+              "time": 43208
+            },
+            {
+              "type": "preview",
+              "ms": 0.10000000149011612,
+              "time": 43215.60000000149
+            },
+            {
+              "type": "input-frame",
+              "ms": 7.799999997019768,
+              "time": 43216
+            },
+            {
+              "type": "preview",
+              "ms": 0.10000000149011612,
+              "time": 43223.90000000596
+            },
+            {
+              "type": "input-frame",
+              "ms": 8,
+              "time": 43224.30000000447
+            },
+            {
+              "type": "preview",
+              "ms": 0.10000000149011612,
+              "time": 43230.60000000149
+            },
+            {
+              "type": "input-frame",
+              "ms": 6.699999995529652,
+              "time": 43231.10000000149
+            },
+            {
+              "type": "preview",
+              "ms": 0.19999999552965164,
+              "time": 43241
+            },
+            {
+              "type": "input-frame",
+              "ms": 10.100000001490116,
+              "time": 43241.40000000596
+            },
+            {
+              "type": "preview",
+              "ms": 0.10000000149011612,
+              "time": 43247.30000000447
+            },
+            {
+              "type": "input-frame",
+              "ms": 5.899999998509884,
+              "time": 43247.60000000149
+            },
+            {
+              "type": "preview",
+              "ms": 0.20000000298023224,
+              "time": 43257.40000000596
+            },
+            {
+              "type": "input-frame",
+              "ms": 10.099999994039536,
+              "time": 43258
+            },
+            {
+              "type": "preview",
+              "ms": 0.10000000149011612,
+              "time": 43265.60000000149
+            },
+            {
+              "type": "input-frame",
+              "ms": 7.5,
+              "time": 43266
+            },
+            {
+              "type": "preview",
+              "ms": 0.19999999552965164,
+              "time": 43274
+            },
+            {
+              "type": "input-frame",
+              "ms": 8.199999995529652,
+              "time": 43274.5
+            },
+            {
+              "type": "preview",
+              "ms": 0.10000000149011612,
+              "time": 43281.70000000298
+            },
+            {
+              "type": "input-frame",
+              "ms": 7.399999998509884,
+              "time": 43282.10000000149
+            },
+            {
+              "type": "preview",
+              "ms": 0.29999999701976776,
+              "time": 43291
+            },
+            {
+              "type": "input-frame",
+              "ms": 9.600000001490116,
+              "time": 43291.90000000596
+            },
+            {
+              "type": "preview",
+              "ms": 0.10000000149011612,
+              "time": 43298.90000000596
+            },
+            {
+              "type": "input-frame",
+              "ms": 7,
+              "time": 43299.30000000447
+            },
+            {
+              "type": "preview",
+              "ms": 0.20000000298023224,
+              "time": 43307.30000000447
+            },
+            {
+              "type": "input-frame",
+              "ms": 8.200000002980232,
+              "time": 43307.70000000298
+            },
+            {
+              "type": "preview",
+              "ms": 0.10000000149011612,
+              "time": 43314.10000000149
+            },
+            {
+              "type": "input-frame",
+              "ms": 6.5999999940395355,
+              "time": 43314.5
+            },
+            {
+              "type": "preview",
+              "ms": 0,
+              "time": 43324.20000000298
+            },
+            {
+              "type": "input-frame",
+              "ms": 10,
+              "time": 43324.70000000298
+            },
+            {
+              "type": "preview",
+              "ms": 0.20000000298023224,
+              "time": 43332.20000000298
+            },
+            {
+              "type": "input-frame",
+              "ms": 7.699999995529652,
+              "time": 43332.60000000149
+            },
+            {
+              "type": "preview",
+              "ms": 0.30000000447034836,
+              "time": 43340.90000000596
+            },
+            {
+              "type": "input-frame",
+              "ms": 8.899999998509884,
+              "time": 43341.70000000298
+            },
+            {
+              "type": "preview",
+              "ms": 0.20000000298023224,
+              "time": 43348.40000000596
+            },
+            {
+              "type": "input-frame",
+              "ms": 6.600000001490116,
+              "time": 43348.80000000447
+            },
+            {
+              "type": "preview",
+              "ms": 0.10000000149011612,
+              "time": 43357.40000000596
+            },
+            {
+              "type": "input-frame",
+              "ms": 8.800000004470348,
+              "time": 43357.80000000447
+            },
+            {
+              "type": "preview",
+              "ms": 0,
+              "time": 43358.10000000149
+            },
+            {
+              "type": "input-frame",
+              "ms": 0.4000000059604645,
+              "time": 43358.40000000596
+            },
+            {
+              "type": "request",
+              "time": 43358.5
+            },
+            {
+              "type": "network",
+              "ms": 1604.3000000044703,
+              "time": 44962.80000000447
+            },
+            {
+              "type": "correction",
+              "rmsMm": 0.4547936471186199,
+              "maxMm": 4.556245476682848,
+              "time": 44999.30000000447
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

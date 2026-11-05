@@ -1,6 +1,7 @@
 import * as THREE from 'three';
 import { captureRig, updateRigMatrices } from '../poser/libraryPose.js';
 import { prepareModelRig } from './modelRig.js';
+import {loadBrowserRig,attachBrowserPreview} from './mhrBrowserPreview.js';
 import { BODY_PRESETS, bodyState } from './bodyShape.js';
 
 const API='/mhr-experiment/api';
@@ -26,7 +27,7 @@ export function sourceTargets(source){
   }
   return {source:{positions,orientations},hips,height};
 }
-export async function createMhrRig(material){
+export async function createMhrRig(material,{browserNative=import.meta.env?.VITE_MHR_BROWSER_NATIVE==='true'}={}){
   const {meta,indices}=await loadMhrAssets();
   const root=new THREE.Group(), reverse=new Map(Object.entries(meta.mapping).map(([role,name])=>[name,role]));
   const bones=meta.jointNames.map(name=>{const b=new THREE.Bone();b.name=reverse.has(name)?`mixamorig${reverse.get(name)}`:`mhr_${name}`;return b;});
@@ -38,9 +39,10 @@ export async function createMhrRig(material){
   }
   setSkeleton(meta.rest.flat());
   const geometry=new THREE.BufferGeometry();geometry.setIndex(new THREE.BufferAttribute(indices,1));geometry.setAttribute('position',new THREE.BufferAttribute(new Float32Array(meta.vertexCount*3),3));
-  const mesh=new THREE.Mesh(geometry,material);mesh.castShadow=mesh.receiveShadow=true;mesh.frustumCulled=false;root.add(mesh);
+  const mesh=browserNative?new THREE.SkinnedMesh(geometry,material):new THREE.Mesh(geometry,material);mesh.castShadow=mesh.receiveShadow=true;mesh.frustumCulled=false;root.add(mesh);
+  if(browserNative)mesh.bind(new THREE.Skeleton(bones),new THREE.Matrix4());
   const rig=prepareModelRig(captureRig(root),'mhr');
-  let packet=null;
+  let packet=null,preview;
   rig.mhr={meta,params:Array(204).fill(0),shape:{silhouette:0,fullness:0,height:1},fitError:null,
     get state(){return bodyState(this.params,this.shape);},
     apply(data){
@@ -49,12 +51,12 @@ export async function createMhrRig(material){
       const nextShape={...(data.bodyShape||this.shape)};
       const changed=packet&&Object.keys(nextShape).some(k=>nextShape[k]!==this.shape[k]);
       const floor=changed?new THREE.Box3().setFromObject(root,true).min.y:null;
-      this.shape=nextShape;packet=data.slice();packet.bodyShape={...this.shape};geometry.attributes.position.array.set(data.subarray(0,n));geometry.attributes.position.needsUpdate=true;
+      this.shape=nextShape;packet=data.slice();packet.bodyShape={...this.shape};if(preview)preview.apply(data);else geometry.attributes.position.array.set(data.subarray(0,n));geometry.attributes.position.needsUpdate=true;
       geometry.computeVertexNormals();geometry.computeBoundingBox();geometry.computeBoundingSphere();
       setSkeleton(data.subarray(n,n+j));this.params=Array.from(data.subarray(n+j));
       if(changed){root.position.y+=floor-new THREE.Box3().setFromObject(root,true).min.y;root.updateMatrixWorld(true);}
     },
-    capture(){if(!packet)return null;const copy=packet.slice();copy.bodyShape={...this.shape};return copy;},
+    capture(){if(!packet)return null;const copy=packet.slice();copy.bodyShape={...this.shape};return preview?.active?preview.capture(copy):copy;},
     async evaluate(body,signal){const shape={...(body.shape||this.shape)};const response=await request('flow',{...body,shape},signal);const data=new Float32Array(await response.arrayBuffer());data.bodyShape=shape;return data;},
     async fit(source,signal){
       const {source:targets,hips,height}=sourceTargets(source);
@@ -70,8 +72,10 @@ export async function createMhrRig(material){
       }
       updateRigMatrices(rig);
     },
-    dispose(){geometry.dispose();},
+    dispose(){preview?.dispose();geometry.dispose();},
   };
+  if(browserNative){const data=await loadBrowserRig();mesh.skeleton.dispose();preview=attachBrowserPreview({data,mesh,bones,setSkeleton,geometry,native:rig.mhr});
+    Object.assign(rig.mhr,{preview:body=>preview.preview(body),settle:(data,invalidate)=>preview.settle(data,invalidate),cancelPreview:()=>preview.cancel()});}
   return rig;
 }
 

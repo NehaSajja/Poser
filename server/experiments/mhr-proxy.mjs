@@ -2,7 +2,7 @@ import { isAllowedRequest } from '../access.mjs';
 
 // The browser uses the same origin as Poser; Python stays private on loopback.
 // Limit expensive work by concurrency, not per-minute counts (sliders are continuous).
-export function createMhrProxy({ enabled, origins, json, allowBench = false, fetcher = fetch, maxPending = 8, ready = Promise.resolve() }) {
+export function createMhrProxy({ enabled, origins, json, allowBench = false, fetcher = fetch, maxPending = 8, ready = Promise.resolve(), remote = false }) {
   let pending = 0;
   return async (req, res, path) => {
     if (!path.startsWith('/mhr-experiment/')) return false;
@@ -31,7 +31,8 @@ export function createMhrProxy({ enabled, origins, json, allowBench = false, fet
       }
       await ready;
       if (controller.signal.aborted) return true;
-      const upstream = await fetcher(`http://127.0.0.1:4354${endpoint}`, {
+      const base = remote ? 'https://poser-demo.fly.dev/mhr-experiment' : 'http://127.0.0.1:4354';
+      const upstream = await fetcher(`${base}${endpoint}`, {
         method, body, headers: { 'Content-Type': 'application/json' },
         signal: AbortSignal.any([controller.signal, AbortSignal.timeout(120000)]),
       });

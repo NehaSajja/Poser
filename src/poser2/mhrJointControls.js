@@ -1,5 +1,6 @@
 import {Plane,Raycaster,Vector2,Vector3} from 'three';
 import {createJointDrag} from './jointDrag';
+import {createMhrEditQueue} from './mhrEditQueue.js';
 import {bodyRequest} from './bodyShape.js';
 
 // Native parameters keep MHR pose correctives active. Updates are coalesced;
@@ -7,23 +8,12 @@ import {bodyRequest} from './bodyShape.js';
 export function createMhrJointControls({rig,camera,container,orbit,invalidate,onEdit,onCommit,history,onControlsChange}){
  const native=rig.mhr,overlay=document.createElement('div');overlay.className='poser2-joints';overlay.setAttribute('role','group');overlay.setAttribute('aria-label','MHR pose joints');overlay.inert=true;container.append(overlay);
  const status=document.createElement('div');status.className='poser2-mhr-status';status.setAttribute('role','status');container.append(status);
- let enabled=false,disposed=false,pending=null,running=null,commitWhenIdle=false,version=0;
- const abort=new AbortController();
+ let enabled=false,disposed=false;
  const actions=()=>onControlsChange?.({canUndo:history.canUndo,canRedo:history.canRedo,bodyShape:{...native.shape}});
  const repaint=()=>{onEdit();invalidate();};
- async function flush(){
-   while(pending&&!disposed){const {body,token,notice}=pending;pending=null;
-    try{const packet=await native.evaluate(body,abort.signal);if(disposed)break;
-      // A new gesture/reset invalidates previous requests, but intermediate frames
-      // within the same drag still render so long drags never starve the viewer.
-      if(token===version){native.apply(packet);status.textContent=notice;repaint();}
-    }catch(error){if(!disposed){pending=null;commitWhenIdle=false;status.textContent=error.message;}}
-   }
-   running=null;
-   if(commitWhenIdle&&!disposed){commitWhenIdle=false;history.commit(native.state);onCommit();actions();}
- }
- function queue(body,notice=''){pending={body,token:version,notice};if(!running)running=flush();}
- function commit(){commitWhenIdle=true;if(!running){commitWhenIdle=false;history.commit(native.state);onCommit();actions();}}
+ const edits=createMhrEditQueue({native,render:repaint,notice:text=>status.textContent=text,error:error=>status.textContent=error.message,
+  committed:()=>{history.commit(native.state);onCommit();actions();}});
+ const queue=(body,notice='')=>edits.queue(body,notice),commit=()=>edits.commit();
  const ray=new Raycaster(),plane=new Plane(),point=new Vector3();
  const hit=e=>{const b=container.getBoundingClientRect();ray.setFromCamera(new Vector2((e.clientX-b.left)/b.width*2-1,1-(e.clientY-b.top)/b.height*2),camera);return ray.ray.intersectPlane(plane,point);};
  const position=h=>rig.joints.get(h.role).getWorldPosition(new Vector3());
@@ -39,7 +29,7 @@ export function createMhrJointControls({rig,camera,container,orbit,invalidate,on
   {role:'Spine2',kind:'torso',label:'Torso tilt'},{role:'Head',kind:'head',label:'Head turn and nod'},
   {role:'LeftArm',kind:'shoulder',label:'Left shoulder'},{role:'RightArm',kind:'shoulder',label:'Right shoulder'}];
  const drag=createJointDrag({surface:container,
-  begin(e,h){if(!enabled)return null;version++;commitWhenIdle=false;pending=null;
+  begin(e,h){if(!enabled)return null;edits.begin();
    h.button.focus({preventScroll:true});camera.updateMatrixWorld();
    const start=position(h);plane.setFromNormalAndCoplanarPoint(camera.getWorldDirection(new Vector3()),start);const p=hit(e);if(!p)return null;
    const orbitEnabled=orbit.enabled;orbit.enabled=false;h.button.dataset.dragging='true';
@@ -49,7 +39,7 @@ export function createMhrJointControls({rig,camera,container,orbit,invalidate,on
    else {const next=upper(a,a.params,e.clientX-a.startX,a.startY-e.clientY);queue({params:next.params},next.notice);}
   },
   end(a,reason){a.button.removeAttribute('data-dragging');orbit.enabled=a.orbitEnabled;
-   if(reason==='escape'){version++;pending=null;commitWhenIdle=false;native.apply(a.packet);repaint();actions();}
+   if(reason==='escape'){edits.cancel();native.apply(a.packet);repaint();actions();}
    else if(reason!=='dispose')commit();
   }
  });
@@ -57,18 +47,18 @@ export function createMhrJointControls({rig,camera,container,orbit,invalidate,on
   b.addEventListener('pointerdown',e=>drag.start(e,h));
   b.addEventListener('keydown',e=>{
    const dirs={ArrowLeft:[-1,0],ArrowRight:[1,0],ArrowUp:[0,1],ArrowDown:[0,-1]};if(!enabled||!dirs[e.key]||drag.active)return;
-   e.preventDefault();e.stopPropagation();const [x,y]=dirs[e.key],step=e.shiftKey?16:4;version++;
+   e.preventDefault();e.stopPropagation();const [x,y]=dirs[e.key],step=e.shiftKey?16:4;edits.begin();
    if(h.kind==='limb'){const scale=(camera.top-camera.bottom)/camera.zoom/container.clientHeight;const target=position(h).add(new Vector3(x*step*scale,y*step*scale,0).applyQuaternion(camera.quaternion));queue({params:native.params,limb:{role:h.role,target:rig.root.worldToLocal(target).toArray()}});}
    else {const next=upper(h,native.params,x*step,y*step);queue({params:next.params},next.notice);}commit();
   });overlay.append(b);return h;
  });
- const finish=async()=>{drag.finish('commit');if(running)await running;};
- const navigate=async(direction)=>{await finish();if(disposed)return;const state=history[direction]();if(!state)return;version++;queue(bodyRequest(state));await running;if(!disposed){onCommit();actions();}};
+ const finish=async()=>{drag.finish('commit');await edits.finish();};
+ const navigate=async(direction)=>{await finish();if(disposed)return;const state=history[direction]();if(!state)return;edits.begin();queue(bodyRequest(state));await edits.finish();if(!disposed){onCommit();actions();}};
  const key=e=>{if(e.key==='Escape'&&drag.active){e.preventDefault();e.stopPropagation();drag.finish('escape');}else if((e.metaKey||e.ctrlKey)&&e.key.toLowerCase()==='z'){e.preventDefault();e.stopPropagation();void navigate(e.shiftKey?'redo':'undo');}};
  container.addEventListener('keydown',key);actions();
- return {finish,commitBodyShape:commit,async setBodyShape(shape, shouldCommit=true){drag.finish('commit');version++;pending=null;commitWhenIdle=false;queue({params:[...native.params],shape});if(shouldCommit)commit();if(running)await running;},cancelPending(){version++;pending=null;commitWhenIdle=false;},undo:()=>navigate('undo'),redo:()=>navigate('redo'),
+ return {finish,beginGesture:()=>edits.begin(),updateParams:params=>queue({params}),endGesture:commit,commitBodyShape:commit,async setBodyShape(shape, shouldCommit=true){drag.finish('commit');edits.cancel();queue({params:[...native.params],shape});if(shouldCommit)commit();await edits.finish();},cancelPending(){edits.cancel();},undo:()=>navigate('undo'),redo:()=>navigate('redo'),
   setEnabled(value){if(!value)drag.finish('hide');enabled=value;overlay.inert=!value;overlay.dataset.visible=String(value);},
   update(){camera.updateMatrixWorld();const {width,height}=container.getBoundingClientRect();for(const h of handles){const p=position(h).project(camera);h.button.style.visibility=Math.abs(p.x)>1||Math.abs(p.y)>1||Math.abs(p.z)>1?'hidden':'visible';h.button.style.left=`${(p.x+1)*width/2}px`;h.button.style.top=`${(1-p.y)*height/2}px`;h.button.style.zIndex=String(2+Math.round((1-p.z)*100));}},
-  dispose(){disposed=true;version++;pending=null;abort.abort();drag.dispose();overlay.remove();status.remove();container.removeEventListener('keydown',key);}
+  dispose(){disposed=true;edits.dispose();drag.dispose();overlay.remove();status.remove();container.removeEventListener('keydown',key);}
  };
 }
