@@ -18,7 +18,7 @@ export async function startMhrExperiment(root) {
   child.once('error', () => { failed = true; }); child.once('exit', () => { failed = true; });
   // Consume Flask output without logging request bodies or credentials.
   child.stderr.on('data', () => {});
-  for (let i = 0; i < (required ? 480 : 80) && !failed; i++) {
+  for (let i = 0; i < (required ? 960 : 80) && !failed; i++) {
     if (await ready()) { console.log('MHR corrections ready on localhost.'); return () => child.kill('SIGTERM'); }
     await new Promise(resolve => setTimeout(resolve, 125));
   }

@@ -22,8 +22,14 @@ const key = provider === 'openai' ? process.env.OPENAI_API_KEY : process.env.OPE
 const port = Number(process.env.PORT || 4317);
 const production = process.env.NODE_ENV === 'production';
 const mhrEnabled = process.env.MHR_ENABLED === 'true' || (!production && process.env.VITE_MHR_ENABLED === 'true');
-const stopMhr = mhrEnabled
-  ? await (await import('./experiments/start-mhr.mjs')).startMhrExperiment(root) : () => {};
+let stopMhr = () => {};
+let mhrReady = !mhrEnabled;
+const mhrStartup = mhrEnabled
+  ? import('./experiments/start-mhr.mjs').then(m => m.startMhrExperiment(root)).then(stop => { stopMhr = stop; mhrReady = true; })
+  : Promise.resolve();
+// Serve the drawing interface while the CPU model loads after an idle stop.
+// A failed startup still fails the process; never silently substitute a body.
+mhrStartup.catch(() => { console.error('MHR failed to start.'); process.exit(1); });
 const origins = allowedOrigins(port);
 const runtime = resolve(process.env.POSER_DATA_DIR || resolve(root, '.local'));
 const reserve = production ? createDailyQuota({ file: resolve(runtime, 'usage/node.json'), limit: limitValue(process.env.DAILY_NODE_API_CALLS, 100), totalLimit: limitValue(process.env.TOTAL_NODE_API_CALLS, 200) }) : () => {};
@@ -37,13 +43,14 @@ const handlePoseAssets = poseAssetRoutes({ port, json, origins });
 const handlePoseRetrieval = poseRetrievalRoutes({port,json,key:process.env.GEMINI_API_KEY,origins,beforeProviderCall:reserve});
 const references = createReferenceService(root);
 const handleArtReferences = artReferenceRoutes({ port, json, request: references, origins });
-const handleMhr = createMhrProxy({ enabled: mhrEnabled, origins, json, allowBench: !production });
+const handleMhr = createMhrProxy({ enabled: mhrEnabled, origins, json, allowBench: !production, ready: mhrStartup });
 let inFlight = 0;
 const server = http.createServer(async (req, res) => {
   const path = new URL(req.url, 'http://localhost').pathname;
   res.setHeader('X-Content-Type-Options', 'nosniff');
   res.setHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
   if (path === '/healthz' && req.method === 'GET') {
+    if (mhrEnabled && !mhrReady) return json(res, 200, { ok: true, mhr: false, warming: true });
     if (mhrEnabled) {
       try {
         const ready = await fetch('http://127.0.0.1:4354/api/flow-meta', { signal: AbortSignal.timeout(2000) });

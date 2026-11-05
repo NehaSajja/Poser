@@ -35,7 +35,8 @@ origin checks. Python listens on loopback, and comparison-only endpoints remain
 unpublished. Requests are limited to 32 KiB and eight pending requests so an
 interactive slider is not charged against the search request-per-minute limit.
 The body evaluation itself makes no external API calls. The application health
-check includes MHR readiness. Missing weights or startup failure stop startup
+check reports MHR readiness. During startup the interface is served immediately
+and body requests wait for the model; health reports `warming: true` until ready. Missing weights or startup failure stop startup
 instead of silently shipping the old body as the default.
 
 Torso, head, shoulder and body changes are evaluated on the server, so interaction

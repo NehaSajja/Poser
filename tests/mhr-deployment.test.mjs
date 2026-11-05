@@ -31,9 +31,18 @@ test('MHR has a bounded work queue and recovers capacity after upstream failure'
  const first=response();const pending=proxy(request(),first,'/mhr-experiment/api/flow-meta');
  const busy=response();await proxy(request(),busy,'/mhr-experiment/api/flow-meta');assert.equal(busy.statusCode,503);assert.equal(calls,1);
  reject(new Error('service stopped'));await pending;assert.equal(first.statusCode,503);
- const recovered=response();const next=proxy(request(),recovered,'/mhr-experiment/api/flow-meta');assert.equal(calls,2);reject(new Error('still stopped'));await next;
+ const recovered=response();const next=proxy(request(),recovered,'/mhr-experiment/api/flow-meta');await Promise.resolve();assert.equal(calls,2);reject(new Error('still stopped'));await next;
 });
 test('MHR rollback flag disables routes; local comparison endpoints are opt-in',async()=>{
  const disabled=createMhrProxy({...options,enabled:false});const res=response();await disabled(request(),res,'/mhr-experiment/api/topology');assert.equal(res.statusCode,404);
  const dev=createMhrProxy({...options,allowBench:true,fetcher:async()=>new Response('{}')});const bench=response();await dev(request(),bench,'/mhr-experiment/api/meta');assert.equal(bench.statusCode,200);
+});
+
+test('body requests wait for cold startup without contacting an unavailable model',async()=>{
+ let start;let calls=0;
+ const ready=new Promise(resolve=>{start=resolve;});
+ const proxy=createMhrProxy({...options,ready,fetcher:async()=>{calls++;return new Response('{}');}});
+ const res=response();const pending=proxy(request(),res,'/mhr-experiment/api/flow-meta');
+ await Promise.resolve();assert.equal(calls,0);assert.equal(res.writableEnded,undefined);
+ start();await pending;assert.equal(calls,1);assert.equal(res.statusCode,200);
 });
