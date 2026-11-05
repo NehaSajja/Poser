@@ -117,13 +117,13 @@ references. Cold MHR startup after this deployment took approximately 55 seconds
 auto-stop settings are unchanged, so first-visit latency should be measured
 separately from warm matching latency.
 
-## Experimental saved initial bodies (2026-11-05, not deployed)
+## Saved initial bodies — experimental validation (2026-11-05)
 
 Branch `experiment/saved-mhr-bodies` starts from live checkpoint `2bc265f`.
 Run `npm run build:mhr-bodies` once, with the existing local MHR Python environment
 and weights installed, then `npm run dev:saved-bodies`. The separate experiment is
 at `http://127.0.0.1:4360/`; `tests/saved-bodies.html` is its comparison bench.
-The deployed app and its build flags remain unchanged.
+This experimental validation preceded the deployment recorded below.
 
 The builder evaluates all 1,361 saved library fits at the existing feminine preset
 (silhouette 1, fullness -0.8, height 1). Each packet contains the fully corrected
@@ -159,3 +159,45 @@ seconds, again with zero MHR requests and zero fallbacks. The normal drawing flo
 all four matches from saved bodies (individual preparation logs: 62–431 ms).
 These are local observations, not hosted latency promises. Gemini interpretation,
 retrieval ranking and historical artwork searches are unchanged.
+
+
+## Saved-body live release — November 5, 2026
+
+The saved-body version is deployed at https://poser-demo.fly.dev/ using
+`registry.fly.io/poser-demo:saved-bodies-2026-11-05`. Exact image digest, source,
+asset revision and live checks are in `checkpoints/saved-bodies-live-2026-11-05.json`.
+The deployment source is backed up on `deploy/saved-bodies-2026-11-05`; the earlier
+experiment checkpoint remains `54af27f`. All three VITE_MHR flags are enabled.
+
+The previous live version has a GitHub-backed tag
+`checkpoint/live-before-saved-bodies-2026-11-05`. Its exact configuration and image
+are recorded in `checkpoints/pre-saved-bodies-2026-11-05.json`.
+Restore it without rebuilding:
+
+```sh
+flyctl deploy --config deployment/checkpoints/pre-saved-bodies-2026-11-05.fly.toml \
+  --image registry.fly.io/poser-demo@sha256:417bb69bd9a3ced10288c0a066a9947ad28bfc188e73597942fb34362be1685c --ha=false
+```
+
+Keep the current runtime secrets and data volume. Do not reset reference caches
+or usage ledgers. The deployment retains the same single two-CPU/4-GB machine,
+volume, auto-stop policy and API configuration. The temporary build server and
+cache were removed after deployment.
+
+For the incremental build, compile dist locally using the existing browser license
+and `VITE_MHR_ENABLED=true VITE_MHR_BROWSER_NATIVE=true VITE_MHR_SAVED_BODIES=true`.
+Use an isolated context containing dist, the six files copied by
+`deployment/Dockerfile.saved-bodies`, that Dockerfile named `Dockerfile`, and
+fly.toml. Deploy that context with `--buildkit --remote-only --ha=false`.
+An isolated context avoids the builder selecting the root full-build recipe;
+never include local environment files or credentials. The image validates every
+packet with `scripts/experiments/verify-mhr-bodies.mjs` before publishing.
+The root Dockerfile also supports the saved-body flag and validates assets for
+future full builds; generate the body files first with `npm run build:mhr-bodies`.
+
+Live verification matched both JavaScript bundles and shared rig assets against
+the tested local build, verified six downloaded packet checksums and gzip caching,
+and compared a saved seated body with a fresh Linux correction (maximum coordinate
+difference 0.000596 mm). Health reported MHR ready. Browser checks covered sketch
+matches, selection, head editing and undo. All 94 local checks passed before
+release. Search interpretation and historical-reference behavior are unchanged.

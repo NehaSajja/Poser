@@ -1,0 +1,63 @@
+{
+  "app": "poser-demo",
+  "url": "https://poser-demo.fly.dev/",
+  "deployedAt": "2026-11-05T19:47:43.713269+00:00",
+  "sourceCommit": "58cd4d0",
+  "experimentCommit": "54af27f",
+  "image": "registry.fly.io/poser-demo:saved-bodies-2026-11-05",
+  "imageDigest": "sha256:3512717728aa998d0d29da592b857f68870c3ecaea015b32dab623f8cc82753d",
+  "machine": "874222f0301de8",
+  "volume": "vol_458573mo9e58q1q4",
+  "rollbackConfig": "deployment/checkpoints/pre-saved-bodies-2026-11-05.fly.toml",
+  "rollbackTag": "checkpoint/live-before-saved-bodies-2026-11-05",
+  "temporaryBuilderRemoved": true,
+  "verification": {
+    "revision": "b1b3133250cbc2b70d7e",
+    "count": 1361,
+    "bodies": [
+      {
+        "id": "2013",
+        "ms": 157,
+        "decodedBytes": 226148,
+        "encoding": "gzip"
+      },
+      {
+        "id": "1351",
+        "ms": 66,
+        "decodedBytes": 226148,
+        "encoding": "gzip"
+      },
+      {
+        "id": "201",
+        "ms": 61,
+        "decodedBytes": 226148,
+        "encoding": "gzip"
+      },
+      {
+        "id": "1010",
+        "ms": 50,
+        "decodedBytes": 226148,
+        "encoding": "gzip"
+      },
+      {
+        "id": "1176",
+        "ms": 66,
+        "decodedBytes": 226148,
+        "encoding": "gzip"
+      },
+      {
+        "id": "2933",
+        "ms": 35,
+        "decodedBytes": 226148,
+        "encoding": "gzip"
+      }
+    ],
+    "frontendMatchesLocalBuild": true,
+    "sharedRigAssetsMatch": true,
+    "linuxSurfaceMaxDifferenceMm": 0.0005960464477539062,
+    "health": {
+      "ok": true,
+      "mhr": true
+    }
+  }
+}
